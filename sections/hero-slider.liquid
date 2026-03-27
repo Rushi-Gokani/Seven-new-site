@@ -1,0 +1,225 @@
+{% schema %}
+{
+  "name": "Hero Slider",
+  "class": "section-hero-slider",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Autoplay speed",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show pagination dots",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Slider height",
+      "options": [
+        { "value": "h-[400px] md:h-[500px]", "label": "Medium" },
+        { "value": "h-[500px] md:h-[600px]", "label": "Large" },
+        { "value": "h-[600px] md:h-[700px]", "label": "Extra large" },
+        { "value": "h-[80vh]", "label": "Full viewport" }
+      ],
+      "default": "h-[500px] md:h-[600px]"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Background image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile background image (optional)"
+        },
+        {
+          "type": "url",
+          "id": "slide_link",
+          "label": "Slide link (click to redirect)",
+          "info": "Leave empty to make the image non-clickable"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Slider",
+      "blocks": [
+        {
+          "type": "slide"
+        },
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section
+  class="hero-slider relative overflow-hidden {{ section.settings.height }}"
+  x-data="heroSlider({ 
+    slideCount: {{ section.blocks.size }},
+    autoplay: {{ section.settings.autoplay }},
+    autoplaySpeed: {{ section.settings.autoplay_speed }}
+  })"
+  x-init="init()"
+  @mouseenter="pause()"
+  @mouseleave="resume()"
+>
+  <div class="slides-container relative h-full w-full">
+    {%- for block in section.blocks -%}
+      <div
+        class="slide absolute inset-0 h-full w-full transition-opacity duration-1000 ease-in-out"
+        :class="{ 'opacity-100 z-10': currentSlide === {{ forloop.index0 }}, 'opacity-0 z-0': currentSlide !== {{ forloop.index0 }} }"
+        {{ block.shopify_attributes }}
+      >
+        {%- if block.settings.slide_link != blank -%}
+          <a href="{{ block.settings.slide_link }}" class="absolute inset-0 z-10" aria-label="{{ block.settings.image.alt | default: 'View slide' | escape }}"></a>
+        {%- endif -%}
+
+        {%- if block.settings.image != blank -%}
+          <picture class="absolute inset-0 h-full w-full">
+            {%- if block.settings.mobile_image != blank -%}
+              <source
+                media="(max-width: 768px)"
+                srcset="{{ block.settings.mobile_image | image_url: width: 375 }} 375w,
+                        {{ block.settings.mobile_image | image_url: width: 550 }} 550w,
+                        {{ block.settings.mobile_image | image_url: width: 768 }} 768w"
+                sizes="100vw">
+            {%- endif -%}
+            <img
+              src="{{ block.settings.image | image_url: width: 1920 }}"
+              srcset="{{ block.settings.image | image_url: width: 768 }} 768w,
+                      {{ block.settings.image | image_url: width: 1024 }} 1024w,
+                      {{ block.settings.image | image_url: width: 1366 }} 1366w,
+                      {{ block.settings.image | image_url: width: 1920 }} 1920w"
+              sizes="100vw"
+              alt="{{ block.settings.image.alt | default: block.settings.heading | escape }}"
+              class="h-full w-full object-cover"
+              loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              fetchpriority="{% if forloop.first %}high{% else %}low{% endif %}"
+              decoding="{% if forloop.first %}sync{% else %}async{% endif %}"
+              width="{{ block.settings.image.width }}"
+              height="{{ block.settings.image.height }}"
+            >
+          </picture>
+        {%- else -%}
+          <div class="absolute inset-0 h-full w-full bg-gradient-to-br from-cloud-burst-500 to-cloud-burst-700"></div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- if section.settings.show_arrows and section.blocks.size > 1 -%}
+    <button
+      class="nav-arrow absolute left-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-cloud-burst-900 md:left-8"
+      @click="prev()"
+      aria-label="Previous slide"
+    >
+      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+    </button>
+    <button
+      class="nav-arrow absolute right-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-cloud-burst-900 md:right-8"
+      @click="next()"
+      aria-label="Next slide"
+    >
+      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </button>
+  {%- endif -%}
+
+  {%- if section.settings.show_dots and section.blocks.size > 1 -%}
+    <div class="dots-container absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 gap-2.5 md:bottom-8">
+      {%- for block in section.blocks -%}
+        <button
+          class="h-2.5 w-2.5 rounded-full transition-all duration-300"
+          :class="currentSlide === {{ forloop.index0 }} ? 'bg-white w-8' : 'bg-white/50 hover:bg-white/75'"
+          @click="goTo({{ forloop.index0 }})"
+          aria-label="Go to slide {{ forloop.index }}"
+        ></button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('heroSlider', (config) => ({
+      currentSlide: 0,
+      slideCount: config.slideCount,
+      autoplay: config.autoplay,
+      autoplaySpeed: config.autoplaySpeed,
+      interval: null,
+
+      init() {
+        if (this.autoplay && this.slideCount > 1) {
+          this.startAutoplay()
+        }
+      },
+
+      startAutoplay() {
+        this.interval = setInterval(() => {
+          this.next()
+        }, this.autoplaySpeed * 1000)
+      },
+
+      pause() {
+        if (this.interval) {
+          clearInterval(this.interval)
+          this.interval = null
+        }
+      },
+
+      resume() {
+        if (this.autoplay && this.slideCount > 1) {
+          this.startAutoplay()
+        }
+      },
+
+      next() {
+        this.currentSlide = (this.currentSlide + 1) % this.slideCount
+      },
+
+      prev() {
+        this.currentSlide = (this.currentSlide - 1 + this.slideCount) % this.slideCount
+      },
+
+      goTo(index) {
+        this.currentSlide = index
+      }
+    }))
+  })
+</script>

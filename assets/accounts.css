@@ -1,0 +1,91 @@
+.shell {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.account-register,
+.account-login,
+.account-reset-password {
+  width: 100%;
+}
+
+.account-register-inner,
+.account-login-inner,
+.account-reset-password-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.account-register input,
+.account-login input,
+.account-reset-password input,
+.account-register select,
+.account-login select,
+.account-reset-password select,
+.account-register textarea,
+.account-login textarea,
+.account-reset-password textarea,
+.account-register button,
+.account-login button,
+.account-reset-password button {
+  font: inherit;
+}
+
+.account-register input,
+.account-login input,
+.account-reset-password input,
+.account-register select,
+.account-login select,
+.account-reset-password select,
+.account-register textarea,
+.account-login textarea,
+.account-reset-password textarea {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+}
+
+.account-register button,
+.account-login button,
+.account-reset-password button,
+.account-register input[type='submit'],
+.account-login input[type='submit'],
+.account-reset-password input[type='submit'] {
+  padding: 0.625rem 1rem;
+  border: 0;
+  border-radius: 0.375rem;
+  background: #252a59;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.account-register a,
+.account-login a,
+.account-reset-password a {
+  text-underline-offset: 2px;
+}
+
+.account-register input:focus-visible,
+.account-login input:focus-visible,
+.account-reset-password input:focus-visible,
+.account-register select:focus-visible,
+.account-login select:focus-visible,
+.account-reset-password select:focus-visible,
+.account-register textarea:focus-visible,
+.account-login textarea:focus-visible,
+.account-reset-password textarea:focus-visible,
+.account-register button:focus-visible,
+.account-login button:focus-visible,
+.account-reset-password button:focus-visible,
+.account-register input[type='submit']:focus-visible,
+.account-login input[type='submit']:focus-visible,
+.account-reset-password input[type='submit']:focus-visible,
+.account-register a:focus-visible,
+.account-login a:focus-visible,
+.account-reset-password a:focus-visible {
+  outline: 2px solid #252a59;
+  outline-offset: 2px;
+}

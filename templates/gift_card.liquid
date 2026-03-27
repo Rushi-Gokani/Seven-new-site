@@ -1,0 +1,133 @@
+{% layout none %}
+{% assign gift_card_initial_value = gift_card.initial_value | money %}
+{% assign gift_card_balance = gift_card.balance | money %}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{{ 'gift_cards.issued.title' | t: value: gift_card_initial_value, shop: shop.name }}</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Open Sans", sans-serif;
+        background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+        color: #0f172a;
+      }
+
+      .gift-card-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .gift-card-card {
+        width: 100%;
+        max-width: 560px;
+        border: 1px solid #e2e8f0;
+        border-radius: 20px;
+        background: #ffffff;
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+        padding: 28px;
+      }
+
+      .gift-card-meta {
+        margin-top: 8px;
+        color: #475569;
+        font-size: 14px;
+      }
+
+      .gift-card-code {
+        margin: 20px 0 14px;
+        border: 1px dashed #cbd5e1;
+        border-radius: 12px;
+        background: #f8fafc;
+        padding: 16px;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .gift-card-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 10px;
+      }
+
+      .gift-card-actions a,
+      .gift-card-actions button {
+        border: 1px solid #0f172a;
+        background: #0f172a;
+        color: #ffffff;
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .gift-card-actions a.secondary,
+      .gift-card-actions button.secondary {
+        background: #ffffff;
+        color: #0f172a;
+      }
+
+      .gift-card-status {
+        margin-top: 12px;
+        font-size: 13px;
+        color: #334155;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="gift-card-page">
+      <section class="gift-card-card" aria-label="{{ 'gift_cards.issued.gift_card_code' | t }}">
+        <h1>{{ 'gift_cards.issued.title' | t: value: gift_card_initial_value, shop: shop.name }}</h1>
+        <p class="gift-card-meta">{{ 'gift_cards.issued.subtext' | t }}</p>
+
+        {% if gift_card.expired or gift_card.enabled == false %}
+          <p class="gift-card-status">{{ 'gift_cards.issued.expired' | t }}</p>
+        {% else %}
+          <p class="gift-card-status">{{ 'gift_cards.issued.remaining_html' | t: balance: gift_card_balance }}</p>
+        {% endif %}
+
+        <p class="gift-card-code" id="GiftCardCode">{{ gift_card.code | format_code }}</p>
+
+        <div class="gift-card-actions">
+          <button type="button" id="GiftCardCopyButton" class="secondary">{{ 'gift_cards.issued.copy_code' | t }}</button>
+          <a href="{{ shop.url }}">{{ 'gift_cards.issued.shop_link' | t }}</a>
+          <button type="button" class="secondary" onclick="window.print()">{{ 'gift_cards.issued.print_gift_card' | t }}</button>
+        </div>
+
+        <p class="gift-card-status" id="GiftCardCopyStatus" hidden>{{ 'gift_cards.issued.copy_code_success' | t }}</p>
+      </section>
+    </main>
+
+    <script>
+      const copyButton = document.getElementById('GiftCardCopyButton')
+      const copyStatus = document.getElementById('GiftCardCopyStatus')
+      const giftCardCode = document.getElementById('GiftCardCode')
+
+      if (copyButton && copyStatus && giftCardCode) {
+        copyButton.addEventListener('click', async () => {
+          const code = giftCardCode.textContent.replace(/\s+/g, '').trim()
+          try {
+            await navigator.clipboard.writeText(code)
+            copyStatus.hidden = false
+            setTimeout(() => {
+              copyStatus.hidden = true
+            }, 2000)
+          } catch (error) {
+            copyStatus.hidden = true
+          }
+        })
+      }
+    </script>
+  </body>
+</html>

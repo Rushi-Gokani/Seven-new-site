@@ -1,0 +1,44 @@
+{{ 'accounts.css' | asset_url | stylesheet_tag }}
+
+<div class="account-register">
+  <div class="account-register-inner shell">
+    <h1>{{ 'customer.activate_account.title' | t }}</h1>
+    <p>{{ 'customer.activate_account.subtext' | t }}</p>
+
+    {% form 'activate_customer_password' %}
+      {{ form.errors | default_errors }}
+
+      <div class="password">
+        <label for="CustomerPassword" class="visually-hidden">{{ 'customer.activate_account.password' | t }}</label>
+        <input
+          id="CustomerPassword"
+          type="password"
+          name="customer[password]"
+          placeholder="{{ 'customer.activate_account.password' | t }}"
+          autocomplete="new-password"
+          required
+        >
+      </div>
+
+      <div class="password">
+        <label for="CustomerPasswordConfirmation" class="visually-hidden">{{ 'customer.activate_account.password_confirm' | t }}</label>
+        <input
+          id="CustomerPasswordConfirmation"
+          type="password"
+          name="customer[password_confirmation]"
+          placeholder="{{ 'customer.activate_account.password_confirm' | t }}"
+          autocomplete="new-password"
+          required
+        >
+      </div>
+
+      <div class="submit">
+        <button type="submit">{{ 'customer.activate_account.submit' | t }}</button>
+      </div>
+
+      <div class="submit">
+        <button type="submit" name="decline">{{ 'customer.activate_account.cancel' | t }}</button>
+      </div>
+    {% endform %}
+  </div>
+</div>

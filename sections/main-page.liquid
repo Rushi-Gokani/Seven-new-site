@@ -1,0 +1,36 @@
+{% schema %}
+  {
+    "name": "Main page",
+    "class": "section-main-page",
+    "tag": "section",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "featured_image_esc",
+        "label": "Featured image"
+      }
+    ]
+  }
+{% endschema %}
+
+<div class="px-6 md:px-8">
+  <div class="container py-6 md:py-8">
+    {% if section.settings.featured_image_esc != blank %}
+      <div class="mb-8 overflow-hidden rounded-2xl border border-gray-200">
+        <img
+          src="{{ section.settings.featured_image_esc | image_url: width: 1600 }}"
+          alt="{{ section.settings.featured_image_esc.alt | default: page.title | escape }}"
+          class="h-auto w-full object-cover"
+          loading="lazy"
+          width="{{ section.settings.featured_image_esc.width }}"
+          height="{{ section.settings.featured_image_esc.height }}"
+        >
+      </div>
+    {% endif %}
+
+    <div class="prose">
+      <h1>{{ page.title }}</h1>
+      <div>{{ page.content }}</div>
+    </div>
+  </div>
+</div>

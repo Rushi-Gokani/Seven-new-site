@@ -1,0 +1,64 @@
+{% doc %}
+  Renders the mobile navigation drawer menu.
+
+  @param {linklist} [menu] - The navigation menu to render.
+{% enddoc %}
+
+{% if menu != blank and menu.links.size > 0 %}
+<ul
+  id="mobile-menu-list"
+  class="space-y-1"
+  x-data="{ expanded: {} }"
+>
+  {% for link in menu.links %}
+    {%- if link.links.size > 0 -%}
+  {% assign has_child = true %}
+{%- else -%}
+  {% assign has_child = false %}
+{%- endif -%}
+    <li class="mobile-menu-item">
+      {% if has_child %}
+        <button
+          type="button"
+          class="flex w-full items-center justify-between px-4 py-3.5 text-base font-medium text-white/90 no-underline transition-all duration-200 hover:bg-white/5 hover:text-white"
+          @click="expanded[{{ forloop.index }}] = !expanded[{{ forloop.index }}]"
+        >
+          <span>{{ link.title | escape }}</span>
+          <svg 
+            class="h-4 w-4 shrink-0 transition-transform duration-200" 
+            :class="expanded[{{ forloop.index }}] ? 'rotate-180' : ''"
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+        <div x-show="expanded[{{ forloop.index }}]" x-collapse>
+          <ul class="ml-4 border-l border-white/10 pl-4">
+            {% for child in link.links %}
+              <li>
+                <a
+                  href="{{ child.url }}"
+                  class="block px-4 py-2.5 text-sm text-white/70 no-underline transition-colors duration-200 hover:bg-white/5 hover:text-white"
+                  @click="$store.global.closeMobileMenu()"
+                >
+                  {{ child.title | escape }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% else %}
+        <a
+          href="{{ link.url }}"
+          class="flex items-center justify-between px-4 py-3.5 text-base font-medium text-white/90 no-underline transition-all duration-200 hover:bg-white/5 hover:text-white"
+          @click="$store.global.closeMobileMenu()"
+        >
+          <span>{{ link.title | escape }}</span>
+        </a>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+{% endif %}

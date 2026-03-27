@@ -1,0 +1,191 @@
+{% schema %}
+{
+  "name": "List Collections",
+  "class": "section-list-collections",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns",
+      "options": [
+        { "value": "2", "label": "2 columns" },
+        { "value": "3", "label": "3 columns" },
+        { "value": "4", "label": "4 columns" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Card style",
+      "options": [
+        { "value": "overlay", "label": "Overlay" },
+        { "value": "card", "label": "Card" }
+      ],
+      "default": "overlay"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show description",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Exclusions"
+    },
+    {
+      "type": "text",
+      "id": "exclude_collections",
+      "label": "Exclude collections (handles, comma-separated)",
+      "info": "E.g., frontpage, all"
+    }
+  ]
+}
+{% endschema %}
+
+{%- liquid
+  assign columns = section.settings.columns | plus: 0
+  assign exclude_handles = section.settings.exclude_collections | split: ',' | strip
+-%}
+
+<div class="px-6 py-12 md:px-8 md:py-16">
+  <div class="container">
+    <div class="mb-12 text-center">
+      <nav class="mb-4 flex items-center justify-center gap-2 text-sm text-gray-500" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}" class="hover:text-cloud-burst-500">Home</a>
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+        <span class="text-gray-700">Collections</span>
+      </nav>
+      <h1 class="text-3xl font-bold md:text-4xl">Our Collections</h1>
+      <p class="mx-auto mt-3 max-w-xl text-gray-600">Explore our curated collections of quality products</p>
+    </div>
+
+    <div class="collections-grid grid gap-4 md:gap-6
+      {%- if columns == 2 -%}
+        grid-cols-1 sm:grid-cols-2
+      {%- elsif columns == 3 -%}
+        grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
+      {%- else -%}
+        grid-cols-1 sm:grid-cols-2 lg:grid-cols-4
+      {%- endif -%}
+    ">
+      {%- for collection in collections -%}
+        {%- assign excluded = false -%}
+        {%- for handle in exclude_handles -%}
+          {%- if collection.handle == handle -%}
+            {%- assign excluded = true -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- unless excluded -%}
+          {%- if collection.products.size > 0 -%}
+            <a href="{{ collection.url }}" class="collection-card group relative overflow-hidden rounded-2xl transition-transform duration-300 hover:-translate-y-1">
+              {%- if section.settings.card_style == 'overlay' -%}
+                {%- assign coll_image = collection.featured_image | default: collection.products.first.featured_image -%}
+                <div class="aspect-[4/5] md:aspect-[3/4]">
+                  {%- if coll_image -%}
+                    <img
+                      src="{{ coll_image | image_url: width: 600 }}"
+                      srcset="{{ coll_image | image_url: width: 300 }} 300w,
+                              {{ coll_image | image_url: width: 450 }} 450w,
+                              {{ coll_image | image_url: width: 600 }} 600w,
+                              {{ coll_image | image_url: width: 900 }} 900w"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, {% if columns == 4 %}25vw{% elsif columns == 3 %}33vw{% else %}50vw{% endif %}"
+                      alt="{{ collection.title | escape }}"
+                      class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="{% if forloop.index <= 3 %}eager{% else %}lazy{% endif %}"
+                      decoding="async"
+                      width="{{ coll_image.width | default: 600 }}"
+                      height="{{ coll_image.height | default: 800 }}"
+                    >
+                  {%- endif -%}
+                  
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+                  
+                  <div class="absolute inset-x-0 bottom-0 p-4 md:p-6">
+                    <h2 class="text-xl font-bold text-white md:text-2xl">{{ collection.title }}</h2>
+                    
+                    {%- if section.settings.show_description and collection.description != blank -%}
+                      <p class="mt-1 line-clamp-2 text-sm text-white/80">{{ collection.description | strip_html }}</p>
+                    {%- endif -%}
+                    
+                    {%- if section.settings.show_product_count -%}
+                      <p class="mt-2 text-sm font-medium text-white/70">{{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}</p>
+                    {%- endif -%}
+                    
+                    <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-white group-hover:underline">
+                      Shop collection
+                      <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              {%- else -%}
+                {%- assign coll_image_card = collection.featured_image | default: collection.products.first.featured_image -%}
+                <div class="rounded-2xl border border-gray-200 bg-white shadow-sm transition-shadow group-hover:shadow-lg">
+                  <div class="aspect-[4/3] overflow-hidden rounded-t-2xl">
+                    {%- if coll_image_card -%}
+                      <img
+                        src="{{ coll_image_card | image_url: width: 600 }}"
+                        srcset="{{ coll_image_card | image_url: width: 300 }} 300w,
+                                {{ coll_image_card | image_url: width: 450 }} 450w,
+                                {{ coll_image_card | image_url: width: 600 }} 600w,
+                                {{ coll_image_card | image_url: width: 900 }} 900w"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, {% if columns == 4 %}25vw{% elsif columns == 3 %}33vw{% else %}50vw{% endif %}"
+                        alt="{{ collection.title | escape }}"
+                        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        loading="{% if forloop.index <= 3 %}eager{% else %}lazy{% endif %}"
+                        decoding="async"
+                        width="{{ coll_image_card.width | default: 600 }}"
+                        height="{{ coll_image_card.height | default: 450 }}"
+                      >
+                    {%- endif -%}
+                  </div>
+                  
+                  <div class="p-4 md:p-5">
+                    <h2 class="text-lg font-semibold text-gray-900">{{ collection.title }}</h2>
+                    
+                    {%- if section.settings.show_description and collection.description != blank -%}
+                      <p class="mt-1 line-clamp-2 text-sm text-gray-600">{{ collection.description | strip_html }}</p>
+                    {%- endif -%}
+                    
+                    {%- if section.settings.show_product_count -%}
+                      <p class="mt-2 text-sm text-gray-500">{{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}</p>
+                    {%- endif -%}
+                    
+                    <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-cloud-burst-500 group-hover:underline">
+                      Shop collection
+                      <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              {%- endif -%}
+            </a>
+          {%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>

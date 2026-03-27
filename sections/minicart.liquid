@@ -1,0 +1,322 @@
+{% schema %}
+{
+  "name": "Mini cart",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "This drawer automatically reflects cart contents and checkout totals."
+    }
+  ]
+}
+{% endschema %}
+
+<div
+  class="minicart flex min-h-0 max-h-[calc(100vh-3rem)] flex-col overflow-hidden rounded-2xl bg-white [[x-cloak]]:hidden"
+  data-ajax-cart-section
+  data-money-format="{{ shop.money_format | escape }}"
+  x-cloak>
+
+  {%- comment -%} ===== HEADER ===== {%- endcomment -%}
+  <div class="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+    <div class="flex items-center gap-2">
+      <h2 class="m-0 text-lg font-semibold text-cloud-burst-500 tracking-wide uppercase">Your Cart</h2>
+      <span class="inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-cloud-burst-500 px-1.5 text-xs font-bold text-white">
+        {{ cart.item_count }}
+      </span>
+    </div>
+    <button
+      @click="$store.global.isMinicartVisible = false"
+      class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-0 bg-gray-100 text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-700"
+      aria-label="Close cart">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  {% if cart.item_count > 0 %}
+
+    {%- comment -%} ===== FREE SHIPPING PROGRESS BAR ===== {%- endcomment -%}
+    {%- assign free_shipping_threshold = 150000 -%}
+    {%- assign cart_total = cart.total_price -%}
+    {%- assign remaining = free_shipping_threshold | minus: cart_total -%}
+    {%- assign progress_pct = cart_total | times: 100 | divided_by: free_shipping_threshold -%}
+    {%- if progress_pct > 100 -%}
+      {%- assign progress_pct = 100 -%}
+    {%- endif -%}
+
+    <div class="border-b border-gray-100 px-6 py-3">
+      {% if remaining <= 0 %}
+        <p class="m-0 mb-2 text-center text-sm font-medium text-green-700">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="mr-1 inline-block align-[-2px]">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          You've unlocked free shipping!
+        </p>
+      {% else %}
+        <p class="m-0 mb-2 text-center text-sm text-gray-600">
+          Spend <strong>{{ remaining | money }}</strong> more for free shipping
+        </p>
+      {% endif %}
+      <div class="h-2 w-full overflow-hidden rounded-full bg-gray-200">
+        <div
+          class="h-full rounded-full transition-all duration-500 ease-out {% if remaining <= 0 %}bg-green-500{% else %}bg-cloud-burst-500{% endif %}"
+          style="width: {{ progress_pct }}%;">
+        </div>
+      </div>
+    </div>
+
+    {%- comment -%} ===== CART ITEMS ===== {%- endcomment -%}
+    <ul class="m-0 min-h-0 flex-1 list-none overflow-y-auto px-6 py-4" data-ajax-cart-section-scroll>
+      {% for line_item in cart.items %}
+        <li data-unit-price="{{ line_item.final_price }}" class="{% unless forloop.last %}mb-4 border-b border-gray-100 pb-4{% endunless %}">
+          <div class="flex gap-4">
+            {%- comment -%} Product image {%- endcomment -%}
+            <a href="{{ line_item.url }}" class="group relative block h-24 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-50 no-underline">
+              <img
+                src="{{ line_item.image | image_url: width: 160, height: 192, crop: 'center' }}"
+                alt="{{ line_item.title | escape }}"
+                srcset="{{ line_item.image | image_url: width: 160, height: 192, crop: 'center' }} 1x, {{ line_item.image | image_url: width: 320, height: 384, crop: 'center' }} 2x"
+                width="80"
+                height="96"
+                loading="eager"
+                decoding="async"
+                class="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105">
+            </a>
+
+            {%- comment -%} Product details {%- endcomment -%}
+            <div class="flex min-w-0 flex-1 flex-col">
+              <div class="flex items-start justify-between gap-2">
+                <a href="{{ line_item.url }}" class="text-sm font-semibold text-gray-900 no-underline hover:text-cloud-burst-500 leading-snug">
+                  {{ line_item.product.title }}
+                </a>
+                {%- comment -%} Remove button {%- endcomment -%}
+                <a
+                  href="{{ line_item.url_to_remove }}"
+                  data-ajax-cart-request-button
+                  class="flex-shrink-0 text-gray-400 transition-colors hover:text-red-500 no-underline"
+                  aria-label="Remove {{ line_item.title | escape }}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  </svg>
+                </a>
+              </div>
+
+              {%- comment -%} Variant options {%- endcomment -%}
+              {% unless line_item.product.has_only_default_variant %}
+                <p class="m-0 mt-0.5 text-xs text-gray-500">
+                  {{ line_item.variant.title }}
+                </p>
+              {% endunless %}
+
+              {%- comment -%} Price and quantity row {%- endcomment -%}
+              <div class="mt-auto flex items-center justify-between pt-2">
+                <ajax-cart-quantity class="inline-flex items-center rounded-lg border border-gray-200">
+                  <a
+                    href="{{ routes.cart_change_url }}?id={{ line_item.key }}&quantity={{ line_item.quantity | minus: 1 | at_least: 0 }}"
+                    data-ajax-cart-quantity-minus
+                    class="flex h-8 w-8 items-center justify-center text-gray-500 transition-colors hover:text-gray-900 no-underline"
+                    aria-label="Decrease quantity">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                  </a>
+                  <input
+                    type="number"
+                    value="{{ line_item.quantity }}"
+                    name="updates[]"
+                    data-ajax-cart-quantity-input="{{ line_item.key }}"
+                    class="h-8 w-10 border-x border-y-0 border-gray-200 bg-transparent text-center text-sm font-medium text-gray-900 appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    readonly
+                    aria-label="Quantity for {{ line_item.title | escape }}">
+                  <a
+                    href="{{ routes.cart_change_url }}?id={{ line_item.key }}&quantity={{ line_item.quantity | plus: 1 }}"
+                    data-ajax-cart-quantity-plus
+                    class="flex h-8 w-8 items-center justify-center text-gray-500 transition-colors hover:text-gray-900 no-underline"
+                    aria-label="Increase quantity">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                  </a>
+                  <span
+                    class="loading-indicator hidden absolute inset-0 items-center justify-center bg-white/80"
+                    role="alert"
+                    aria-busy="false"
+                    aria-label="Updating quantity">
+                    <svg class="h-4 w-4 animate-spin text-cloud-burst-500" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-opacity="0.25" stroke-width="3"></circle>
+                      <path d="M12 3a9 9 0 0 1 9 9" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path>
+                    </svg>
+                  </span>
+                </ajax-cart-quantity>
+
+                <div class="text-right">
+                  {% if line_item.original_line_price != line_item.final_line_price %}
+                    <span class="block text-xs text-gray-400 line-through">{{ line_item.original_line_price | money }}</span>
+                  {% endif %}
+                  <span class="text-sm font-semibold text-gray-900" data-line-price>{{ line_item.final_line_price | money }}</span>
+                </div>
+              </div>
+
+              {%- comment -%} Line item errors {%- endcomment -%}
+              <div data-ajax-cart-errors="{{ line_item.key }}" class="mt-1 text-xs text-red-500"></div>
+            </div>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+
+    {%- comment -%} ===== FOOTER ===== {%- endcomment -%}
+    <div class="mt-auto shrink-0 border-t border-gray-200">
+
+      {%- comment -%} Discount code & Order notes toggles {%- endcomment -%}
+      <div class="border-b border-gray-100 px-6 py-3" x-data="{ showDiscount: false, showNotes: false }">
+
+        {%- comment -%} Discount Code Section {%- endcomment -%}
+        <button
+          @click="showDiscount = !showDiscount"
+          class="flex w-full cursor-pointer items-center justify-between border-0 bg-transparent py-1 text-sm text-gray-600 hover:text-gray-900"
+          :aria-expanded="showDiscount">
+          <span class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+              <line x1="7" y1="7" x2="7.01" y2="7"></line>
+            </svg>
+            Add discount code
+          </span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="transition-transform duration-200"
+            :class="showDiscount ? 'rotate-180' : ''">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div x-show="showDiscount" x-collapse class="mt-2">
+          <form action="{{ routes.cart_url }}" method="post" class="flex gap-2">
+            <input
+              type="text"
+              name="discount"
+              placeholder="Discount code"
+              class="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none transition-colors focus:border-cloud-burst-500 focus:ring-1 focus:ring-cloud-burst-500">
+            <button
+              type="submit"
+              class="cursor-pointer rounded-lg border-0 bg-cloud-burst-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-cloud-burst-600">
+              Apply
+            </button>
+          </form>
+          {% if cart.cart_level_discount_applications.size > 0 %}
+            <div class="mt-2">
+              {% for discount in cart.cart_level_discount_applications %}
+                <div class="flex items-center justify-between rounded-md bg-green-50 px-3 py-1.5 text-sm">
+                  <span class="flex items-center gap-1 text-green-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    {{ discount.title }}
+                  </span>
+                  <span class="font-medium text-green-700">-{{ discount.total_allocated_amount | money }}</span>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        {%- comment -%} Order Notes Section {%- endcomment -%}
+        <button
+          @click="showNotes = !showNotes"
+          class="mt-1 flex w-full cursor-pointer items-center justify-between border-0 bg-transparent py-1 text-sm text-gray-600 hover:text-gray-900"
+          :aria-expanded="showNotes">
+          <span class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            Add order note
+          </span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="transition-transform duration-200"
+            :class="showNotes ? 'rotate-180' : ''">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div x-show="showNotes" x-collapse class="mt-2">
+          <textarea
+            name="note"
+            form="minicart-form"
+            placeholder="Special instructions for your order..."
+            class="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none transition-colors focus:border-cloud-burst-500 focus:ring-1 focus:ring-cloud-burst-500"
+            rows="3"
+            data-ajax-cart-property-input>{{ cart.note }}</textarea>
+        </div>
+      </div>
+
+      {%- comment -%} Subtotal & Checkout {%- endcomment -%}
+      <div class="px-6 py-4">
+        {% if cart.cart_level_discount_applications.size > 0 %}
+          <div class="mb-2 flex items-center justify-between text-sm text-gray-500">
+            <span>Original subtotal</span>
+            <span class="line-through">{{ cart.original_total_price | money }}</span>
+          </div>
+        {% endif %}
+
+        <div class="mb-4 flex items-center justify-between">
+          <span class="text-base font-semibold text-gray-900">Subtotal</span>
+          <span class="text-lg font-bold text-gray-900" data-cart-subtotal data-cart-subtotal-cents="{{ cart.total_price }}">{{ cart.total_price | money }}</span>
+        </div>
+
+        <p class="m-0 mb-3 text-center text-xs text-gray-500">
+          Taxes and shipping calculated at checkout
+        </p>
+
+        <form id="minicart-form" action="{{ routes.cart_url }}" method="post">
+          <button
+            type="submit"
+            name="checkout"
+            class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border-0 bg-cloud-burst-500 px-6 py-3.5 text-sm font-semibold tracking-wide text-white uppercase transition-colors hover:bg-cloud-burst-600">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+              <line x1="1" y1="10" x2="23" y2="10"></line>
+            </svg>
+            Checkout
+          </button>
+        </form>
+
+        <button
+          @click="$store.global.isMinicartVisible = false"
+          class="mt-2 w-full cursor-pointer border-0 bg-transparent py-2 text-center text-sm text-gray-500 underline transition-colors hover:text-gray-900">
+          Continue Shopping
+        </button>
+      </div>
+    </div>
+
+  {% else %}
+
+    {%- comment -%} ===== EMPTY CART STATE ===== {%- endcomment -%}
+    <div class="flex flex-1 flex-col items-center justify-center px-6 py-12">
+      <div class="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gray-100">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+      </div>
+      <h3 class="m-0 mb-2 text-lg font-semibold text-gray-900">Your cart is empty</h3>
+      <p class="m-0 mb-6 text-center text-sm text-gray-500">
+        Looks like you haven't added anything to your cart yet.
+      </p>
+      <a
+        href="{{ routes.collections_url }}"
+        @click="$store.global.isMinicartVisible = false"
+        class="inline-flex items-center gap-2 rounded-lg bg-cloud-burst-500 px-6 py-3 text-sm font-semibold text-white no-underline transition-colors hover:bg-cloud-burst-600">
+        Start Shopping
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+
+  {% endif %}
+</div>

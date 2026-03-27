@@ -1,0 +1,59 @@
+{% comment %}
+  Preloads the Largest Contentful Paint (LCP) image for faster page rendering.
+  Generates <link rel="preload"> tags based on page type so the browser
+  starts downloading the hero/banner image before parsing the full DOM.
+{% endcomment %}
+
+{%- comment -%}
+  Note: Index/home page hero images rely on fetchpriority="high" on the <img> tag
+  since section block data is not accessible from the layout scope.
+{%- endcomment -%}
+
+{%- if request.page_type == 'collection' -%}
+  {%- assign preload_image = collection.featured_image | default: collection.products.first.featured_image -%}
+  {%- if preload_image -%}
+    {% comment %} Using image_tag with preload for optimal browser preloading {% endcomment %}
+    <link
+      rel="preload"
+      as="image"
+      href="{{ preload_image | image_url: width: 1920 }}"
+      imagesrcset="{{ preload_image | image_url: width: 640 }} 640w,
+                    {{ preload_image | image_url: width: 768 }} 768w,
+                    {{ preload_image | image_url: width: 1024 }} 1024w,
+                    {{ preload_image | image_url: width: 1280 }} 1280w,
+                    {{ preload_image | image_url: width: 1536 }} 1536w,
+                    {{ preload_image | image_url: width: 1920 }} 1920w"
+      imagesizes="100vw"
+      fetchpriority="high">
+  {%- endif -%}
+
+{%- elsif request.page_type == 'product' -%}
+  {%- assign preload_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
+  {%- if preload_media -%}
+    <link
+      rel="preload"
+      as="image"
+      href="{{ preload_media | image_url: width: 800 }}"
+      imagesrcset="{{ preload_media | image_url: width: 400 }} 400w,
+                    {{ preload_media | image_url: width: 600 }} 600w,
+                    {{ preload_media | image_url: width: 800 }} 800w,
+                    {{ preload_media | image_url: width: 1000 }} 1000w,
+                    {{ preload_media | image_url: width: 1200 }} 1200w"
+      imagesizes="(min-width: 1024px) 45vw, (min-width: 768px) 50vw, 100vw"
+      fetchpriority="high">
+  {%- endif -%}
+
+{%- elsif request.page_type == 'article' -%}
+  {%- if article.image -%}
+    <link
+      rel="preload"
+      as="image"
+      href="{{ article.image | image_url: width: 1400 }}"
+      imagesrcset="{{ article.image | image_url: width: 600 }} 600w,
+                    {{ article.image | image_url: width: 900 }} 900w,
+                    {{ article.image | image_url: width: 1200 }} 1200w,
+                    {{ article.image | image_url: width: 1400 }} 1400w"
+      imagesizes="(max-width: 768px) 100vw, (max-width: 1024px) 80vw, 896px"
+      fetchpriority="high">
+  {%- endif -%}
+{%- endif -%}

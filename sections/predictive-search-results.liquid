@@ -1,0 +1,71 @@
+{%- if predictive_search.performed -%}
+  <div id="predictive-search-results" class="space-y-4">
+    {%- if predictive_search.resources.products.size > 0 -%}
+      <div class="flex items-center justify-between gap-3">
+        <h3 id="predictive-search-products" class="text-sm font-semibold tracking-[0.14em] text-slate-700 uppercase">
+          Products
+        </h3>
+        <p class="text-xs font-semibold text-slate-500">
+          {{ predictive_search.resources.products.size }} quick match{% if predictive_search.resources.products.size != 1 %}es{% endif %}
+        </p>
+      </div>
+
+      <div class="max-h-[min(52dvh,28rem)] overflow-y-auto pr-1">
+        <ul role="listbox" aria-labelledby="predictive-search-products" class="space-y-2">
+          {%- for product in predictive_search.resources.products -%}
+            {% assign product_result_url = product.url %}
+            {% if product.handle != blank %}
+              {% assign root_path = routes.root_url %}
+              {% assign root_last_char = root_path | slice: -1, 1 %}
+              {% if root_last_char != '/' %}
+                {% assign root_path = root_path | append: '/' %}
+              {% endif %}
+              {% assign product_result_url = root_path | append: 'products/' | append: product.handle %}
+            {% endif %}
+
+            <li role="option" id="predictive-search-option-{{ forloop.index }}">
+              <a
+                href="{{ product_result_url }}"
+                class="group flex items-center gap-3 rounded-2xl border border-transparent bg-slate-50 px-3 py-3 transition hover:border-indigo-200 hover:bg-indigo-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-900"
+              >
+                {% if product.featured_image != blank %}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 120 }}"
+                    alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                    width="60"
+                    height="60"
+                    loading="lazy"
+                    class="h-14 w-14 rounded-lg object-cover"
+                  >
+                {% else %}
+                  <div class="h-14 w-14 rounded-lg bg-slate-200"></div>
+                {% endif %}
+
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate text-sm font-semibold text-slate-900">{{ product.title }}</span>
+                  {% if product.vendor != blank %}
+                    <span class="mt-0.5 block truncate text-xs text-slate-500">{{ product.vendor }}</span>
+                  {% endif %}
+                  <span class="mt-1 block text-sm font-semibold text-indigo-900">{{ product.price | money }}</span>
+                </span>
+
+                <span class="text-xs font-semibold text-indigo-900 transition group-hover:translate-x-0.5">View</span>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- else -%}
+      <div class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-5 text-sm text-slate-600">
+        No products matched your search yet. Try a shorter keyword or browse all results.
+      </div>
+    {%- endif -%}
+
+    <a
+      href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}&options%5Bprefix%5D=last"
+      class="inline-flex items-center rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-indigo-900 hover:text-indigo-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-900"
+    >
+      View all results for "{{ predictive_search.terms | escape }}"
+    </a>
+  </div>
+{%- endif -%}

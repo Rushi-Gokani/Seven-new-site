@@ -1,0 +1,123 @@
+{% schema %}
+  {
+    "name": "Main article",
+    "class": "section-main-article",
+    "tag": "article",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Article meta"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_breadcrumbs",
+        "label": "Show breadcrumbs",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_date",
+        "label": "Show publish date",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_author",
+        "label": "Show author",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Content"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_featured_image",
+        "label": "Show featured image",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_tags",
+        "label": "Show tags",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}
+
+<article class="px-6 py-12 md:px-8 md:py-16">
+  <div class="container max-w-4xl">
+    {% if section.settings.show_breadcrumbs %}
+      <nav class="mb-6 flex flex-wrap items-center gap-2 text-sm text-slate-500" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}" class="transition hover:text-slate-900">Home</a>
+        <span aria-hidden="true">/</span>
+        <a href="{{ blog.url }}" class="transition hover:text-slate-900">{{ blog.title }}</a>
+      </nav>
+    {% endif %}
+
+    <header class="mb-8">
+      <h1 class="text-3xl font-semibold leading-tight text-slate-900 md:text-5xl">{{ article.title }}</h1>
+
+      {% if section.settings.show_date or section.settings.show_author %}
+        <p class="mt-4 text-sm uppercase tracking-[0.12em] text-slate-500">
+          {% if section.settings.show_date %}
+            <span>{{ article.published_at | date: '%b %d, %Y' }}</span>
+          {% endif %}
+          {% if section.settings.show_date and section.settings.show_author %}
+            <span class="mx-1">-</span>
+          {% endif %}
+          {% if section.settings.show_author %}
+            <span>{{ article.author }}</span>
+          {% endif %}
+        </p>
+      {% endif %}
+    </header>
+
+    {% if section.settings.show_featured_image and article.image %}
+      <div class="mb-8 overflow-hidden rounded-3xl border border-slate-200">
+        <img
+          src="{{ article.image | image_url: width: 1400 }}"
+          srcset="{{ article.image | image_url: width: 600 }} 600w,
+                  {{ article.image | image_url: width: 900 }} 900w,
+                  {{ article.image | image_url: width: 1200 }} 1200w,
+                  {{ article.image | image_url: width: 1400 }} 1400w"
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 80vw, 896px"
+          alt="{{ article.image.alt | default: article.title | escape }}"
+          class="h-auto w-full object-cover"
+          loading="eager"
+          fetchpriority="high"
+          decoding="sync"
+          width="{{ article.image.width }}"
+          height="{{ article.image.height }}"
+        >
+      </div>
+    {% endif %}
+
+    <div class="prose prose-slate max-w-none">
+      {{ article.content }}
+    </div>
+
+    {% if section.settings.show_tags and article.tags.size > 0 %}
+      <div class="mt-10 border-t border-slate-200 pt-6">
+        <h2 class="text-sm font-semibold uppercase tracking-[0.14em] text-slate-600">Tags</h2>
+        <div class="mt-3 flex flex-wrap gap-2">
+          {% for tag in article.tags %}
+            <a
+              href="{{ blog.url }}/tagged/{{ tag | handleize }}"
+              class="inline-flex items-center rounded-full border border-slate-300 px-3 py-1 text-sm text-slate-700 transition hover:border-slate-900 hover:text-slate-900"
+            >
+              {{ tag }}
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="mt-10 border-t border-slate-200 pt-6">
+      <a href="{{ blog.url }}" class="inline-flex items-center text-sm font-semibold text-indigo-900 no-underline transition hover:text-indigo-700">
+        Back to {{ blog.title }}
+      </a>
+    </div>
+  </div>
+</article>

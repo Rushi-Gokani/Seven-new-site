@@ -1,0 +1,17 @@
+{% doc %}
+  Renders the desktop header navigation.
+
+  @param {linklist} [menu] - The navigation menu to render.
+{% enddoc %}
+
+{% if menu != blank and menu.links.size > 0 %}
+<ul class="header-menu flex min-w-0 items-center gap-4 overflow-x-auto py-4 whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+  {% for link in menu.links %}
+    <li class="shrink-0">
+      <a href="{{ link.url }}" class="block py-2 text-sm cursor-pointer text-white no-underline lg:text-base{% if link.active %} underline{% endif %}">
+        {{ link.title | escape }}
+      </a>
+    </li>
+  {% endfor %}
+</ul>
+{% endif %}

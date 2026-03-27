@@ -1,0 +1,385 @@
+{% schema %}
+{
+  "name": "Marquee",
+  "class": "section-marquee",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "speed",
+      "label": "Scroll speed",
+      "options": [
+        { "value": "20s", "label": "Slow" },
+        { "value": "30s", "label": "Medium" },
+        { "value": "45s", "label": "Fast" }
+      ],
+      "default": "30s"
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Scroll direction",
+      "options": [
+        { "value": "normal", "label": "Left to right" },
+        { "value": "reverse", "label": "Right to left" }
+      ],
+      "default": "reverse"
+    },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background style",
+      "options": [
+        { "value": "none", "label": "None (transparent)" },
+        { "value": "light", "label": "Light gray" },
+        { "value": "dark", "label": "Dark (cloud-burst)" },
+        { "value": "accent", "label": "Accent (woodland)" }
+      ],
+      "default": "dark"
+    },
+    {
+      "type": "range",
+      "id": "item_spacing",
+      "min": 20,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Space between items",
+      "default": 60
+    },
+    {
+      "type": "select",
+      "id": "text_style",
+      "label": "Text style",
+      "options": [
+        { "value": "solid", "label": "Solid" },
+        { "value": "outline", "label": "Outline" },
+        { "value": "outlined_filled", "label": "Outline with fill" },
+        { "value": "underlined", "label": "Underlined" },
+        { "value": "strikethrough", "label": "Strikethrough" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "separator",
+      "label": "Separator between items",
+      "default": "★"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 12,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Font size",
+      "default": 18
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "normal", "label": "Normal" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "semibold", "label": "Semibold" },
+        { "value": "bold", "label": "Bold" }
+      ],
+      "default": "semibold"
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase",
+      "label": "Uppercase text",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "min": 8,
+      "max": 32,
+      "step": 4,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text_item",
+      "name": "Text Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free Shipping on Orders Over $50"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        }
+      ]
+    },
+    {
+      "type": "icon_item",
+      "name": "Icon Item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "truck", "label": "Truck (Shipping)" },
+            { "value": "shield", "label": "Shield (Security)" },
+            { "value": "refresh", "label": "Refresh (Returns)" },
+            { "value": "gift", "label": "Gift" },
+            { "value": "star", "label": "Star" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "check", "label": "Check" },
+            { "value": "leaf", "label": "Leaf (Eco)" }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free Shipping"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee",
+      "blocks": [
+        {
+          "type": "text_item",
+          "settings": {
+            "text": "Free Shipping on Orders Over $50"
+          }
+        },
+        {
+          "type": "text_item",
+          "settings": {
+            "text": "30-Day Returns"
+          }
+        },
+        {
+          "type": "text_item",
+          "settings": {
+            "text": "Secure Checkout"
+          }
+        },
+        {
+          "type": "text_item",
+          "settings": {
+            "text": "New Arrivals Weekly"
+          }
+        },
+        {
+          "type": "text_item",
+          "settings": {
+            "text": "Shop Now, Pay Later"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{%- liquid
+  assign bg_class = ''
+  assign text_class = ''
+  
+  case section.settings.background
+    when 'light'
+      assign bg_class = 'bg-gray-50'
+      assign text_class = 'text-cloud-burst-800'
+    when 'dark'
+      assign bg_class = 'bg-cloud-burst-600'
+      assign text_class = 'text-white'
+    when 'accent'
+      assign bg_class = 'bg-woodland-500'
+      assign text_class = 'text-white'
+    when 'none'
+      assign bg_class = ''
+      assign text_class = 'text-cloud-burst-800'
+  endcase
+  
+  case section.settings.font_weight
+    when 'normal'
+      assign weight_class = 'font-normal'
+    when 'medium'
+      assign weight_class = 'font-medium'
+    when 'semibold'
+      assign weight_class = 'font-semibold'
+    when 'bold'
+      assign weight_class = 'font-bold'
+  endcase
+  
+  if section.settings.uppercase
+    assign case_class = 'uppercase tracking-wide'
+  else
+    assign case_class = ''
+  endif
+  
+  assign spacing_value = section.settings.item_spacing | divided_by: 2
+  assign padding_y = section.settings.padding_y
+-%}
+
+<style>
+  @keyframes marquee-scroll-{{ section.id }} {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  
+  .marquee-container--{{ section.id }} {
+    --marquee-duration: {{ section.settings.speed }};
+    --marquee-spacing: {{ spacing_value }}px;
+    --marquee-font-size: {{ section.settings.font_size }}px;
+  }
+  
+  .marquee-container--{{ section.id }} .marquee-track {
+    animation: marquee-scroll-{{ section.id }} var(--marquee-duration) linear infinite;
+    animation-direction: {{ section.settings.direction }};
+  }
+  
+  {% if section.settings.pause_on_hover %}
+  .marquee-container--{{ section.id }}:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  {% endif %}
+  
+  .marquee-container--{{ section.id }} .marquee-item {
+    padding-left: var(--marquee-spacing);
+    padding-right: var(--marquee-spacing);
+    font-size: var(--marquee-font-size);
+  }
+  
+  {% if section.settings.text_style == 'outline' %}
+  .marquee-container--{{ section.id }} .marquee-text {
+    -webkit-text-stroke: 1px currentColor;
+    color: transparent;
+  }
+  {% elsif section.settings.text_style == 'outlined_filled' %}
+  .marquee-container--{{ section.id }} .marquee-text {
+    -webkit-text-stroke: 1px currentColor;
+    text-shadow: 
+      -1px -1px 0 currentColor,
+      1px -1px 0 currentColor,
+      -1px 1px 0 currentColor,
+      1px 1px 0 currentColor;
+  }
+  {% elsif section.settings.text_style == 'underlined' %}
+  .marquee-container--{{ section.id }} .marquee-text {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
+  {% elsif section.settings.text_style == 'strikethrough' %}
+  .marquee-container--{{ section.id }} .marquee-text {
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+  }
+  {% endif %}
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-container--{{ section.id }} .marquee-track {
+      animation: none;
+    }
+  }
+</style>
+
+<section 
+  class="marquee-container marquee-container--{{ section.id }} {{ bg_class }} overflow-hidden"
+  style="padding-top: {{ padding_y }}px; padding-bottom: {{ padding_y }}px;"
+  aria-label="Announcements"
+>
+  <div class="marquee-track flex items-center whitespace-nowrap {{ text_class }} {{ weight_class }} {{ case_class }}">
+    {%- if section.blocks.size > 0 -%}
+      {%- for i in (1..3) -%}
+        {%- for block in section.blocks -%}
+          <div class="marquee-item flex items-center" {{ block.shopify_attributes }}>
+            {%- if block.type == 'icon_item' -%}
+              {%- case block.settings.icon -%}
+                {%- when 'truck' -%}
+                  <svg class="mr-3 h-5 w-5 flex-shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/>
+                  </svg>
+                {%- when 'shield' -%}
+                  <svg class="mr-3 h-5 w-5 flex-shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+                  </svg>
+                {%- when 'refresh' -%}
+                  <svg class="mr-3 h-5 w-5 flex-shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
+                  </svg>
+                {%- when 'gift' -%}
+                  <svg class="mr-3 h-5 w-5 flex-shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
+                  </svg>
+                {%- when 'star' -%}
+                  <svg class="mr-3 h-5 w-5 flex-shrink-0 opacity-80" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/>
+                  </svg>
+                {%- when 'heart' -%}
+                  <svg class="mr-3 h-5 w-5 flex-shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+                  </svg>
+                {%- when 'check' -%}
+                  <svg class="mr-3 h-5 w-5 flex-shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                {%- when 'leaf' -%}
+                  <svg class="mr-3 h-5 w-5 flex-shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21c4.5-4.5 6-9 6-12a6 6 0 10-12 0c0 3 1.5 7.5 6 12z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21V9"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l3-3 3 3"/>
+                  </svg>
+                {%- endcase -%}
+            {%- endif -%}
+            
+            {%- if block.settings.link != blank -%}
+              <a 
+                href="{{ block.settings.link }}" 
+                class="marquee-text marquee-link inline-flex items-center hover:opacity-60 transition-opacity duration-200"
+              >
+                {{ block.settings.text }}
+              </a>
+            {%- else -%}
+              <span class="marquee-text inline-flex items-center">
+                {{ block.settings.text }}
+              </span>
+            {%- endif -%}
+            
+            {%- if section.settings.separator != blank -%}
+              <span class="ml-6 mr-2 opacity-40 text-lg">
+                {{ section.settings.separator }}
+              </span>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..5) -%}
+        <span class="marquee-item mx-8">Add content items in the theme editor</span>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>

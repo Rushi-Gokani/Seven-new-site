@@ -1,0 +1,47 @@
+{% schema %}
+{
+  "name": "Main Index Section",
+  "class": "section-main-index",
+  "tag": "section"
+}
+{% endschema %}
+
+<section class="px-6 py-12 md:px-8 md:py-20" aria-labelledby="home-intro-title">
+  <div class="container grid gap-8 md:grid-cols-2 md:items-center">
+    <div>
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-cloud-burst-300">Welcome</p>
+      <h1 id="home-intro-title" class="mb-4 text-4xl leading-tight md:text-5xl">
+        Crafted goods for everyday use.
+      </h1>
+      <p class="mb-6 max-w-xl text-base text-gray-700 md:text-lg">
+        Explore our latest arrivals, timeless essentials, and customer favorites curated by {{ shop.name }}.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a href="{{ routes.all_products_collection_url }}" class="inline-flex items-center rounded-md bg-cloud-burst px-5 py-3 text-sm font-semibold text-white no-underline hover:bg-cloud-burst-400">
+          Shop all products
+        </a>
+        <a href="{{ routes.collections_url }}" class="inline-flex items-center rounded-md border border-cloud-burst px-5 py-3 text-sm font-semibold no-underline hover:bg-gray-50">
+          Browse collections
+        </a>
+      </div>
+    </div>
+
+    <div class="rounded-2xl border border-gray-200 bg-gradient-to-br from-gray-50 to-white p-6 shadow-sm md:p-8">
+      <h2 class="mb-4 text-2xl">Why shoppers choose us</h2>
+      <ul class="space-y-3 text-gray-700">
+        <li class="flex items-start gap-3">
+          <span class="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-woodland"></span>
+          <span>Fast checkout and responsive support</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-woodland"></span>
+          <span>Quality-first product selection</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-woodland"></span>
+          <span>Secure payment options</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,261 @@
+{% liquid
+  assign promo_bar_background_color = settings.promo_bar_background_color | default: '#000000'
+  assign promo_bar_text_color = settings.promo_bar_text_color | default: '#ffffff'
+  assign promo_bar_fallback_text = settings.promo_bar_content | strip_html | strip | default: 'Free shipping on all orders over $50'
+  assign promo_bar_messages_raw = settings.promo_bar_messages | strip
+
+  assign has_structured_messages = false
+  if settings.promo_bar_message_1_text != blank or settings.promo_bar_message_2_text != blank or settings.promo_bar_message_3_text != blank or settings.promo_bar_message_4_text != blank or settings.promo_bar_message_5_text != blank
+    assign has_structured_messages = true
+  endif
+
+  if promo_bar_messages_raw == blank
+    assign promo_bar_messages_raw = promo_bar_fallback_text
+  endif
+
+  assign promo_bar_messages = promo_bar_messages_raw | newline_to_br | split: '<br />'
+%}
+
+<div id="site-promo-bar-wrapper"
+  {% if settings.collapse_promo_bar %}
+    x-data
+    x-show="$store.global.isPromoBarVisible"
+    x-collapse
+  {% endif %}
+>
+  <div
+    id="site-promo-bar"
+    class="promo-bar relative top-0 w-full overflow-hidden px-4 py-1"
+    style="--promo-bar-bg: {{ promo_bar_background_color }}; --promo-bar-text: {{ promo_bar_text_color }};"
+  >
+    <div class="sr-only">
+      {% if has_structured_messages %}
+        {% for i in (1..5) %}
+          {% liquid
+            assign promo_message_text = blank
+            case i
+              when 1
+                assign promo_message_text = settings.promo_bar_message_1_text | strip
+              when 2
+                assign promo_message_text = settings.promo_bar_message_2_text | strip
+              when 3
+                assign promo_message_text = settings.promo_bar_message_3_text | strip
+              when 4
+                assign promo_message_text = settings.promo_bar_message_4_text | strip
+              when 5
+                assign promo_message_text = settings.promo_bar_message_5_text | strip
+            endcase
+          %}
+          {% if promo_message_text != blank %}
+            <p>{{ promo_message_text | escape }}</p>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        {% for promo_message in promo_bar_messages %}
+          {% assign promo_message_text = promo_message | strip %}
+          {% if promo_message_text != blank %}
+            <p>{{ promo_message_text | escape }}</p>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <div class="promo-bar__marquee">
+      <div class="promo-bar__track">
+        <div class="promo-bar__group">
+          {% assign has_primary_items = false %}
+          {% if has_structured_messages %}
+            {% for i in (1..5) %}
+              {% liquid
+                assign promo_message_text = blank
+                assign promo_cta_label = blank
+                assign promo_cta_link = blank
+                case i
+                  when 1
+                    assign promo_message_text = settings.promo_bar_message_1_text | strip
+                    assign promo_cta_label = settings.promo_bar_message_1_cta_label | strip
+                    assign promo_cta_link = settings.promo_bar_message_1_cta_link
+                  when 2
+                    assign promo_message_text = settings.promo_bar_message_2_text | strip
+                    assign promo_cta_label = settings.promo_bar_message_2_cta_label | strip
+                    assign promo_cta_link = settings.promo_bar_message_2_cta_link
+                  when 3
+                    assign promo_message_text = settings.promo_bar_message_3_text | strip
+                    assign promo_cta_label = settings.promo_bar_message_3_cta_label | strip
+                    assign promo_cta_link = settings.promo_bar_message_3_cta_link
+                  when 4
+                    assign promo_message_text = settings.promo_bar_message_4_text | strip
+                    assign promo_cta_label = settings.promo_bar_message_4_cta_label | strip
+                    assign promo_cta_link = settings.promo_bar_message_4_cta_link
+                  when 5
+                    assign promo_message_text = settings.promo_bar_message_5_text | strip
+                    assign promo_cta_label = settings.promo_bar_message_5_cta_label | strip
+                    assign promo_cta_link = settings.promo_bar_message_5_cta_link
+                endcase
+              %}
+              {% if promo_message_text != blank %}
+                {% assign has_primary_items = true %}
+                <span class="promo-bar__item">
+                  <span class="promo-bar__message">{{ promo_message_text | escape }}</span>
+                  {% if promo_cta_label != blank and promo_cta_link != blank %}
+                    <a class="promo-bar__cta" href="{{ promo_cta_link }}">{{ promo_cta_label | escape }}</a>
+                  {% endif %}
+                </span>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+
+          {% unless has_primary_items %}
+            {% for promo_message in promo_bar_messages %}
+              {% assign promo_message_text = promo_message | strip %}
+              {% if promo_message_text != blank %}
+                <span class="promo-bar__item">
+                  <span class="promo-bar__message">{{ promo_message_text | escape }}</span>
+                </span>
+              {% endif %}
+            {% endfor %}
+          {% endunless %}
+        </div>
+
+        <div class="promo-bar__group" aria-hidden="true">
+          {% assign has_duplicate_items = false %}
+          {% if has_structured_messages %}
+            {% for i in (1..5) %}
+              {% liquid
+                assign promo_message_text = blank
+                assign promo_cta_label = blank
+                assign promo_cta_link = blank
+                case i
+                  when 1
+                    assign promo_message_text = settings.promo_bar_message_1_text | strip
+                    assign promo_cta_label = settings.promo_bar_message_1_cta_label | strip
+                    assign promo_cta_link = settings.promo_bar_message_1_cta_link
+                  when 2
+                    assign promo_message_text = settings.promo_bar_message_2_text | strip
+                    assign promo_cta_label = settings.promo_bar_message_2_cta_label | strip
+                    assign promo_cta_link = settings.promo_bar_message_2_cta_link
+                  when 3
+                    assign promo_message_text = settings.promo_bar_message_3_text | strip
+                    assign promo_cta_label = settings.promo_bar_message_3_cta_label | strip
+                    assign promo_cta_link = settings.promo_bar_message_3_cta_link
+                  when 4
+                    assign promo_message_text = settings.promo_bar_message_4_text | strip
+                    assign promo_cta_label = settings.promo_bar_message_4_cta_label | strip
+                    assign promo_cta_link = settings.promo_bar_message_4_cta_link
+                  when 5
+                    assign promo_message_text = settings.promo_bar_message_5_text | strip
+                    assign promo_cta_label = settings.promo_bar_message_5_cta_label | strip
+                    assign promo_cta_link = settings.promo_bar_message_5_cta_link
+                endcase
+              %}
+              {% if promo_message_text != blank %}
+                {% assign has_duplicate_items = true %}
+                <span class="promo-bar__item">
+                  <span class="promo-bar__message">{{ promo_message_text | escape }}</span>
+                  {% if promo_cta_label != blank and promo_cta_link != blank %}
+                    <a class="promo-bar__cta" href="{{ promo_cta_link }}" tabindex="-1">{{ promo_cta_label | escape }}</a>
+                  {% elsif promo_cta_label != blank %}
+                    <span class="promo-bar__cta">{{ promo_cta_label | escape }}</span>
+                  {% endif %}
+                </span>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+
+          {% unless has_duplicate_items %}
+            {% for promo_message in promo_bar_messages %}
+              {% assign promo_message_text = promo_message | strip %}
+              {% if promo_message_text != blank %}
+                <span class="promo-bar__item">
+                  <span class="promo-bar__message">{{ promo_message_text | escape }}</span>
+                </span>
+              {% endif %}
+            {% endfor %}
+          {% endunless %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% style %}
+  #site-promo-bar {
+    background-color: var(--promo-bar-bg);
+    color: var(--promo-bar-text);
+  }
+
+  #site-promo-bar .promo-bar__marquee {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  #site-promo-bar .promo-bar__track {
+    display: flex;
+    width: max-content;
+    animation: promo-bar-scroll 24s linear infinite;
+    will-change: transform;
+  }
+
+  #site-promo-bar .promo-bar__group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  #site-promo-bar .promo-bar__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: inherit;
+  }
+
+  #site-promo-bar .promo-bar__message {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #site-promo-bar .promo-bar__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    padding: 0.18rem 0.62rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: inherit;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  #site-promo-bar a.promo-bar__cta:hover,
+  #site-promo-bar a.promo-bar__cta:focus-visible {
+    background-color: var(--promo-bar-text);
+    color: var(--promo-bar-bg);
+    outline: none;
+  }
+
+  @keyframes promo-bar-scroll {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #site-promo-bar .promo-bar__track {
+      animation: none;
+      transform: none;
+    }
+  }
+{% endstyle %}

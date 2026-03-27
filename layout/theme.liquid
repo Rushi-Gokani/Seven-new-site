@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" class="no-js">
+  <head>
+    {% render 'head-meta' %}
+
+    <link rel="icon" href="{{ 'favicon.ico' | asset_url }}">
+    <link rel="icon" href="{{ 'favicon.ico' | asset_url }}" type="image/x-icon">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link
+      rel="preconnect"
+      href="https://cdn.shopify.com"
+      crossorigin>
+    <link
+      rel="dns-prefetch"
+      href="https://cdn.shopify.com">
+
+    {% render 'critical-image-preload' %}
+
+    {% comment %} Prefetch likely next pages {% endcomment %}
+    <link rel="prefetch" href="{{ routes.cart_url }}">
+    <link rel="prefetch" href="{{ routes.search_url }}">
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %}
+        &ndash; tagged "{{ current_tags | join: ', ' }}"{%- endif -%}
+      {%- if current_page != 1 %}
+        &ndash; Page {{ current_page -}}{%- endif -%}
+      {%- unless page_title contains shop.name %}
+        &ndash; {{ shop.name -}}{%- endunless -%}
+    </title>
+
+    <!-- header hook for Shopify plugins -->
+    {{ content_for_header }}
+
+    {% render 'head-scripts' %}
+
+    {% comment %} System fonts for instant rendering {% endcomment %}
+    <style>
+      :root {
+        --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      }
+      body {
+        font-family: var(--font-sans);
+      }
+    </style>
+
+    {% comment %} Preload critical assets {% endcomment %}
+    <link rel="preload" href="{{ 'theme.DC_pQjxy.min.css' | asset_url | split: '?' | first }}" as="style">
+    <link rel="preload" href="{{ 'theme.DZWE5znk.min.js' | asset_url | split: '?' | first }}" as="script" crossorigin="anonymous">
+
+    {% liquid
+      render 'vite-tag', entry: 'theme.css'
+      render 'vite-tag', entry: 'theme.js'
+
+      if request.page_type == 'product'
+        render 'vite-tag', entry: '@/js/prodify/index.ts'
+      endif
+    %}
+
+  </head> 
+
+  {% liquid
+    assign body_classes = template | handleize | append: '-template'
+    assign body_classes = body_classes | append: ' antialiased using-mouse'
+
+    if settings.show_promo_bar
+      assign body_classes = body_classes | append: ' promo-bar-visible'
+    endif
+  %}
+
+  <body
+    class="{{ body_classes }} overflow-x-hidden"
+    :class="$store.global.bodyClasses"
+    x-data
+    x-scrolled
+    >
+
+    <a class="absolute z-50 px-4 py-2 text-white bg-cloud-burst rounded-lg shadow-lg not-focus:sr-only" href="#main-content">
+      Skip to content
+    </a>
+
+    {% section 'header' %}
+
+    <main
+      id="main-content"
+      role="main"
+      class="site-main relative">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+
+    {% comment %} Mini cart drawer overlay + panel {% endcomment %}
+    <div
+      class="minicart-wrapper fixed inset-0 z-100 [[x-cloak]]:hidden"
+      x-data
+      x-show="$store.global.isMinicartVisible"
+      x-cloak
+      :aria-hidden="$store.global.isMinicartVisible ? 'false' : 'true'"
+      aria-modal="true"
+      role="dialog"
+      aria-label="Shopping cart">
+
+      {%- comment -%} Backdrop overlay {%- endcomment -%}
+      <div
+        class="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
+        x-show="$store.global.isMinicartVisible"
+        x-transition:enter="transition duration-300 ease-out"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition duration-200 ease-in"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        @click="$store.global.isMinicartVisible = false">
+      </div>
+
+      {%- comment -%} Drawer panel {%- endcomment -%}
+      <div
+        class="absolute top-4 right-4 w-full max-w-md max-h-[calc(100vh-2rem)] rounded-2xl shadow-2xl max-[576px]:right-2 max-[576px]:left-2 max-[576px]:w-auto"
+        x-show="$store.global.isMinicartVisible"
+        x-transition:enter="transition duration-300 ease-out"
+        x-transition:enter-start="translate-x-full"
+        x-transition:enter-end="translate-x-0"
+        x-transition:leave="transition duration-200 ease-in"
+        x-transition:leave-start="translate-x-0"
+        x-transition:leave-end="translate-x-full"
+        @keydown.escape.window="$store.global.isMinicartVisible = false">
+        {% section 'minicart' %}
+      </div>
+    </div>
+
+    {% if settings.enable_predictive_search %}
+      {% section 'predictive-search-main' %}
+    {% endif %}
+
+    {% if settings.enable_modal %}
+      {% section 'modal' %}
+    {% endif %}
+
+    {% render 'liquid-ajax-cart' %}
+  </body>
+</html>

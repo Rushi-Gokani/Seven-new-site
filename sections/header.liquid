@@ -1,0 +1,191 @@
+{% schema %}
+  {
+    "name": "Header",
+    "class": "section-header sticky top-0 z-20 shadow-md",
+    "tag": "header",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_max_width",
+        "min": 50,
+        "max": 300,
+        "step": 10,
+        "default": 150,
+        "unit": "px",
+        "label": "Logo width"
+      },
+      {
+        "type": "link_list",
+        "id": "navigation_menu",
+        "label": "Menu"
+      },
+      {
+        "type": "paragraph",
+        "content": "Header content is managed through your store navigation and theme settings."
+      }
+    ]
+  }
+{% endschema %}
+
+{% if settings.show_promo_bar %}
+  {% render 'promo-bar' %}
+{% endif %}
+
+{% liquid
+  assign navigation_menu = section.settings.navigation_menu
+
+  if navigation_menu == blank
+    assign navigation_menu = linklists['main-menu']
+  endif
+%}
+
+<div class="relative bg-indigo-900 px-4 sm:px-6 lg:px-8" x-data @keydown.escape.window="$store.global.closeMobileMenu()" x-on:click.outside="$store.global.closeMobileMenu()">
+  <div class="container relative mx-auto flex min-h-16 items-center gap-3 text-white">
+    <nav
+      aria-label="Mobile navigation"
+      class="block md:hidden [[x-cloak]]:hidden"
+      id="mobile-nav"
+      x-cloak>
+      <button
+        id="mobile-nav-trigger"
+        type="button"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full border-0 bg-white/10 text-white transition-colors duration-200 hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        @click="$store.global.toggleMobileMenu()"
+        :aria-expanded="$store.global.isMobileMenuVisible"
+        aria-label="Toggle mobile menu"
+        aria-controls="mobile-menu-panel"
+        x-data>
+        <span class="sr-only">Menu</span>
+        <span aria-hidden="true" x-show="!$store.global.isMobileMenuVisible">
+          {% render 'icon-hamburger' %}
+        </span>
+        <span aria-hidden="true" x-show="$store.global.isMobileMenuVisible">
+          {% render 'icon-close-x' %}
+        </span>
+      </button>
+    </nav>
+
+    <a href="{{ routes.root_url }}" aria-label="{{ shop.name }} home" class="header-logo min-w-0 flex-1 text-base uppercase text-white no-underline sm:text-lg md:flex-none md:text-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+      {% if section.settings.logo %}
+        {% assign logo_width = section.settings.logo_max_width %}
+        {% assign logo_height = logo_width | times: section.settings.logo.height | divided_by: section.settings.logo.width %}
+        <img
+          src="{{ section.settings.logo | image_url: width: logo_width }}"
+          srcset="{{ section.settings.logo | image_url: width: logo_width }} 1x,
+                  {{ section.settings.logo | image_url: width: logo_width | times: 2 }} 2x"
+          alt="{{ shop.name }}"
+          width="{{ logo_width }}"
+          height="{{ logo_height }}"
+          loading="eager"
+          fetchpriority="high"
+          style="max-width: {{ logo_width }}px; max-width: min({{ logo_width }}px, calc(100vw - 8rem)); height: auto; width: 100%; object-fit: contain;"
+        >
+      {% else %}
+        <span class="block max-w-[48vw] truncate md:max-w-[9rem] lg:max-w-[11rem] xl:max-w-[13rem]">{{ shop.name }}</span>
+      {% endif %}
+    </a>
+
+    <div class="hidden min-w-0 flex-1 md:block">
+      {% render 'header-menu', menu: navigation_menu %}
+    </div>
+
+    <div class="ml-auto flex shrink-0 items-center self-center gap-1 md:gap-2">
+
+      {% if settings.enable_predictive_search %}
+        <a
+          href="{{ routes.search_url }}"
+          aria-label="Search"
+          class="inline-flex size-10 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 md:hidden [&>svg]:size-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          @click.prevent="$store.global.isPredictiveSearchVisible = true"
+          :aria-expanded="$store.global.isPredictiveSearchVisible ? 'true' : 'false'"
+          aria-controls="predictive-search">
+          {% render 'icon-search' %}
+        </a>
+        <button
+          type="button"
+          class="hidden size-10 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 md:inline-flex [&>svg]:size-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          @click="$store.global.isPredictiveSearchVisible = true"
+          :aria-expanded="$store.global.isPredictiveSearchVisible ? 'true' : 'false'"
+          aria-label="Search"
+          aria-controls="predictive-search">
+          {% render 'icon-search' %}
+        </button>
+      {% else %}
+        <a href="{{ routes.search_url }}" aria-label="Search" class="inline-flex size-10 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 [&>svg]:size-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+          {% render 'icon-search' %}
+        </a>
+      {% endif %}
+
+      {% if shop.customer_accounts_enabled %}
+        <a href="{{ routes.account_url }}" aria-label="Account" class="fill-white p-2 text-white [&>svg]:h-7 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+          {% render 'icon-user' %}
+        </a>
+      {% endif %}
+
+
+      <a
+        href="{{ routes.cart_url }}"
+        aria-label="Cart"
+        class="relative inline-flex size-11 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white transition hover:bg-white/20 [&>svg]:size-6 [[x-cloak]]:hidden"
+        @click.prevent="$store.global.isMinicartVisible = true"
+        x-cloak>
+        {% render 'icon-cart' %}
+        <span data-ajax-cart-bind="item_count" class="pointer-events-none absolute -top-1 -right-1 inline-flex min-h-5.5 min-w-5.5 items-center justify-center rounded-full bg-amber-300 px-1.5 text-[11px] font-bold leading-none text-slate-900 ring-2 ring-indigo-900">
+          {{- cart.item_count -}}
+        </span>
+      </a>
+    </div>
+
+  {% comment %}
+    // Output customer login links
+
+    <ul>
+    {% if shop.customer_accounts_enabled %}
+    {% if customer %}
+    <a href="{{ routes.account_url }}">
+    {{ 'action.account' | t }}
+    </a>
+    {{ 'action.log_out' | t | customer_logout_link }}
+    {% else %}
+    {{ 'action.log_in' | t | customer_login_link }}
+    {{ 'action.register' | t | customer_register_link }}
+    {% endif %}
+    {% endif %}
+    </ul>
+  {% endcomment %}
+  </div>
+
+  <div
+    id="mobile-menu-panel"
+    class="absolute left-0 right-0 top-full z-50 bg-indigo-900 px-4 sm:px-6 lg:px-8 max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-white/15 md:hidden [[x-cloak]]:hidden"
+    x-show="$store.global.isMobileMenuVisible"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 -translate-y-4 scale-95"
+    x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+    x-transition:leave-end="opacity-0 -translate-y-2 scale-95"
+    x-cloak>
+    <div class="py-2">
+      {% render 'mobile-menu', menu: navigation_menu %}
+    </div>
+    <div class="border-t border-white/10 px-4 py-4">
+      <a
+        href="{{ routes.all_products_collection_url }}"
+        class="flex items-center justify-center gap-2 rounded-lg bg-white/10 px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white no-underline transition-all duration-300 hover:bg-white hover:text-indigo-900"
+        @click="$store.global.closeMobileMenu()"
+      >
+        <span>Shop All</span>
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+</div>

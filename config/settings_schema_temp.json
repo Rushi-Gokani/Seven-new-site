@@ -1,0 +1,380 @@
+  {
+    "name": "theme_info",
+    "theme_name": "NutraBox Fast Shopify",
+    "theme_version": "1.0.0",
+    "theme_author": "NutraBox",
+    "theme_documentation_url": "https://help.shopify.com/manual/using-themes",
+    "theme_support_url": "https://support.shopify.com/"
+  },
+  {
+    "name": "Logo",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 50,
+        "max": 300,
+        "step": 10,
+        "default": 150,
+        "unit": "px",
+        "label": "Logo width"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Primary colors"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary",
+        "default": "#4F46E5"
+      },
+      {
+        "type": "color",
+        "id": "color_primary_hover",
+        "label": "Primary hover",
+        "default": "#4338CA"
+      },
+      {
+        "type": "header",
+        "content": "Secondary colors"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Secondary",
+        "default": "#10B981"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary_hover",
+        "label": "Secondary hover",
+        "default": "#059669"
+      },
+      {
+        "type": "header",
+        "content": "Background colors"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_background_secondary",
+        "label": "Secondary background",
+        "default": "#F9FAFB"
+      },
+      {
+        "type": "color",
+        "id": "color_background_dark",
+        "label": "Dark background",
+        "default": "#111827"
+      },
+      {
+        "type": "header",
+        "content": "Text colors"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text",
+        "default": "#111827"
+      },
+      {
+        "type": "color",
+        "id": "color_text_secondary",
+        "label": "Secondary text",
+        "default": "#6B7280"
+      },
+      {
+        "type": "color",
+        "id": "color_text_inverse",
+        "label": "Inverse text (on dark backgrounds)",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "header",
+        "content": "Border colors"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Border",
+        "default": "#E5E7EB"
+      },
+      {
+        "type": "color",
+        "id": "color_border_light",
+        "label": "Light border",
+        "default": "#F3F4F6"
+      },
+      {
+        "type": "header",
+        "content": "Accent colors"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent",
+        "default": "#F59E0B"
+      },
+      {
+        "type": "color",
+        "id": "color_success",
+        "label": "Success",
+        "default": "#10B981"
+      },
+      {
+        "type": "color",
+        "id": "color_warning",
+        "label": "Warning",
+        "default": "#F59E0B"
+      },
+      {
+        "type": "color",
+        "id": "color_error",
+        "label": "Error",
+        "default": "#EF4444"
+      },
+      {
+        "type": "color",
+        "id": "color_info",
+        "label": "Info",
+        "default": "#3B82F6"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading font",
+        "default": "open_sans_n7"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body font",
+        "default": "open_sans_n4"
+      },
+      {
+        "type": "range",
+        "id": "font_base_size",
+        "min": 12,
+        "max": 20,
+        "step": 1,
+        "default": 16,
+        "unit": "px",
+        "label": "Base font size"
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "url",
+        "id": "social_facebook",
+        "label": "Facebook"
+      },
+      {
+        "type": "url",
+        "id": "social_twitter",
+        "label": "Twitter/X"
+      },
+      {
+        "type": "url",
+        "id": "social_instagram",
+        "label": "Instagram"
+      },
+      {
+        "type": "url",
+        "id": "social_tiktok",
+        "label": "TikTok"
+      },
+      {
+        "type": "url",
+        "id": "social_pinterest",
+        "label": "Pinterest"
+      },
+      {
+        "type": "url",
+        "id": "social_youtube",
+        "label": "YouTube"
+      },
+      {
+        "type": "url",
+        "id": "social_linkedin",
+        "label": "LinkedIn"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "options": [
+          {
+            "value": "page",
+            "label": "Page"
+          },
+          {
+            "value": "drawer",
+            "label": "Drawer"
+          }
+        ],
+        "default": "drawer"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_notes_enable",
+        "label": "Enable cart notes",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_vendor_enable",
+        "label": "Show vendor",
+        "default": false
+      }
+    ]
+  },
+  {
+    "name": "Product cards",
+    "settings": [
+      {
+        "type": "select",
+        "id": "product_image_ratio",
+        "label": "Image ratio",
+        "options": [
+          {
+            "value": "square",
+            "label": "Square (1:1)"
+          },
+          {
+            "value": "portrait",
+            "label": "Portrait (3:4)"
+          },
+          {
+            "value": "landscape",
+            "label": "Landscape (4:3)"
+          },
+          {
+            "value": "natural",
+            "label": "Natural"
+          }
+        ],
+        "default": "portrait"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_show_vendor",
+        "label": "Show vendor",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "product_show_price",
+        "label": "Show price",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "product_show_secondary_image",
+        "label": "Show secondary image on hover",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "product_enable_quick_add",
+        "label": "Enable quick add to cart",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Search",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_predictive_search",
+        "label": "Enable predictive search",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "search_show_vendor",
+        "label": "Show vendor",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "search_show_price",
+        "label": "Show price",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Promotional banner",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_promo_bar",
+        "label": "Show promotional banner",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "promo_bar_text",
+        "label": "Banner text",
+        "default": "Free shipping on orders over $50"
+      },
+      {
+        "type": "url",
+        "id": "promo_bar_link",
+        "label": "Banner link"
+      },
+      {
+        "type": "color",
+        "id": "promo_bar_bg",
+        "label": "Background color",
+        "default": "#4F46E5"
+      },
+      {
+        "type": "color",
+        "id": "promo_bar_text_color",
+        "label": "Text color",
+        "default": "#FFFFFF"
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  }
+]

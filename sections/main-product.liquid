@@ -1,0 +1,791 @@
+{% schema %}
+{
+  "name": "Product Section",
+  "class": "section-main-product",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "radio",
+      "id": "picker_type",
+      "label": "Variant Picker Type",
+      "options": [
+        {
+          "value": "radio",
+          "label": "Radio Buttons"
+        }, {
+          "value": "select",
+          "label": "Select Dropdowns"
+        }
+      ],
+      "default": "radio"
+    },
+    {
+      "type": "select",
+      "id": "gallery_layout",
+      "label": "Gallery Layout",
+      "options": [
+        {
+          "value": "thumbnails_bottom",
+          "label": "Thumbnails Bottom"
+        },
+        {
+          "value": "thumbnails_left",
+          "label": "Thumbnails Left (Desktop)"
+        }
+      ],
+      "default": "thumbnails_bottom"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collapsable_row",
+      "name": "Collapsable Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        }, {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<div class="px-4 md:px-8 pt-8 pb-32 md:pb-28">
+  <div
+    class="shopify-section-main-product-inner container mx-auto"
+    data-handle="{{ product.handle }}"
+    data-id="{{ product.id }}"
+    data-url="{{ product.url }}"
+    data-section="{{ section.id }}"
+    data-prodify="{{ section.settings.picker_type }}">
+
+    <script type="application/json" data-prodify-variants-json>
+      {{ product.variants | json }}
+    </script>
+
+    {% assign image_media = product.media | where: "media_type", "image" %}
+    {% assign image_count = image_media.size %}
+
+    {% assign initial_gallery_index = 0 %}
+    {% assign current_var = product.selected_or_first_available_variant %}
+    {% if current_var.featured_media %}
+      {% for m in image_media %}
+        {% if m.id == current_var.featured_media.id %}
+          {% assign initial_gallery_index = forloop.index0 %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    <script type="application/json" data-variant-media-map>
+      {
+        {% assign first_map_entry = true %}
+        {% for variant in product.variants %}
+          {% if variant.featured_media %}
+            {% for m in image_media %}
+              {% if m.id == variant.featured_media.id %}
+                {% unless first_map_entry %},{% endunless %}
+                "{{ variant.id }}": {{ forloop.index0 }}
+                {% assign first_map_entry = false %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      }
+    </script>
+
+    <a class="absolute z-50 px-4 py-2 text-white bg-cloud-burst rounded-lg shadow-lg not-focus:sr-only" href="#product-info-{{ section.id }}">
+      Skip to product info
+    </a>
+
+    <div class="pdp-main relative md:grid md:gap-8 lg:gap-10 {% if section.settings.gallery_layout == 'thumbnails_left' %}md:grid-cols-[100px_1fr_1fr] lg:grid-cols-[110px_1fr_1fr]{% else %}md:grid-cols-2{% endif %}">
+      {% if section.settings.gallery_layout == 'thumbnails_left' %}
+      <!-- Single Alpine component for left layout -->
+      <div x-data="productGallery({{ image_count }}, {{ initial_gallery_index }})" class="md:contents">
+        <!-- Thumbnails Left (Desktop only) -->
+        <div class="hidden md:block">
+          <div
+            class="product-gallery-thumbs flex md:flex-col gap-2 overflow-y-auto overflow-x-hidden pr-2"
+            style="max-height: 500px;"
+          >
+            {% for media in image_media %}
+              <button
+                @click="goTo({{ forloop.index0 }})"
+                class="flex-shrink-0 w-full aspect-square overflow-hidden rounded-lg cursor-pointer transition-all duration-200 border-2 bg-gray-50"
+                :class="activeIndex === {{ forloop.index0 }} ? 'border-indigo-900 opacity-100 ring-1 ring-indigo-900/20' : 'border-gray-200 opacity-60 hover:opacity-90 hover:border-gray-300'"
+                data-gallery-thumb="{{ forloop.index0 }}"
+                data-media-id="{{ media.id }}"
+                aria-label="View image {{ forloop.index }}">
+                <img
+                  src="{{ media | image_url: width: 200 }}"
+                  alt="{{ media.alt | default: product.title | escape }}"
+                  width="{{ media.width }}"
+                  height="{{ media.height }}"
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false">
+              </button>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      <!-- Main Gallery -->
+      <div class="media {% if section.settings.gallery_layout == 'thumbnails_left' %}md:col-start-2{% endif %} mb-6 md:mb-0" data-prodify-media-container>
+        {% if image_count > 0 %}
+          {% if section.settings.gallery_layout != 'thumbnails_left' %}
+          <div x-data="productGallery({{ image_count }}, {{ initial_gallery_index }})" class="product-gallery">
+          {% endif %}
+            <!-- Main image slider -->
+            <div class="product-gallery__viewport-wrap relative">
+              <div
+                x-ref="viewport"
+                class="product-gallery__viewport relative overflow-x-auto overflow-y-hidden rounded-xl bg-gray-100 snap-x snap-mandatory"
+                role="listbox"
+                tabindex="0"
+                aria-label="Product media"
+                @mousedown="onMouseDown($event)"
+                @mousemove="onMouseMove($event)"
+                @mouseup="onMouseUp()"
+                @mouseleave="onMouseLeave()"
+                @scroll.passive="onViewportScroll()"
+                @keydown="onViewportKeydown($event)"
+                @touchstart.passive="onGalleryTouchStart($event)"
+                @touchmove.passive="onGalleryTouchMove($event)"
+                @touchend.passive="onGalleryTouchEnd()">
+                <div class="product-gallery__track flex w-full flex-nowrap">
+                  {% for media in image_media %}
+                    <div
+                      class="product-gallery__slide relative min-w-full w-full h-full flex-shrink-0 snap-center"
+                      style="aspect-ratio: 1 / 1;">
+                      <img
+                        src="{{ media | image_url: width: 800 }}"
+                        data-media-id="{{ media.id }}"
+                        alt="{{ media.alt | default: product.title | escape }}"
+                        srcset="{{ media | image_url: width: 400 }} 400w, {{ media | image_url: width: 600 }} 600w, {{ media | image_url: width: 800 }} 800w, {{ media | image_url: width: 1200 }} 1200w"
+                        sizes="(min-width: 1024px) 45vw, (min-width: 768px) 50vw, 100vw"
+                        width="{{ media.width }}"
+                        height="{{ media.height }}"
+                        class="absolute inset-0 w-full h-full object-contain"
+                        loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                        {% if forloop.first %}fetchpriority="high"{% endif %}
+                        decoding="{% if forloop.first %}sync{% else %}async{% endif %}"
+                        draggable="false">
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              {% if image_count > 1 %}
+                <div class="product-gallery__pagination absolute bottom-4 left-1/2 -translate-x-1/2 pointer-events-none bg-black/70 backdrop-blur-md text-white text-sm font-medium px-5 py-2 rounded-full z-10 shadow-lg">
+                  <span x-text="activeIndex + 1"></span>/{{ image_count }}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Thumbnails (Bottom) -->
+            {% if section.settings.gallery_layout != 'thumbnails_left' %}
+            {% if image_count > 1 %}
+              <div class="product-gallery__thumbs mt-4 overflow-x-auto pb-1 hidden md:block">
+                <div class="flex gap-2.5">
+                  {% for media in image_media %}
+                    <button
+                      @click="goTo({{ forloop.index0 }})"
+                      class="product-gallery__thumb flex-shrink-0 overflow-hidden rounded-lg cursor-pointer transition-all duration-200 border-2 bg-gray-50"
+                      :class="activeIndex === {{ forloop.index0 }} ? 'border-indigo-900 opacity-100 ring-1 ring-indigo-900/20' : 'border-gray-200 opacity-60 hover:opacity-90 hover:border-gray-300'"
+                      data-gallery-thumb="{{ forloop.index0 }}"
+                      data-media-id="{{ media.id }}"
+                      aria-label="View image {{ forloop.index }}">
+                      <img
+                        src="{{ media | image_url: width: 200 }}"
+                        alt="{{ media.alt | default: product.title | escape }}"
+                        width="{{ media.width }}"
+                        height="{{ media.height }}"
+                        class="w-full h-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                        draggable="false">
+                    </button>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+            {% endif %}
+
+            <!-- Lightbox overlay -->
+            <div
+              x-show="lightboxOpen"
+              x-transition:enter="transition ease-out duration-300"
+              x-transition:enter-start="opacity-0"
+              x-transition:enter-end="opacity-100"
+              x-transition:leave="transition ease-in duration-200"
+              x-transition:leave-start="opacity-100"
+              x-transition:leave-end="opacity-0"
+              @keydown.escape.window="closeLightbox()"
+              @keydown.left.window="if(lightboxOpen) lightboxPrev()"
+              @keydown.right.window="if(lightboxOpen) lightboxNext()"
+              class="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center"
+              style="display: none;">
+
+              <button
+                @click="closeLightbox()"
+                class="absolute top-4 right-4 text-white/70 hover:text-white z-10 cursor-pointer p-3 transition-all hover:bg-white/10 rounded-lg"
+                aria-label="Close lightbox">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+
+              <div class="w-full h-full flex items-center justify-center p-4 md:p-16"
+                @click.self="closeLightbox()"
+                @touchstart.passive="onLightboxTouchStart($event)"
+                @touchend.passive="onLightboxTouchEnd($event)">
+                {% for media in image_media %}
+                  <img
+                    x-show="lightboxIndex === {{ forloop.index0 }}"
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0 scale-95"
+                    x-transition:enter-end="opacity-100 scale-100"
+                    src="{{ media | image_url: width: 2048 }}"
+                    srcset="{{ media | image_url: width: 1024 }} 1024w, {{ media | image_url: width: 1600 }} 1600w, {{ media | image_url: width: 2048 }} 2048w"
+                    sizes="(max-width: 768px) 100vw, 80vw"
+                    alt="{{ media.alt | default: product.title | escape }}"
+                    width="{{ media.width }}"
+                    height="{{ media.height }}"
+                    class="max-w-full max-h-full object-contain select-none"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                    style="display: none;">
+                {% endfor %}
+              </div>
+
+              {% if image_count > 1 %}
+                <button
+                  @click="lightboxPrev()"
+                  x-show="lightboxIndex > 0"
+                  class="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white cursor-pointer transition-colors"
+                  aria-label="Previous image">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <button
+                  @click="lightboxNext()"
+                  x-show="lightboxIndex < totalImages - 1"
+                  class="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white cursor-pointer transition-colors"
+                  aria-label="Next image">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/70 text-sm font-medium">
+                  <span x-text="lightboxIndex + 1"></span> / {{ image_count }}
+                </div>
+              {% endif %}
+            </div>
+          {% if section.settings.gallery_layout != 'thumbnails_left' %}
+          </div>
+          {% endif %}
+        {% else %}
+          <div class="image-wrapper relative overflow-hidden rounded-xl bg-gray-100" style="aspect-ratio: 1 / 1;">
+            <img
+              src="{{ 'no-image-found.jpg' | asset_url }}"
+              alt="{{ product.title | escape }}"
+              width="1000"
+              height="1000"
+              class="absolute inset-0 w-full h-full object-contain"
+              loading="eager">
+          </div>
+        {% endif %}
+      </div>
+      {% if section.settings.gallery_layout == 'thumbnails_left' %}
+      </div><!-- End x-data wrapper -->
+      {% endif %}
+      
+      <div class="info" id="product-info-{{ section.id }}">
+        <p class="caption tracking-wide text-[10px] leading-3 text-gray-500">{{ product.type | upcase }}</p>
+        <h1 class="text-3xl md:text-4xl leading-normal font-medium">{{ product.title }}</h1>
+        <div class="flex items-center py-3" data-prodify-price-container>
+          <span class="sr-only">Regular Price</span>
+          {% if product.selected_or_first_available_variant.compare_at_price %}
+            <span class="line-through text-gray-400 text-lg mr-4">
+              {{ product.selected_or_first_available_variant.compare_at_price | money }}
+            </span>
+          {% endif %}
+          <span class="text-2xl font-bold text-indigo-900">
+            {{ product.selected_or_first_available_variant.price | money }}
+          </span>
+        </div>
+        {% render 'product-variant-picker'
+          , product: product
+          , product_form_id: 'product-form-id'
+          , picker_type: section.settings.picker_type %}
+        <ajax-cart-product-form>
+          {%- form 'product', product, id: 'product-form-id', class: 'product-form', novalidate: 'novalidate', data-prodify-product-form: '' -%}
+            <input
+              type="hidden"
+              name="id"
+              value="{{ product.selected_or_first_available_variant.id }}">
+            <input
+              type="hidden"
+              name="quantity"
+              value="1"
+              data-prodify-quantity-hidden-input>
+
+            <div class="product-form__actions">
+              <div class="product-form__qty-row">
+                <div class="quantity-row">
+                  <label for="quantity-control-input">Quantity</label>
+                  <div class="quantity-control-container">
+                    <button type="button" data-prodify-quantity-decrement>
+                      {% render 'icon-minus' %}
+                    </button>
+                    <input
+                      tabindex="-1"
+                      type="number"
+                      id="quantity-control-input"
+                      value="1"
+                      disabled=""
+                      data-prodify-quantity-presentation>
+                    <button type="button" data-prodify-quantity-increment>
+                      {% render 'icon-plus' %}
+                    </button>
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  name="add"
+                  class="product-form__add-btn"
+                  {% if product.selected_or_first_available_variant.available == false %}
+                  disabled
+                  {% endif %}>
+                  <span class="in-[[processing]]:hidden">
+                    {%- if product.selected_or_first_available_variant.available -%}
+                      Add to cart
+                    {%- else -%}
+                      Sold out
+                    {%- endif -%}
+                  </span>
+                  <span class="hidden in-[[processing]]:block in-[[processing]]:cursor-not-allowed">
+                    Adding...
+                  </span>
+                </button>
+              </div>
+
+              <div data-ajax-cart-errors="form" class="text-red-500 text-sm"></div>
+
+              <div class="product-form__buy-now">
+                {{ form | payment_button }}
+              </div>
+            </div>
+          {%- endform -%}
+        </ajax-cart-product-form>
+
+        <div class="description prose mt-6">
+          {{ product.description }}
+        </div>
+        {% for block in section.blocks %}
+          <div class="collapsable-row border border-gray-500 my-4 p-4">
+            <h2>{{ block.settings.heading }}</h2>
+            <div>{{ block.settings.content }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="product-sticky-atc" data-sticky-atc>
+      <div class="product-sticky-atc__inner">
+        {% assign sticky_media = current_var.featured_media | default: image_media.first | default: product.featured_image %}
+        <div class="product-sticky-atc__media">
+          {% if sticky_media %}
+            <img
+              src="{{ sticky_media | image_url: width: 160 }}"
+              srcset="{{ sticky_media | image_url: width: 80 }} 1x, {{ sticky_media | image_url: width: 160 }} 2x"
+              alt="{{ sticky_media.alt | default: product.title | escape }}"
+              width="80"
+              height="100"
+              loading="lazy"
+              decoding="async"
+              data-sticky-atc-image>
+          {% endif %}
+        </div>
+        <div class="product-sticky-atc__content">
+          <p class="product-sticky-atc__title">{{ product.title | escape }}</p>
+          <p class="product-sticky-atc__price" data-sticky-atc-price>{{ product.selected_or_first_available_variant.price | money }}</p>
+        </div>
+        <button
+          type="button"
+          class="product-sticky-atc__button"
+          data-sticky-atc-button
+          aria-controls="product-form-id"
+          {% if product.selected_or_first_available_variant.available == false %}
+          disabled
+          {% endif %}>
+          <span data-sticky-atc-button-text>
+            {%- if product.selected_or_first_available_variant.available -%}
+              Add to cart
+            {%- else -%}
+              Sold out
+            {%- endif -%}
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+  .section-main-product .shopify-section-main-product-inner .info fieldset label {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 40px;
+    letter-spacing: 1px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  body:not(.using-mouse) .section-main-product .shopify-section-main-product-inner .info fieldset input:focus + label {
+    outline: #08f auto 2px;
+  }
+
+  .section-main-product .shopify-section-main-product-inner .info fieldset label[data-unavailable='true'],
+  .section-main-product .shopify-section-main-product-inner .info fieldset input[disabled] + label {
+    background-color: rgb(241 245 249);
+    color: lightgray;
+  }
+
+  /* Quantity control */
+  .section-main-product .quantity-row label {
+    display: block;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    line-height: 19.5px;
+    color: rgba(26, 27, 24, 0.75);
+    margin-bottom: 6px;
+  }
+
+  .section-main-product .quantity-control-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(26, 27, 24, 0.55);
+    max-width: max-content;
+    color: rgba(26, 27, 24, 0.75);
+    font-family: Arial;
+    font-size: 14px;
+  }
+
+  .section-main-product .quantity-control-container button {
+    width: 45px;
+    height: 45px;
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .section-main-product .quantity-control-container button svg {
+    width: 10px;
+  }
+
+  .section-main-product .quantity-control-container input {
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    pointer-events: none;
+    width: 48px;
+    text-align: center;
+    padding: 0;
+  }
+
+  .section-main-product .quantity-control-container input[type='number']::-webkit-inner-spin-button,
+  .section-main-product .quantity-control-container input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Product form actions */
+  .section-main-product .product-form {
+    margin: 24px 0;
+  }
+
+  .section-main-product .product-form__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .section-main-product .product-form__qty-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    align-items: end;
+  }
+
+  .section-main-product .product-form__add-btn {
+    width: 100%;
+    height: 52px;
+    padding: 0 24px;
+    background-color: rgb(49 46 129);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 9999px;
+  }
+
+  .section-main-product .product-form__add-btn:hover {
+    background-color: rgb(67 56 202);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(49, 46, 129, 0.3);
+  }
+
+  .section-main-product .product-form__add-btn:active {
+    transform: translateY(0);
+  }
+
+  .section-main-product .product-form__add-btn:disabled {
+    background-color: rgb(229 231 235);
+    color: rgb(107 114 128);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Buy now / dynamic checkout button */
+  .section-main-product .product-form__buy-now .shopify-payment-button {
+    margin-top: 0;
+  }
+
+  .section-main-product .product-form__buy-now .shopify-payment-button__button {
+    border-radius: 0;
+    min-height: 47px;
+  }
+
+  .section-main-product .product-form__buy-now .shopify-payment-button__button--unbranded {
+    background-color: rgb(49 46 129) !important;
+    color: #fff !important;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 0 24px;
+  }
+
+  .section-main-product .product-form__buy-now .shopify-payment-button__button--unbranded:hover {
+    background-color: rgb(67 56 202) !important;
+  }
+
+  /* Sticky ATC */
+  .section-main-product .product-sticky-atc {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    border-top: 0;
+    background: transparent;
+    box-shadow: none;
+    padding: 0 10px calc(10px + env(safe-area-inset-bottom));
+    pointer-events: none;
+  }
+
+  .section-main-product .product-sticky-atc__inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 8px 10px;
+    border-radius: 9999px;
+    border: 1px solid rgba(17, 24, 39, 0.09);
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.15);
+    pointer-events: auto;
+  }
+
+  .section-main-product .product-sticky-atc__media {
+    width: 44px;
+    height: 56px;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: rgb(243 244 246);
+    border: 1px solid rgb(229 231 235);
+  }
+
+  .section-main-product .product-sticky-atc__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .section-main-product .product-sticky-atc__content {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-right: 4px;
+  }
+
+  .section-main-product .product-sticky-atc__title {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: rgb(17 24 39);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .section-main-product .product-sticky-atc__price {
+    font-size: 13px;
+    color: rgb(55 65 81);
+    margin: 0;
+  }
+
+  .section-main-product .product-sticky-atc__button {
+    height: 40px;
+    min-width: 122px;
+    padding: 0 16px;
+    border-radius: 9999px;
+    border: none;
+    background-color: rgb(49 46 129);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+  }
+
+  .section-main-product .product-sticky-atc__button:hover {
+    background-color: rgb(67 56 202);
+  }
+
+  .section-main-product .product-sticky-atc__button:disabled {
+    background-color: rgb(229 231 235);
+    color: rgb(107 114 128);
+    cursor: not-allowed;
+  }
+
+  @media (min-width: 768px) {
+    .section-main-product .product-sticky-atc__button {
+      min-width: 140px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .section-main-product .product-sticky-atc {
+      padding: 0 8px calc(8px + env(safe-area-inset-bottom));
+    }
+
+    .section-main-product .product-sticky-atc__inner {
+      gap: 8px;
+      border-radius: 18px;
+      padding: 8px;
+    }
+
+    .section-main-product .product-sticky-atc__button {
+      min-width: 108px;
+      height: 38px;
+      padding: 0 14px;
+    }
+
+    .section-main-product .product-sticky-atc__media {
+      width: 40px;
+      height: 50px;
+      border-radius: 7px;
+    }
+
+    .section-main-product .product-sticky-atc__title,
+    .section-main-product .product-sticky-atc__price {
+      font-size: 12px;
+    }
+  }
+
+  .section-main-product .shopify-section-main-product-inner .info .description {
+    font-size: 16px;
+    line-height: 28.8px;
+  }
+
+  .section-main-product .shopify-section-main-product-inner .info .description em {
+    font-style: italic;
+  }
+
+  .section-main-product .shopify-section-main-product-inner .info .description a {
+    color: rgba(68, 89, 88, 0.85);
+  }
+
+  /* Product gallery */
+  .product-gallery__thumbs {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .product-gallery__thumbs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .product-gallery__thumb {
+    width: 64px;
+    height: 72px;
+  }
+
+  .product-gallery__viewport {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+  }
+
+  .product-gallery__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .product-gallery__thumb {
+      width: 72px;
+      height: 80px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .product-gallery__thumb {
+      width: 80px;
+      height: 88px;
+    }
+  }
+
+  .product-gallery__track {
+    will-change: scroll-position;
+  }
+
+  .product-gallery__slide {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .product-gallery__viewport.is-dragging,
+  .product-gallery__viewport.is-dragging * {
+    cursor: grabbing;
+    user-select: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .product-gallery__viewport {
+      scroll-behavior: auto;
+    }
+  }
+</style>
+
+<script src="{{ 'product-buy-now.js' | asset_url }}" defer></script>
