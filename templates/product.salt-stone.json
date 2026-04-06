@@ -1,0 +1,132 @@
+{
+  "layout": "theme",
+  "sections": {
+    "main": {
+      "type": "product-salt-stone",
+      "settings": {
+        "gallery_layout": "vertical_thumbs",
+        "thumbnail_size": 75,
+        "main_image_ratio": 100,
+        "show_badge": true,
+        "badge_text": "BEST SELLER",
+        "badge_bg_color": "#FFFFFF",
+        "badge_text_color": "#000000",
+        "show_rating": true,
+        "star_rating": 4.9,
+        "review_count": "5,540 reviews",
+        "swatch_size": 70,
+        "swatch_border_color": "#E5E5E5",
+        "swatch_active_border": "#000000",
+        "show_promo_bar": true,
+        "promo_text": "Get a free Mini Santal Deodorant on orders $70+",
+        "promo_bg_color": "#F5F5F5",
+        "show_afterpay": true,
+        "afterpay_installments": "4",
+        "show_floating_badge": true,
+        "floating_badge_text": "GET 10% OFF",
+        "floating_badge_bg": "#000000",
+        "floating_badge_text_color": "#FFFFFF"
+      },
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "title_size": "large",
+            "uppercase": true
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "truncate": false,
+            "truncate_lines": 3
+          }
+        },
+        "refill_link": {
+          "type": "refill_link",
+          "settings": {
+            "link_text": "Save $9 with the Body Wash Refill Set",
+            "link_url": "#"
+          }
+        },
+        "size_info": {
+          "type": "size_info",
+          "settings": {
+            "size_text": "15.2 FL OZ / 450 ML",
+            "show_variant_size": false
+          }
+        },
+        "rating": {
+          "type": "rating",
+          "settings": {
+            "stars_size": 12
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "option_label_prefix": "SCENT:",
+            "use_variant_images": true
+          }
+        },
+        "promo_bar": {
+          "type": "promo_bar",
+          "settings": {
+            "text": "Get a free Mini Santal Deodorant on orders $70+",
+            "background_color": "#F5F5F5"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "add_to_cart_text": "ADD TO CART",
+            "sold_out_text": "SOLD OUT",
+            "waitlist_text": "JOIN WAITLIST",
+            "show_quantity": false,
+            "button_style": "rounded"
+          }
+        },
+        "payment_icons": {
+          "type": "payment_icons",
+          "settings": {
+            "show_afterpay": true
+          }
+        },
+        "cross_sell": {
+          "type": "cross_sell",
+          "settings": {
+            "heading": "COMPLETE YOUR ROUTINE",
+            "image_width": 100
+          }
+        },
+        "accordion_ingredients": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Ingredients",
+            "content": "<ul><li>Seaweed Extracts</li><li>Hyaluronic Acid</li><li>Natural Botanicals</li></ul>",
+            "open_by_default": false
+          }
+        },
+        "accordion_how_to_use": {
+          "type": "accordion",
+          "settings": {
+            "heading": "How to Use",
+            "content": "<p>Lather onto wet skin, rinse thoroughly.</p><p>Use daily for best results.</p>",
+            "open_by_default": false
+          }
+        },
+        "accordion_shipping": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Shipping & Returns",
+            "content": "<p>Free standard shipping on orders over $50.</p><p>Easy 30-day returns.</p>",
+            "open_by_default": false
+          }
+        }
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
