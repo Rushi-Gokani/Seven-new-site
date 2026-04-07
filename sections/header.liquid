@@ -1,7 +1,7 @@
 {% schema %}
   {
     "name": "Header",
-    "class": "section-header sticky top-0 z-20 border-b border-gray-100",
+    "class": "section-header sticky top-0 z-50 border-b border-gray-100",
     "tag": "header",
     "settings": [
       {
@@ -44,7 +44,7 @@
   endif
 %}
 
-<div class="relative bg-white px-4 lg:px-12 transition-colors duration-300" x-data @keydown.escape.window="$store.global.closeMobileMenu()" x-on:click.outside="$store.global.closeMobileMenu()">
+<div class="relative bg-white px-6 md:px-12 transition-colors duration-300" x-data @keydown.escape.window="$store.global.closeMobileMenu()" x-on:click.outside="$store.global.closeMobileMenu()">
   <div class="mx-auto flex h-16 items-center justify-between text-black font-bold text-[11px] tracking-[0.15em] relative">
     <nav
       aria-label="Mobile navigation"
@@ -72,12 +72,12 @@
       {% render 'header-menu', menu: navigation_menu %}
     </div>
     <div class="flex items-center justify-start md:hidden">
-      <!-- Mobile trigger handled below -->
+      <!-- Mobile trigger handled above -->
     </div>
 
     <!-- Center Logo -->
     <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-      <a href="{{ routes.root_url }}" aria-label="{{ shop.name }} home" class="header-logo block text-lg lg:text-xl font-medium tracking-[0.2em] uppercase text-black no-underline whitespace-nowrap">
+      <a href="{{ routes.root_url }}" aria-label="{{ shop.name }} home" class="header-logo block text-[11px] md:text-lg lg:text-xl font-medium tracking-[0.2em] uppercase text-black no-underline whitespace-nowrap">
         {% if section.settings.logo %}
           {% assign logo_width = section.settings.logo_max_width %}
           {% assign logo_height = logo_width | times: section.settings.logo.height | divided_by: section.settings.logo.width %}
@@ -99,12 +99,12 @@
       </a>
     </div>
 
-    <!-- Right Navigation (Desktop) -->
-    <div class="flex items-center justify-end gap-6 uppercase">
+    <!-- Right Navigation (Desktop/Mobile) -->
+    <div class="flex items-center justify-end gap-4 md:gap-6 uppercase">
       {% if settings.enable_predictive_search %}
         <button
           type="button"
-          class="hover:opacity-70 transition-opacity focus-visible:outline-none"
+          class="hidden md:block hover:opacity-70 transition-opacity focus-visible:outline-none"
           @click="$store.global.isPredictiveSearchVisible = true"
           :aria-expanded="$store.global.isPredictiveSearchVisible ? 'true' : 'false'"
           aria-label="Search"
@@ -112,18 +112,18 @@
           SEARCH
         </button>
       {% else %}
-        <a href="{{ routes.search_url }}" class="hover:opacity-70">SEARCH</a>
+        <a href="{{ routes.search_url }}" class="hidden md:block hover:opacity-70">SEARCH</a>
       {% endif %}
 
       {% if shop.customer_accounts_enabled %}
-        <a href="{{ routes.account_url }}" class="hover:opacity-70 transition-opacity">
+        <a href="{{ routes.account_url }}" class="hidden md:block hover:opacity-70 transition-opacity">
           ACCOUNT
         </a>
       {% endif %}
 
       <a
         href="{{ routes.cart_url }}"
-        class="hover:opacity-70 transition-opacity [[x-cloak]]:hidden"
+        class="hidden md:block hover:opacity-70 transition-opacity [[x-cloak]]:hidden"
         @click.prevent="$store.global.isMinicartVisible = true"
         x-cloak>
         BAG
