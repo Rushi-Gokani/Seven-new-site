@@ -18,18 +18,6 @@
       "id": "badge_text",
       "label": "Badge Text",
       "default": "BEST SELLER"
-    },
-    {
-      "type": "text",
-      "id": "star_rating",
-      "label": "Star Rating",
-      "default": "4.9"
-    },
-    {
-      "type": "text",
-      "id": "review_count",
-      "label": "Review Count",
-      "default": "5,540 reviews"
     }
   ],
   "blocks": [
@@ -40,6 +28,25 @@
     {
       "type": "description",
       "name": "Description"
+    },
+    {
+      "type": "rating",
+      "name": "Review/Rating",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "star_rating",
+          "label": "Star Rating",
+          "default": "4.9"
+        },
+        {
+          "type": "text",
+          "id": "review_count",
+          "label": "Review Count",
+          "default": "5,540 reviews"
+        }
+      ]
     },
     {
       "type": "buy_buttons",
@@ -76,6 +83,7 @@
       "blocks": [
         { "type": "title" },
         { "type": "description" },
+        { "type": "rating" },
         { "type": "buy_buttons" }
       ]
     }
@@ -117,18 +125,20 @@
               <h1 class="product-title">{{ product.title }}</h1>
             {% when 'description' %}
               <div class="product-desc">{{ product.description }}</div>
-            {% when 'buy_buttons' %}
-              <div class="rating-container">
+            {% when 'rating' %}
+              <div class="rating-container" {{ block.shopify_attributes }}>
                 <div class="stars">
                   {% for i in (1..5) %}
                     <svg class="star-icon" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
                   {% endfor %}
                 </div>
                 <span class="rating-text">
-                  <span class="rating-value">{{ section.settings.star_rating }}</span>
-                  <span class="review-count">({{ section.settings.review_count }})</span>
+                  <span class="rating-value">{{ block.settings.star_rating }}</span>
+                  <span class="review-count">({{ block.settings.review_count }})</span>
                 </span>
               </div>
+
+            {% when 'buy_buttons' %}
               {% form 'product', product %}
                 <input type="hidden" name="id" value="{{ current_variant.id }}">
                 <button type="submit" class="btn-add">ADD TO CART</button>
