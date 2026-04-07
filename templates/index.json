@@ -40,11 +40,39 @@
     "featured_collection_slider_y7wHkU": {
       "type": "featured-collection-slider",
       "blocks": {
+        "product_LF3F8q": {
+          "type": "product",
+          "settings": {
+            "product": "kids-brush-heads-5",
+            "badge_text": "",
+            "right_badge_text": "",
+            "scent_text": ""
+          }
+        },
+        "product_PeTjTY": {
+          "type": "product",
+          "settings": {
+            "product": "sensitive-brush-heads-lavender-edition",
+            "badge_text": "",
+            "right_badge_text": "",
+            "scent_text": ""
+          }
+        },
+        "product_Mgnw8t": {
+          "type": "product",
+          "settings": {
+            "product": "sensitive-brush-heads-royal-blue-edition",
+            "badge_text": "",
+            "right_badge_text": "",
+            "scent_text": ""
+          }
+        },
         "product_GdmjQa": {
           "type": "product",
           "settings": {
             "product": "kids-brush-heads-7",
             "badge_text": "new",
+            "right_badge_text": "",
             "scent_text": ""
           }
         },
@@ -53,6 +81,7 @@
           "settings": {
             "product": "kids-3-purple-pop",
             "badge_text": "low stock",
+            "right_badge_text": "",
             "scent_text": ""
           }
         },
@@ -61,6 +90,7 @@
           "settings": {
             "product": "kids-brush-heads-3",
             "badge_text": "best seller",
+            "right_badge_text": "save $25",
             "scent_text": ""
           }
         },
@@ -69,11 +99,15 @@
           "settings": {
             "product": "regular-brush-heads-pro-midnight-blue",
             "badge_text": "best seller",
+            "right_badge_text": "",
             "scent_text": ""
           }
         }
       },
       "block_order": [
+        "product_LF3F8q",
+        "product_PeTjTY",
+        "product_Mgnw8t",
         "product_GdmjQa",
         "product_AYXGU7",
         "product_za4LLF",
