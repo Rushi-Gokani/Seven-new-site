@@ -94,23 +94,23 @@
             {% when 'description' %}
               <div class="product-desc">{{ product.description }}</div>
             {% when 'buy_buttons' %}
+              <div class="rating-container">
+                <div class="stars">
+                  {% for i in (1..5) %}
+                    <svg class="star-icon" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                  {% endfor %}
+                </div>
+                <span class="rating-text">
+                  <span class="rating-value">{{ section.settings.star_rating }}</span>
+                  <span class="review-count">({{ section.settings.review_count }})</span>
+                </span>
+              </div>
               {% form 'product', product %}
                 <input type="hidden" name="id" value="{{ current_variant.id }}">
                 <button type="submit" class="btn-add">ADD TO CART</button>
               {% endform %}
           {% endcase %}
         {% endfor %}
-        <div class="rating-container">
-          <div class="stars">
-            {% for i in (1..5) %}
-              <svg class="star-icon" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-            {% endfor %}
-          </div>
-          <span class="rating-text">
-            <span class="rating-value">{{ section.settings.star_rating }}</span>
-            <span class="review-count">({{ section.settings.review_count }})</span>
-          </span>
-        </div>
       </div>
       
     </div>
