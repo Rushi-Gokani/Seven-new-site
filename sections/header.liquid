@@ -67,11 +67,13 @@
       </button>
     </nav>
 
-    <!-- Left Placeholder / Mobile Trigger -->
+    <!-- Left Navigation (Desktop) -->
+    <div class="hidden md:block">
+      {% render 'header-menu', menu: navigation_menu %}
+    </div>
     <div class="flex items-center justify-start md:hidden">
       <!-- Mobile trigger handled below -->
     </div>
-    <div class="hidden md:block"></div>
 
     <!-- Center Logo -->
     <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -98,40 +100,34 @@
     </div>
 
     <!-- Right Navigation (Desktop) -->
-    <div class="flex items-center justify-end gap-8 uppercase">
-      <div class="hidden md:block">
-        {% render 'header-menu', menu: navigation_menu %}
-      </div>
+    <div class="flex items-center justify-end gap-6 uppercase">
+      {% if settings.enable_predictive_search %}
+        <button
+          type="button"
+          class="hover:opacity-70 transition-opacity focus-visible:outline-none"
+          @click="$store.global.isPredictiveSearchVisible = true"
+          :aria-expanded="$store.global.isPredictiveSearchVisible ? 'true' : 'false'"
+          aria-label="Search"
+          aria-controls="predictive-search">
+          SEARCH
+        </button>
+      {% else %}
+        <a href="{{ routes.search_url }}" class="hover:opacity-70">SEARCH</a>
+      {% endif %}
 
-      <div class="flex items-center gap-6">
-        {% if settings.enable_predictive_search %}
-          <button
-            type="button"
-            class="hover:opacity-70 transition-opacity focus-visible:outline-none"
-            @click="$store.global.isPredictiveSearchVisible = true"
-            :aria-expanded="$store.global.isPredictiveSearchVisible ? 'true' : 'false'"
-            aria-label="Search"
-            aria-controls="predictive-search">
-            SEARCH
-          </button>
-        {% else %}
-          <a href="{{ routes.search_url }}" class="hover:opacity-70">SEARCH</a>
-        {% endif %}
-
-        {% if shop.customer_accounts_enabled %}
-          <a href="{{ routes.account_url }}" class="hover:opacity-70 transition-opacity">
-            ACCOUNT
-          </a>
-        {% endif %}
-
-        <a
-          href="{{ routes.cart_url }}"
-          class="hover:opacity-70 transition-opacity [[x-cloak]]:hidden"
-          @click.prevent="$store.global.isMinicartVisible = true"
-          x-cloak>
-          BAG
+      {% if shop.customer_accounts_enabled %}
+        <a href="{{ routes.account_url }}" class="hover:opacity-70 transition-opacity">
+          ACCOUNT
         </a>
-      </div>
+      {% endif %}
+
+      <a
+        href="{{ routes.cart_url }}"
+        class="hover:opacity-70 transition-opacity [[x-cloak]]:hidden"
+        @click.prevent="$store.global.isMinicartVisible = true"
+        x-cloak>
+        BAG
+      </a>
     </div>
 
 

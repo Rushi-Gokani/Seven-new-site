@@ -1,0 +1,307 @@
+{% schema %}
+{
+  "name": "Featured Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link Text",
+      "default": "SHOP ALL"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge Text",
+          "info": "e.g., BEST SELLER, NEW, LOW STOCK"
+        },
+        {
+          "type": "text",
+          "id": "scent_text",
+          "label": "Scent / Info Text",
+          "info": "e.g., SANTAL & VETIVER"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection Slider",
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<div 
+  class="featured-slider-section"
+  style="background-color: {{ section.settings.bg_color }};"
+  x-data="{ 
+    progress: 0,
+    updateProgress() {
+      const el = this.$refs.scroller;
+      const total = el.scrollWidth - el.offsetWidth;
+      this.progress = total > 0 ? (el.scrollLeft / total) * 100 : 0;
+    }
+  }"
+>
+  <div class="slider-container">
+    
+    <!-- Header -->
+    <div class="slider-header">
+      <h2 class="slider-title">{{ section.settings.title }}</h2>
+      {% if section.settings.link_text != blank %}
+        <a href="{{ section.settings.link_url }}" class="slider-link">{{ section.settings.link_text }}</a>
+      {% endif %}
+    </div>
+
+    <!-- Scroller Container -->
+    <div class="slider-scroller-outer">
+      <div 
+        x-ref="scroller"
+        class="slider-scroller hide-scrollbar"
+        @scroll="updateProgress()"
+      >
+        {% for block in section.blocks %}
+          {%- assign card_product = all_products[block.settings.product] -%}
+          {% if card_product != blank %}
+            <div class="slider-item" {{ block.shopify_attributes }}>
+              <div class="card-image-wrap">
+                {% if block.settings.badge_text != blank %}
+                  <span class="card-badge">{{ block.settings.badge_text }}</span>
+                {% endif %}
+                
+                <a href="{{ card_product.url }}">
+                  {% if card_product.featured_image %}
+                    {{ card_product.featured_image | image_url: width: 800 | image_tag: class: 'card-img', loading: 'lazy' }}
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'card-img' }}
+                  {% endif %}
+                </a>
+              </div>
+
+              <div class="card-info">
+                <h3 class="card-title">
+                  <a href="{{ card_product.url }}">{{ card_product.title | uppercase }}</a>
+                </h3>
+                
+                {% if block.settings.scent_text != blank %}
+                  <p class="card-scent text-black">{{ block.settings.scent_text | uppercase }}</p>
+                {% endif %}
+
+                <div class="card-status">
+                  {% if card_product.available %}
+                    {{ card_product.price | money | uppercase }}
+                  {% else %}
+                    SOLD OUT
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <!-- Placeholder for empty blocks -->
+            <div class="slider-item">
+              <div class="card-image-wrap placeholder-bg">
+                {{ 'product-1' | placeholder_svg_tag: 'card-img' }}
+              </div>
+              <div class="card-info">
+                <h3 class="card-title">EXAMPLE PRODUCT</h3>
+                <p class="card-scent">SCENT NOTES</p>
+                <div class="card-status">$25.00</div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="slider-progress-wrap">
+      <div class="slider-progress-track">
+        <div 
+          class="slider-progress-bar"
+          :style="`left: calc(${progress}% - (40px * (${progress} / 100)))`"
+        ></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.featured-slider-section {
+  padding: 80px 0;
+  overflow: hidden;
+  font-family: inherit;
+}
+.slider-container {
+  max-width: 1540px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 40px;
+}
+.slider-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.01em;
+  font-family: inherit;
+}
+.slider-link {
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  letter-spacing: 0.15em;
+  color: #000;
+}
+.slider-scroller-outer {
+  position: relative;
+  margin: 0 -40px;
+  padding: 0 40px;
+}
+.slider-scroller {
+  display: flex;
+  gap: 1.5px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 20px;
+}
+.slider-item {
+  flex: 0 0 calc(25% - 1.1px);
+  scroll-snap-align: start;
+}
+@media (max-width: 1280px) {
+  .slider-item { flex: 0 0 calc(33.33% - 1px); }
+}
+@media (max-width: 1024px) {
+  .slider-item { flex: 0 0 calc(50% - 1px); }
+  .slider-container { padding: 0 20px; }
+  .slider-scroller-outer { margin: 0 -20px; padding: 0 20px; }
+}
+@media (max-width: 640px) {
+  .slider-item { flex: 0 0 85%; }
+}
+
+/* Card Styling */
+.card-image-wrap {
+  position: relative;
+  background: #f7f7f7;
+  aspect-ratio: 1/1.05;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.slider-item:hover .card-img {
+  transform: scale(1.05);
+}
+.card-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #fff;
+  padding: 6px 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  z-index: 5;
+  color: #000;
+}
+.card-info {
+  padding: 20px 0;
+}
+.card-title {
+  font-size: 13px;
+  font-weight: 800;
+  margin: 0 0 4px 0;
+  letter-spacing: 0.02em;
+}
+.card-title a {
+  text-decoration: none;
+  color: #000;
+}
+.card-scent {
+  font-size: 11px;
+  color: hsl(0, 0%, 50%);
+  margin: 0 0 4px 0;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+.card-status {
+  font-size: 11px;
+  color: hsl(0, 0%, 50%);
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+/* Progress Bar */
+.slider-progress-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+.slider-progress-track {
+  width: 220px;
+  height: 1px;
+  background: #e5e5e5;
+  position: relative;
+}
+.slider-progress-bar {
+  position: absolute;
+  top: -0.5px;
+  height: 2px;
+  width: 40px;
+  background: #000;
+  transition: left 0.1s ease-out;
+}
+
+/* Hide Scrollbar helper */
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
