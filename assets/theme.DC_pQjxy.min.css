@@ -3694,7 +3694,9 @@
         }
 
         .hover\:bg-white:hover {
-            background-color: var(--color-white)
+            background-color: var(--color-white);
+            color: #000;
+        
         }
 
         .hover\:bg-white\/5:hover {
