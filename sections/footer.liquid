@@ -53,15 +53,15 @@
         <!-- Policy Links in First Column -->
         <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 text-left">
           {% if shop.privacy_policy != blank %}
-            <a href="{{ shop.privacy_policy.url }}" class="text-[11px] text-black hover:opacity-70 transition-opacity font-normal whitespace-nowrap">Privacy Policy</a>
+            <a href="{{ shop.privacy_policy.url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal whitespace-nowrap">Privacy Policy</a>
           {% endif %}
           {% if shop.terms_of_service != blank %}
-            <a href="{{ shop.terms_of_service.url }}" class="text-[11px] text-black hover:opacity-70 transition-opacity font-normal whitespace-nowrap">Terms & Conditions</a>
+            <a href="{{ shop.terms_of_service.url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal whitespace-nowrap">Terms & Conditions</a>
           {% endif %}
           {% if section.settings.accessibility_url != blank %}
-            <a href="{{ section.settings.accessibility_url }}" class="text-[11px] text-black hover:opacity-70 transition-opacity font-normal whitespace-nowrap">Accessibility</a>
+            <a href="{{ section.settings.accessibility_url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal whitespace-nowrap">Accessibility</a>
           {% endif %}
-          <button class="text-[11px] text-black hover:opacity-70 transition-opacity flex items-center gap-2 font-normal whitespace-nowrap" aria-label="Your Privacy Choices">
+          <button class="text-sm text-black hover:opacity-70 transition-opacity flex items-center gap-2 font-normal whitespace-nowrap" aria-label="Your Privacy Choices">
             <span class="relative inline-flex items-center">
               <svg width="24" height="12" viewBox="0 0 30 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-black">
                 <rect x="0.5" y="0.5" width="23" height="11" rx="5.5" fill="black" stroke="black"/>
