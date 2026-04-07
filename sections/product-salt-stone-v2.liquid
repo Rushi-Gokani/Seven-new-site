@@ -49,6 +49,11 @@
       ]
     },
     {
+      "type": "afterpay",
+      "name": "Afterpay Message",
+      "limit": 1
+    },
+    {
       "type": "buy_buttons",
       "name": "Buy Buttons"
     },
@@ -136,6 +141,15 @@
                   <span class="rating-value">{{ block.settings.star_rating }}</span>
                   <span class="review-count">({{ block.settings.review_count }})</span>
                 </span>
+              </div>
+
+            {% when 'afterpay' %}
+              <div class="afterpay-installment mb-4" {{ block.shopify_attributes }}>
+                or 4 interest-free payments of <span>{{ product.price | divided_by: 4.0 | money }}</span> with 
+                <span class="afterpay-logo">
+                  <span class="afterpay-badge">S</span> Afterpay
+                </span>
+                <span class="afterpay-info">ⓘ</span>
               </div>
 
             {% when 'buy_buttons' %}
@@ -259,6 +273,42 @@
   font-size: 13px;
   color: #000;
   font-weight: 500;
+}
+.afterpay-installment {
+  font-size: 13px;
+  color: #888;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.afterpay-installment span {
+  font-weight: 600;
+  color: #666;
+}
+.afterpay-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #000 !important;
+  font-weight: 700 !important;
+}
+.afterpay-badge {
+  background: #b2fce4;
+  color: #000;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 900;
+}
+.afterpay-info {
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 2px;
 }
 @media (max-width: 768px) {
   .product-grid {
