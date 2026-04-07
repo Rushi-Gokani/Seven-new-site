@@ -14,10 +14,11 @@
       "blocks": {
         "promo_toast_Wi9Jkg": {
           "type": "promo_toast",
+          "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/optimized_brush_green_ddeafb24-0a83-4950-94ef-aeefe5764756.jpg",
-            "text": "Free Mini Santal Deodorant on orders $65+",
-            "link": ""
+            "image": "shopify://shop_images/landscape_jpg.jpg",
+            "text": "",
+            "link": "shopify://products/the-superbrush-pro-blush-pink"
           }
         },
         "slide-1": {
@@ -33,8 +34,8 @@
         "slide-2": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/1_2_ea6280a1-0ad3-47d2-9ad1-9668d320e46f.png",
-            "mobile_image": "shopify://shop_images/2_3.png",
+            "image": "shopify://shop_images/landscape_jpg.jpg",
+            "mobile_image": "shopify://shop_images/seven_bru_jpg.jpg",
             "slide_link": "",
             "overlay_opacity": 0
           }
