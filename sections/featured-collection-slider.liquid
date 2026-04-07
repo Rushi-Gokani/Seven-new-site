@@ -39,8 +39,14 @@
         {
           "type": "text",
           "id": "badge_text",
-          "label": "Badge Text",
-          "info": "e.g., BEST SELLER, NEW, LOW STOCK"
+          "label": "Left Badge Text",
+          "info": "e.g., BEST SELLER, NEW"
+        },
+        {
+          "type": "text",
+          "id": "right_badge_text",
+          "label": "Right Badge Text",
+          "info": "e.g., SAVE $25, LOW STOCK"
         },
         {
           "type": "text",
@@ -99,9 +105,12 @@
           {% if card_product != blank %}
             <div class="slider-item" {{ block.shopify_attributes }}>
               <div class="card-image-wrap">
-                {% if block.settings.badge_text != blank %}
-                  <span class="card-badge">{{ block.settings.badge_text }}</span>
-                {% endif %}
+              {% if block.settings.badge_text != blank %}
+                <span class="card-badge card-badge--left">{{ block.settings.badge_text }}</span>
+              {% endif %}
+              {% if block.settings.right_badge_text != blank %}
+                <span class="card-badge card-badge--right">{{ block.settings.right_badge_text }}</span>
+              {% endif %}
                 
                 <a href="{{ card_product.url }}">
                   {% if card_product.featured_image %}
@@ -243,7 +252,6 @@
 .card-badge {
   position: absolute;
   top: 15px;
-  left: 15px;
   background: #fff;
   padding: 6px 10px;
   font-size: 10px;
@@ -252,6 +260,12 @@
   text-transform: uppercase;
   z-index: 5;
   color: #000;
+}
+.card-badge--left {
+  left: 15px;
+}
+.card-badge--right {
+  right: 15px;
 }
 .card-info {
   padding: 20px 0;
