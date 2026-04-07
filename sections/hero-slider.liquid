@@ -125,7 +125,7 @@
           "step": 4,
           "unit": "px",
           "label": "Padding left",
-          "default": 0
+          "default": 24
         },
         {
           "type": "range",
@@ -135,7 +135,7 @@
           "step": 4,
           "unit": "px",
           "label": "Padding right",
-          "default": 0
+          "default": 24
         },
         {
           "type": "range",
@@ -197,7 +197,7 @@
           "step": 4,
           "unit": "px",
           "label": "Padding left",
-          "default": 0
+          "default": 24
         },
         {
           "type": "range",
@@ -207,7 +207,7 @@
           "step": 4,
           "unit": "px",
           "label": "Padding right",
-          "default": 0
+          "default": 24
         },
         {
           "type": "range",
@@ -264,7 +264,7 @@
           "step": 4,
           "unit": "px",
           "label": "Padding left",
-          "default": 0
+          "default": 24
         },
         {
           "type": "range",
@@ -274,7 +274,7 @@
           "step": 4,
           "unit": "px",
           "label": "Padding right",
-          "default": 0
+          "default": 24
         },
         {
           "type": "range",
@@ -409,7 +409,7 @@
     {%- endfor -%}
 
     {%- comment -%} Modular Content Overlay (Global) {%- endcomment -%}
-    <div class="absolute inset-0 z-30 pointer-events-none flex items-center px-16 md:px-32 lg:px-48">
+    <div class="absolute inset-0 z-30 pointer-events-none flex items-center px-8 md:px-32 lg:px-48">
       <div class="max-w-[1600px] w-full pointer-events-auto">
         {%- for block in section.blocks -%}
           {%- case block.type -%}
@@ -435,12 +435,13 @@
                 style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px; max-width: {{ block.settings.max_width }}px;"
                 {{ block.shopify_attributes }}
               >
-                <a href="{{ block.settings.link | default: '#' }}" class="inline-flex items-center justify-center gap-10 px-14 py-4.5 bg-black text-white rounded-full uppercase tracking-tighter text-[15px] font-extrabold transition-all duration-300 hover:bg-gray-800 group/btn whitespace-nowrap w-fit">
-                  <span>{{ block.settings.text }}</span>
-                  <svg width="22" height="16" viewBox="0 0 24 24" fill="none" class="transition-transform duration-300 group-hover/btn:translate-x-1.5 shrink-0" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </a>
+            <a href="{{ block.settings.link | default: '#' }}" class="inline-flex items-center justify-center gap-4 px-12 py-3 bg-black text-white rounded-full uppercase tracking-[0.15em] text-[11px] font-bold transition-all duration-300 hover:bg-gray-800 group/btn whitespace-nowrap w-fit">
+              <span>{{ block.settings.text }}</span>
+              <svg width="15" height="10" viewBox="0 0 15 10" fill="none" class="transition-transform duration-300 group-hover/btn:translate-x-1 shrink-0" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 1L14 5L10 9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M1 5H14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
               </div>
           {%- endcase -%}
         {%- endfor -%}
