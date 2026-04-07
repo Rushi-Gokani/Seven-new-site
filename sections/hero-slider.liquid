@@ -116,6 +116,26 @@
           "unit": "px",
           "label": "Padding bottom",
           "default": 16
+        },
+        {
+          "type": "range",
+          "id": "padding_left",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Padding left",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "padding_right",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Padding right",
+          "default": 0
         }
       ]
     },
@@ -158,6 +178,26 @@
           "unit": "px",
           "label": "Padding bottom",
           "default": 40
+        },
+        {
+          "type": "range",
+          "id": "padding_left",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Padding left",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "padding_right",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Padding right",
+          "default": 0
         }
       ]
     },
@@ -195,6 +235,26 @@
           "unit": "px",
           "label": "Padding bottom",
           "default": 16
+        },
+        {
+          "type": "range",
+          "id": "padding_left",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Padding left",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "padding_right",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "Padding right",
+          "default": 0
         }
       ]
     },
@@ -326,7 +386,7 @@
             {%- when 'heading' -%}
               <h2 
                 class="text-5xl md:text-6xl lg:text-8xl font-bold leading-[1.05] tracking-tighter {{ block.settings.color }}" 
-                style="padding-top: {{ block.settings.padding_top }}px; padding-bottom: {{ block.settings.padding_bottom }}px;"
+                style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px;"
                 {{ block.shopify_attributes }}
               >
                 {{ block.settings.text }}
@@ -334,7 +394,7 @@
             {%- when 'subheading' -%}
               <p 
                 class="text-base md:text-lg lg:text-xl font-medium opacity-90 max-w-[450px] {{ block.settings.color }}" 
-                style="padding-top: {{ block.settings.padding_top }}px; padding-bottom: {{ block.settings.padding_bottom }}px;"
+                style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px;"
                 {{ block.shopify_attributes }}
               >
                 {{ block.settings.text }}
@@ -342,7 +402,7 @@
             {%- when 'button' -%}
               <div 
                 class="flex items-center justify-start" 
-                style="padding-top: {{ block.settings.padding_top }}px; padding-bottom: {{ block.settings.padding_bottom }}px;"
+                style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px;"
                 {{ block.shopify_attributes }}
               >
                 <a href="{{ block.settings.link | default: '#' }}" class="inline-flex items-center justify-center gap-4 px-9 py-3.5 bg-black text-white rounded-full uppercase tracking-[0.15em] text-[11px] font-bold transition-all duration-300 hover:bg-gray-800 group/btn whitespace-nowrap w-fit">
