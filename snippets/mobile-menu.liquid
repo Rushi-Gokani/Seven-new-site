@@ -20,7 +20,7 @@
       {% if has_child %}
         <button
           type="button"
-          class="flex w-full items-center justify-between px-4 py-3.5 text-base font-medium text-white/90 no-underline transition-all duration-200 hover:bg-white/5 hover:text-white"
+          class="flex w-full items-center justify-between px-4 py-3.5 text-base font-medium text-black no-underline transition-all duration-200 hover:bg-gray-100 active:bg-gray-200"
           @click="expanded[{{ forloop.index }}] = !expanded[{{ forloop.index }}]"
         >
           <span>{{ link.title | escape }}</span>
@@ -35,12 +35,12 @@
           </svg>
         </button>
         <div x-show="expanded[{{ forloop.index }}]" x-collapse>
-          <ul class="ml-4 border-l border-white/10 pl-4">
+          <ul class="ml-4 border-l border-gray-200 pl-4">
             {% for child in link.links %}
               <li>
                 <a
                   href="{{ child.url }}"
-                  class="block px-4 py-2.5 text-sm text-white/70 no-underline transition-colors duration-200 hover:bg-white/5 hover:text-white"
+                  class="block px-4 py-2.5 text-sm text-gray-600 no-underline transition-colors duration-200 hover:bg-gray-100 hover:text-black"
                   @click="$store.global.closeMobileMenu()"
                 >
                   {{ child.title | escape }}
@@ -52,7 +52,7 @@
       {% else %}
         <a
           href="{{ link.url }}"
-          class="flex items-center justify-between px-4 py-3.5 text-base font-medium text-white/90 no-underline transition-all duration-200 hover:bg-white/5 hover:text-white"
+          class="flex items-center justify-between px-4 py-3.5 text-base font-medium text-black no-underline transition-all duration-200 hover:bg-gray-100 active:bg-gray-200"
           @click="$store.global.closeMobileMenu()"
         >
           <span>{{ link.title | escape }}</span>
