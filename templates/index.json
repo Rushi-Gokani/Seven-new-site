@@ -345,6 +345,20 @@
         "afterpay_74KqiU": {
           "type": "afterpay",
           "settings": {}
+        },
+        "accordion_hKm3LA": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Accordion Heading",
+            "content": "<p>Add content here for your accordion.</p>"
+          }
+        },
+        "accordion_nXhyJG": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Accordion Heading",
+            "content": "<p>Add content here for your accordion.</p>"
+          }
         }
       },
       "block_order": [
@@ -356,7 +370,9 @@
         "rating_UQg8HM",
         "promo_bar_Y4QQ3x",
         "buy_buttons_8hxpJh",
-        "afterpay_74KqiU"
+        "afterpay_74KqiU",
+        "accordion_hKm3LA",
+        "accordion_nXhyJG"
       ],
       "name": "Product Salt Stone",
       "settings": {
