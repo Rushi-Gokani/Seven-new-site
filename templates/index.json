@@ -1,4 +1,12 @@
-
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero-slider": {
@@ -13,7 +21,7 @@
             "padding_bottom": 16,
             "padding_left": 100,
             "padding_right": 0,
-            "width": 2500
+            "max_width": 2500
           }
         },
         "subheading_MaRRRX": {
@@ -76,6 +84,9 @@
         "slide-2",
         "promo_toast_Wi9Jkg",
         "slide-1"
+      ],
+      "custom_css": [
+        ".hero-slider{height: 90vh }"
       ],
       "settings": {
         "autoplay_speed": 5,
