@@ -12,6 +12,36 @@
     "hero-slider": {
       "type": "hero-slider",
       "blocks": {
+        "heading_mqpbP4": {
+          "type": "heading",
+          "settings": {
+            "text": "THE SUPER BRUSH PRO",
+            "color": "text-black"
+          }
+        },
+        "subheading_MaRRRX": {
+          "type": "subheading",
+          "settings": {
+            "text": "Five Colours , Five Modes One Brush That Keep Up",
+            "color": "text-black"
+          }
+        },
+        "button_rFD99t": {
+          "type": "button",
+          "settings": {
+            "text": "SHOP NOW",
+            "link": "shopify://collections/all"
+          }
+        },
+        "slide-2": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/landscape_jpg.jpg",
+            "mobile_image": "shopify://shop_images/seven_bru_jpg.jpg",
+            "slide_link": "",
+            "overlay_opacity": 0
+          }
+        },
         "promo_toast_Wi9Jkg": {
           "type": "promo_toast",
           "disabled": true,
@@ -30,21 +60,15 @@
             "slide_link": "",
             "overlay_opacity": 0
           }
-        },
-        "slide-2": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/landscape_jpg.jpg",
-            "mobile_image": "shopify://shop_images/seven_bru_jpg.jpg",
-            "slide_link": "",
-            "overlay_opacity": 0
-          }
         }
       },
       "block_order": [
+        "heading_mqpbP4",
+        "subheading_MaRRRX",
+        "button_rFD99t",
+        "slide-2",
         "promo_toast_Wi9Jkg",
-        "slide-1",
-        "slide-2"
+        "slide-1"
       ],
       "settings": {
         "autoplay_speed": 5,
