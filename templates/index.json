@@ -15,11 +15,11 @@
         "heading_mqpbP4": {
           "type": "heading",
           "settings": {
-            "text": "The super  <br> brush pro",
+            "text": "The super <br>  brush pro",
             "color": "text-black",
             "padding_top": 0,
             "padding_bottom": 16,
-            "padding_left": 28,
+            "padding_left": 36,
             "padding_right": 0
           }
         },
