@@ -141,11 +141,11 @@
           "type": "range",
           "id": "max_width",
           "min": 200,
-          "max": 1200,
+          "max": 1600,
           "step": 20,
           "unit": "px",
           "label": "Maximum Width",
-          "default": 1000
+          "default": 1200
         }
       ]
     },
@@ -213,11 +213,11 @@
           "type": "range",
           "id": "max_width",
           "min": 200,
-          "max": 1200,
+          "max": 1600,
           "step": 20,
           "unit": "px",
           "label": "Maximum Width",
-          "default": 600
+          "default": 900
         }
       ]
     },
@@ -280,11 +280,11 @@
           "type": "range",
           "id": "max_width",
           "min": 200,
-          "max": 1200,
+          "max": 1600,
           "step": 20,
           "unit": "px",
           "label": "Maximum Width",
-          "default": 400
+          "default": 500
         }
       ]
     },
@@ -410,12 +410,12 @@
 
     {%- comment -%} Modular Content Overlay (Global) {%- endcomment -%}
     <div class="absolute inset-0 z-30 pointer-events-none flex items-center px-16 md:px-32 lg:px-48">
-      <div class="max-w-[1400px] w-full pointer-events-auto">
+      <div class="max-w-[1600px] w-full pointer-events-auto">
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'heading' -%}
               <h2 
-                class="text-6xl md:text-7xl lg:text-9xl font-bold leading-[1.05] tracking-tighter {{ block.settings.color }}" 
+                class="text-7xl md:text-8xl lg:text-[10rem] font-bold leading-[1.05] tracking-tighter {{ block.settings.color }}" 
                 style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px; max-width: {{ block.settings.max_width }}px;"
                 {{ block.shopify_attributes }}
               >
@@ -423,7 +423,7 @@
               </h2>
             {%- when 'subheading' -%}
               <p 
-                class="text-lg md:text-xl lg:text-2xl font-medium opacity-90 {{ block.settings.color }}" 
+                class="text-xl md:text-2xl lg:text-[2rem] font-medium opacity-90 {{ block.settings.color }}" 
                 style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px; max-width: {{ block.settings.max_width }}px;"
                 {{ block.shopify_attributes }}
               >
@@ -435,11 +435,11 @@
                 style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px; max-width: {{ block.settings.max_width }}px;"
                 {{ block.shopify_attributes }}
               >
-                <a href="{{ block.settings.link | default: '#' }}" class="inline-flex items-center justify-center gap-4 px-16 py-4 bg-black text-white rounded-full uppercase tracking-[0.15em] text-[13px] font-bold transition-all duration-300 hover:bg-gray-800 group/btn whitespace-nowrap w-fit">
+                <a href="{{ block.settings.link | default: '#' }}" class="inline-flex items-center justify-center gap-6 px-20 py-5 bg-black text-white rounded-full uppercase tracking-[0.15em] text-[18px] font-bold transition-all duration-300 hover:bg-gray-800 group/btn whitespace-nowrap w-fit">
                   <span>{{ block.settings.text }}</span>
-                  <svg width="15" height="10" viewBox="0 0 15 10" fill="none" class="transition-transform duration-300 group-hover/btn:translate-x-1 shrink-0" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 1L14 5L10 9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M1 5H14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <svg width="20" height="12" viewBox="0 0 20 12" fill="none" class="transition-transform duration-300 group-hover/btn:translate-x-2 shrink-0" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 1L19 6L14 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M1 6H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </a>
               </div>
