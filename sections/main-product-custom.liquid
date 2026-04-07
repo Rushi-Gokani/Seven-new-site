@@ -42,6 +42,18 @@
       ]
     },
     {
+      "type": "text",
+      "name": "Custom Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Add <b>bold</b>, <u>underline</u>, or <s>strikethrough</s> text here.</p>"
+        }
+      ]
+    },
+    {
       "type": "refill_link",
       "name": "Refill Link",
       "limit": 1,
@@ -259,7 +271,7 @@
             </div>
 
           {% when 'rating' %}
-            <div class="flex items-center gap-2" {{ block.shopify_attributes }}>
+            <div class="flex items-center gap-2 mb-4" {{ block.shopify_attributes }}>
               <div class="flex text-black">
                 {% for i in (1..5) %}
                   <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
@@ -282,6 +294,11 @@
           {% when 'description' %}
             <div class="prose prose-sm text-gray-600 leading-relaxed font-light" {{ block.shopify_attributes }}>
               {{ product.description }}
+            </div>
+
+          {% when 'text' %}
+            <div class="product-text-custom prose-sm" {{ block.shopify_attributes }}>
+              {{ block.settings.text }}
             </div>
 
           {% when 'size_info' %}

@@ -44,6 +44,18 @@
     {
       "type": "buy_buttons",
       "name": "Buy Buttons"
+    },
+    {
+      "type": "text",
+      "name": "Custom Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Add <b>bold</b>, <u>underline</u>, or <s>strikethrough</s> text here.</p>"
+        }
+      ]
     }
   ],
   "presets": [
@@ -109,7 +121,11 @@
                 <input type="hidden" name="id" value="{{ current_variant.id }}">
                 <button type="submit" class="btn-add">ADD TO CART</button>
               {% endform %}
-          {% endcase %}
+            {% when 'text' %}
+              <div class="product-text-custom prose-sm mb-4" {{ block.shopify_attributes }}>
+                {{ block.settings.text }}
+              </div>
+{% endcase %}
         {% endfor %}
       </div>
       
@@ -188,6 +204,7 @@
   align-items: center;
   gap: 10px;
   margin-top: 20px;
+  margin-bottom: 15px;
 }
 .stars {
   display: flex;
