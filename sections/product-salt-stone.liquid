@@ -942,7 +942,7 @@
 
             {% comment %} Buy Buttons Block {% endcomment %}
             {% when 'buy_buttons' %}
-              <div class="product-block product-block--buy" {{ block.shopify_attributes }}>
+              <div class="product-block product-block--buy mt-10" {{ block.shopify_attributes }}>
                 {% form 'product', product, id: 'product-form-{{ section.id }}', class: 'product-form', novalidate: 'novalidate', data-product-form: '' %}
                   <input type="hidden" name="id" :value="selectedVariant || {{ current_variant.id }}">
                   
@@ -1489,7 +1489,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
 
   .stars {
