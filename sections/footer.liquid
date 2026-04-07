@@ -93,7 +93,7 @@
 
       <!-- Part 3: Column 2 Links -->
       <div class="w-full">
-        <ul class="space-y-4">
+        <ul class="space-y-4 space-x-2">
           {% if section.settings.menu_2 != blank %}
             {% for link in section.settings.menu_2.links %}
               <li><a href="{{ link.url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal block">{{ link.title }}</a></li>
