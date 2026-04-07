@@ -8,17 +8,36 @@
   endif
 %}
 
-<div class="w-full bg-[#f8f8f8] py-16 md:py-24">
+<style>
+  #shopify-section-{{ section.id }} .footer-container {
+    letter-spacing: 0.02em;
+  }
+  #shopify-section-{{ section.id }} .footer-container .newsletter-part * {
+    font-weight: 600 !important;
+  }
+  #shopify-section-{{ section.id }} .footer-container .bold-column * {
+    font-weight: 600 !important;
+  }
+  #shopify-section-{{ section.id }} .footer-heading {
+    font-weight: 700 !important;
+    letter-spacing: -0.01em;
+  }
+  #shopify-section-{{ section.id }} .footer-container a:hover {
+    opacity: 0.6;
+  }
+</style>
+
+<div class="w-full bg-[#f8f8f8] py-16 md:py-24 footer-container">
   <div class="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20">
     <!-- Top Section (4 Columns) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-24 items-start mb-24">
       
       <!-- Part 1: Newsletter Signup -->
-      <div class="w-full">
+      <div class="w-full newsletter-part">
         {% if section.settings.show_newsletter %}
           {% form 'customer', id: 'FooterNewsletter', class: 'block w-full' %}
             <input type="hidden" name="contact[tags]" value="newsletter">
-            <h3 class="text-2xl md:text-3xl font-medium text-black mb-8">{{ section.settings.newsletter_heading }}</h3>
+            <h3 class="text-2xl md:text-3xl text-black mb-8 footer-heading">{{ section.settings.newsletter_heading }}</h3>
             <div class="relative flex items-center bg-[#EDEDED] rounded-full p-1.5 w-full max-w-md">
               <label class="sr-only" for="FooterNewsletter-email">Enter email address</label>
               <input
@@ -33,8 +52,8 @@
               >
               <button
                 type="submit"
-                class="h-10 px-8 bg-black text-white text-[10px] uppercase tracking-widest font-bold rounded-full hover:bg-zinc-800 transition-colors flex-shrink-0"
-                style="min-width: 100px; white-space: nowrap;"
+                class="h-8 px-4 bg-black text-white text-[10px] uppercase tracking-normal font-bold rounded-full transition-colors flex-shrink-0"
+                style="white-space: nowrap;"
                 name="commit"
               >
                 Sign up
@@ -53,15 +72,15 @@
         <!-- Policy Links in First Column -->
         <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 text-left">
           {% if shop.privacy_policy != blank %}
-            <a href="{{ shop.privacy_policy.url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal whitespace-nowrap">Privacy Policy   </a>
+            <a href="{{ shop.privacy_policy.url }}" class="text-sm text-black hover:opacity-70 transition-opacity whitespace-nowrap">Privacy Policy</a>
           {% endif %}
           {% if shop.terms_of_service != blank %}
-            <a href="{{ shop.terms_of_service.url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal whitespace-nowrap">Terms & Conditions</a>
+            <a href="{{ shop.terms_of_service.url }}" class="text-sm text-black hover:opacity-70 transition-opacity whitespace-nowrap">Terms & Conditions</a>
           {% endif %}
           {% if section.settings.accessibility_url != blank %}
-            <a href="{{ section.settings.accessibility_url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal whitespace-nowrap">Accessibility</a>
+            <a href="{{ section.settings.accessibility_url }}" class="text-sm text-black hover:opacity-70 transition-opacity whitespace-nowrap">Accessibility</a>
           {% endif %}
-          <button class="text-sm text-black hover:opacity-70 transition-opacity flex items-center gap-2 font-normal whitespace-nowrap" aria-label="Your Privacy Choices">
+          <button class="text-sm text-black hover:opacity-70 transition-opacity flex items-center gap-2 whitespace-nowrap" aria-label="Your Privacy Choices">
             <span class="relative inline-flex items-center">
               <svg width="24" height="12" viewBox="0 0 30 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-black">
                 <rect x="0.5" y="0.5" width="23" height="11" rx="5.5" fill="black" stroke="black"/>
@@ -75,66 +94,67 @@
       </div>
 
       <!-- Part 2: Column 1 Links -->
-      <div class="w-full lg:pl-4">
+      <div class="w-full lg:pl-4 bold-column">
         <ul class="space-y-4">
           {% if section.settings.menu_1 != blank %}
             {% for link in section.settings.menu_1.links %}
-              <li><a href="{{ link.url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal block">{{ link.title }}</a></li>
+              <li><a href="{{ link.url }}" class="text-sm text-black hover:opacity-70 transition-opacity block">{{ link.title }}</a></li>
             {% endfor %}
           {% else %}
-            <li><a href="#" class="text-sm text-black font-normal block">Subscribe</a></li>
-            <li><a href="#" class="text-sm text-black font-normal block">Become a Member</a></li>
-            <li><a href="#" class="text-sm text-black font-normal block">Refer a Friend</a></li>
-            <li><a href="#" class="text-sm text-black font-normal block">Take the Scent Quiz</a></li>
-            <li><a href="#" class="text-sm text-black font-normal block">Find a Store</a></li>
+            <li><a href="#" class="text-sm text-black block">Subscribe</a></li>
+            <li><a href="#" class="text-sm text-black block">Become a Member</a></li>
+            <li><a href="#" class="text-sm text-black block">Refer a Friend</a></li>
+            <li><a href="#" class="text-sm text-black block">Take the Scent Quiz</a></li>
+            <li><a href="#" class="text-sm text-black block">Find a Store</a></li>
           {% endif %}
         </ul>
       </div>
 
       <!-- Part 3: Column 2 Links -->
-      <div class="w-full">
+      <div class="w-full bold-column">
         <ul class="space-y-4 pl-8">
           {% if section.settings.menu_2 != blank %}
             {% for link in section.settings.menu_2.links %}
-              <li><a href="{{ link.url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal block">{{ link.title }}</a></li>
+              <li><a href="{{ link.url }}" class="text-sm text-black hover:opacity-70 transition-opacity block">{{ link.title }}</a></li>
             {% endfor %}
           {% else %}
-            <li><a href="#" class="text-sm text-black font-normal block">Help Center</a></li>
-            <li><a href="#" class="text-sm text-black font-normal block">FAQs</a></li>
-            <li><a href="#" class="text-sm text-black font-normal block">Returns</a></li>
-            <li><a href="#" class="text-sm text-black font-normal block">Contact</a></li>
+            <li><a href="#" class="text-sm text-black block">Help Center</a></li>
+            <li><a href="#" class="text-sm text-black block">FAQs</a></li>
+            <li><a href="#" class="text-sm text-black block">Returns</a></li>
+            <li><a href="#" class="text-sm text-black block">Contact</a></li>
           {% endif %}
         </ul>
       </div>
 
-      <!-- Part 4: Column 3 Links (Shipping/Language) -->
-      <div class="w-full">
-        <ul class="space-y-4">
-          <li class="text-sm text-black font-normal">{{ section.settings.shipping_label }}: <span class="font-normal">{{ section.settings.shipping_value }}</span></li>
-          <li class="text-sm text-black font-normal">{{ section.settings.language_label }}: <span class="font-normal">{{ section.settings.language_value }}</span></li>
+      <!-- Part 4: Column 3 Links (Shipping/Language + Socials) -->
+      <div class="w-full bold-column">
+        <ul class="space-y-4 mb-8">
+          <li class="text-sm text-black">{{ section.settings.shipping_label }}: <span>{{ section.settings.shipping_value }}</span></li>
+          <li class="text-sm text-black">{{ section.settings.language_label }}: <span>{{ section.settings.language_value }}</span></li>
         </ul>
+        
+        <!-- Social Icons in Column 4 -->
+        <div class="flex items-center gap-6 mt-8">
+          {% if section.settings.tiktok_url != blank %}
+            <a href="{{ section.settings.tiktok_url }}" class="text-black hover:opacity-70 transition-opacity" aria-label="TikTok">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.instagram_url != blank %}
+            <a href="{{ section.settings.instagram_url }}" class="text-black hover:opacity-70 transition-opacity" aria-label="Instagram">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
       </div>
     </div>
 
-    <!-- Bottom Row (Socials Only) -->
+    <!-- Bottom Row (Empty separator) -->
     <div class="pt-8 flex flex-col md:flex-row justify-end items-center gap-6 border-t border-gray-200">
-      <!-- Bottom Right: Social Icons -->
-      <div class="flex items-center gap-8">
-        {% if section.settings.tiktok_url != blank %}
-          <a href="{{ section.settings.tiktok_url }}" class="text-black hover:opacity-70 transition-opacity" aria-label="TikTok">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
-            </svg>
-          </a>
-        {% endif %}
-        {% if section.settings.instagram_url != blank %}
-          <a href="{{ section.settings.instagram_url }}" class="text-black hover:opacity-70 transition-opacity" aria-label="Instagram">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-            </svg>
-          </a>
-        {% endif %}
-      </div>
     </div>
   </div>
 </div>
