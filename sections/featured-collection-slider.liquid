@@ -77,6 +77,7 @@
   x-data="{ 
     progress: 0,
     isDown: false,
+    isTracking: false,
     startX: 0,
     scrollLeft: 0,
     updateProgress() {
@@ -85,6 +86,7 @@
       this.progress = total > 0 ? (el.scrollLeft / total) * 100 : 0;
     },
     scrollTo(e) {
+      if (this.isTracking) return;
       const track = e.currentTarget;
       const rect = track.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
@@ -109,8 +111,26 @@
       if (!this.isDown) return;
       e.preventDefault();
       const x = e.pageX - this.$refs.scroller.offsetLeft;
-      const walk = (x - this.startX) * 1.5; // Scroll speed
+      const walk = (x - this.startX) * 1.5; 
       this.$refs.scroller.scrollLeft = this.scrollLeft - walk;
+    },
+    startTrackDrag(e) {
+      this.isTracking = true;
+      this.$refs.scroller.style.scrollSnapType = 'none';
+      this.trackDrag(e);
+    },
+    trackDrag(e) {
+      if (!this.isTracking) return;
+      const rect = this.$refs.track.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const percent = Math.min(Math.max(clickX / rect.width, 0), 1);
+      const scroller = this.$refs.scroller;
+      const target = percent * (scroller.scrollWidth - scroller.offsetWidth);
+      scroller.scrollLeft = target;
+    },
+    endTrackDrag() {
+      this.isTracking = false;
+      this.$refs.scroller.style.scrollSnapType = 'x mandatory';
     }
   }"
 >
@@ -195,11 +215,16 @@
     <!-- Progress Bar -->
     <div class="slider-progress-wrap">
       <div 
-        class="slider-progress-track cursor-pointer group/track"
+        x-ref="track"
+        class="slider-progress-track cursor-pointer group/track py-2 -my-2"
+        @mousedown="startTrackDrag($event)"
+        @mousemove.window="trackDrag($event)"
+        @mouseup.window="endTrackDrag()"
         @click="scrollTo($event)"
       >
         <div 
-          class="slider-progress-bar transition-all duration-300 group-hover/track:scale-y-150"
+          class="slider-progress-bar transition-transform"
+          :class="isTracking ? 'scale-y-200 duration-0' : 'duration-300'"
           :style="`left: calc(${progress}% - (40px * (${progress} / 100)))`"
         ></div>
       </div>
