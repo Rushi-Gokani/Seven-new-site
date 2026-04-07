@@ -123,12 +123,29 @@
 {% endschema %}
 
 <section
-  class="hero-slider relative overflow-hidden {{ section.settings.height }}"
-  x-data="heroSlider({ 
+  class="hero-slider relative overflow-hidden group {{ section.settings.height }}"
+  x-data="{ 
+    currentSlide: 0,
     slideCount: {{ section.blocks.size }},
     autoplay: {{ section.settings.autoplay }},
-    autoplaySpeed: {{ section.settings.autoplay_speed }}
-  })"
+    autoplaySpeed: {{ section.settings.autoplay_speed }},
+    interval: null,
+    textColors: [{% for block in section.blocks %}'{{ block.settings.text_color }}'{% unless forloop.last %},{% endunless %}{% endfor %}],
+    
+    init() {
+      if (this.autoplay && this.slideCount > 1) {
+        this.startAutoplay()
+      }
+    },
+    startAutoplay() {
+      this.interval = setInterval(() => { this.next() }, this.autoplaySpeed * 1000)
+    },
+    pause() { if (this.interval) clearInterval(this.interval) },
+    resume() { if (this.autoplay && this.slideCount > 1) this.startAutoplay() },
+    next() { this.currentSlide = (this.currentSlide + 1) % this.slideCount },
+    prev() { this.currentSlide = (this.currentSlide - 1 + this.slideCount) % this.slideCount },
+    goTo(index) { this.currentSlide = index }
+  }"
   x-init="init()"
   @mouseenter="pause()"
   @mouseleave="resume()"
@@ -233,8 +250,13 @@
     <div class="dots-container absolute bottom-10 left-10 md:left-20 lg:left-32 z-30 flex gap-3">
       {%- for block in section.blocks -%}
         <button
-          class="h-1 w-8 transition-all duration-500 rounded-full"
-          :class="currentSlide === {{ forloop.index0 }} ? 'bg-black' : 'bg-black/20'"
+          class="h-1 w-10 transition-all duration-500 rounded-full"
+          :class="{
+            'bg-white': textColors[currentSlide] === 'text-white' && currentSlide === {{ forloop.index0 }},
+            'bg-white/30': textColors[currentSlide] === 'text-white' && currentSlide !== {{ forloop.index0 }},
+            'bg-black': textColors[currentSlide] === 'text-black' && currentSlide === {{ forloop.index0 }},
+            'bg-black/20': textColors[currentSlide] === 'text-black' && currentSlide !== {{ forloop.index0 }}
+          }"
           @click="goTo({{ forloop.index0 }})"
           aria-label="Go to slide {{ forloop.index }}"
         ></button>
@@ -242,52 +264,3 @@
     </div>
   {%- endif -%}
 </section>
-
-<script>
-  document.addEventListener('alpine:init', () => {
-    Alpine.data('heroSlider', (config) => ({
-      currentSlide: 0,
-      slideCount: config.slideCount,
-      autoplay: config.autoplay,
-      autoplaySpeed: config.autoplaySpeed,
-      interval: null,
-
-      init() {
-        if (this.autoplay && this.slideCount > 1) {
-          this.startAutoplay()
-        }
-      },
-
-      startAutoplay() {
-        this.interval = setInterval(() => {
-          this.next()
-        }, this.autoplaySpeed * 1000)
-      },
-
-      pause() {
-        if (this.interval) {
-          clearInterval(this.interval)
-          this.interval = null
-        }
-      },
-
-      resume() {
-        if (this.autoplay && this.slideCount > 1) {
-          this.startAutoplay()
-        }
-      },
-
-      next() {
-        this.currentSlide = (this.currentSlide + 1) % this.slideCount
-      },
-
-      prev() {
-        this.currentSlide = (this.currentSlide - 1 + this.slideCount) % this.slideCount
-      },
-
-      goTo(index) {
-        this.currentSlide = index
-      }
-    }))
-  })
-</script>
