@@ -97,7 +97,7 @@
     position: absolute;
     inset: 0;
     z-index: 10;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 40%);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 40%);
   }
   .category-card-content {
     position: absolute;
@@ -110,9 +110,9 @@
     pointer-events: none;
   }
   .category-card-title {
-    color: white;
+    color: white !important;
     font-size: 24px;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: -0.02em;
     margin: 0;
   }
@@ -164,7 +164,7 @@
     
     <!-- Header -->
     <div class="flex justify-between items-baseline mb-12">
-      <h2 class="text-3xl md:text-4xl lg:text-5xl font-normal tracking-tighter text-black m-0">
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-medium tracking-tighter text-black m-0">
         {{ section.settings.title }}
       </h2>
       {% if section.settings.shop_all_link != blank %}
