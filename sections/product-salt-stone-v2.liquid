@@ -134,8 +134,10 @@
         if (index < 0) index = this.totalImages - 1;
         if (index >= this.totalImages) index = 0;
         this.activeIndex = index;
-        const scrollAmount = this.$refs.mainGallery.offsetWidth * index;
-        this.$refs.mainGallery.scrollTo({
+        const gallery = this.$refs.mainGallery;
+        const width = gallery.getBoundingClientRect().width;
+        const scrollAmount = width * index;
+        gallery.scrollTo({
           left: scrollAmount,
           behavior: 'smooth'
         });
@@ -158,20 +160,23 @@
       </div>
       
       <!-- Main Image Scroller -->
-      <div 
-        class="product-main"
-        @mousemove="
-          const rect = $el.getBoundingClientRect();
-          const x = $event.clientX - rect.left;
-          cursorSide = x < rect.width / 2 ? 'left' : 'right';
-          showCursor = true;
-          cursorX = $event.clientX;
-          cursorY = $event.clientY;
-        "
-        @mouseleave="showCursor = false"
-        @click="cursorSide === 'left' ? goTo(activeIndex - 1) : goTo(activeIndex + 1)"
-      >
-        <span class="badge">{{ section.settings.badge_text }}</span>
+      <div class="product-main">
+        <!-- Interaction Overlay -->
+        <div 
+          class="gallery-interaction-layer"
+          @mousemove="
+            const rect = $el.getBoundingClientRect();
+            const x = $event.clientX - rect.left;
+            cursorSide = x < rect.width / 2 ? 'left' : 'right';
+            showCursor = true;
+            cursorX = $event.clientX;
+            cursorY = $event.clientY;
+          "
+          @mouseleave="showCursor = false"
+          @click="cursorSide === 'left' ? goTo(activeIndex - 1) : goTo(activeIndex + 1)"
+        ></div>
+
+        <span class="badge" style="pointer-events: none;">{{ section.settings.badge_text }}</span>
         
         <div 
           x-ref="mainGallery"
@@ -327,6 +332,14 @@
   background: #fff;
   border-radius: 12px;
   overflow: hidden;
+}
+.gallery-interaction-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
   cursor: none;
 }
 .gallery-custom-cursor {
