@@ -198,7 +198,6 @@
         box-sizing: border-box;
         border: 0 solid;
         margin: 0;
-        padding: 20;
     }
 
     ::file-selector-button {
