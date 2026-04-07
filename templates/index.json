@@ -16,21 +16,33 @@
           "type": "heading",
           "settings": {
             "text": "THE SUPER BRUSH PRO",
-            "color": "text-black"
+            "color": "text-black",
+            "padding_top": 0,
+            "padding_bottom": 16,
+            "padding_left": 28,
+            "padding_right": 0
           }
         },
         "subheading_MaRRRX": {
           "type": "subheading",
           "settings": {
             "text": "Five Colours , Five Modes One Brush That Keep Up",
-            "color": "text-black"
+            "color": "text-black",
+            "padding_top": 0,
+            "padding_bottom": 32,
+            "padding_left": 28,
+            "padding_right": 0
           }
         },
         "button_rFD99t": {
           "type": "button",
           "settings": {
             "text": "SHOP NOW",
-            "link": "shopify://collections/all"
+            "link": "shopify://collections/all",
+            "padding_top": 0,
+            "padding_bottom": 16,
+            "padding_left": 28,
+            "padding_right": 0
           }
         },
         "slide-2": {
