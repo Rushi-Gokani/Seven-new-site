@@ -49,6 +49,29 @@
             {% endif %}
           {% endform %}
         {% endif %}
+
+        <!-- Policy Links in First Column -->
+        <div class="mt-12 flex flex-col gap-4 text-left">
+          {% if shop.privacy_policy != blank %}
+            <a href="{{ shop.privacy_policy.url }}" class="text-[11px] text-black hover:opacity-70 transition-opacity font-normal">Privacy Policy</a>
+          {% endif %}
+          {% if shop.terms_of_service != blank %}
+            <a href="{{ shop.terms_of_service.url }}" class="text-[11px] text-black hover:opacity-70 transition-opacity font-normal">Terms & Conditions</a>
+          {% endif %}
+          {% if section.settings.accessibility_url != blank %}
+            <a href="{{ section.settings.accessibility_url }}" class="text-[11px] text-black hover:opacity-70 transition-opacity font-normal">Accessibility</a>
+          {% endif %}
+          <button class="text-[11px] text-black hover:opacity-70 transition-opacity flex items-center gap-2 font-normal whitespace-nowrap" aria-label="Your Privacy Choices">
+            <span class="relative inline-flex items-center">
+              <svg width="24" height="12" viewBox="0 0 30 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-black">
+                <rect x="0.5" y="0.5" width="23" height="11" rx="5.5" fill="black" stroke="black"/>
+                <circle cx="18" cy="6" r="3" fill="white"/>
+                <path d="M6 6L8 8L11 5" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            Your Privacy Choices
+          </button>
+        </div>
       </div>
 
       <!-- Part 2: Column 1 Links -->
@@ -93,31 +116,8 @@
       </div>
     </div>
 
-    <!-- Bottom Row (Policy & Socials) -->
-    <div class="pt-8 flex flex-col md:flex-row justify-between items-center gap-6 border-t border-gray-200">
-      <!-- Bottom Left: Policy Links -->
-      <div class="flex flex-wrap items-center gap-8">
-        {% if shop.privacy_policy != blank %}
-          <a href="{{ shop.privacy_policy.url }}" class="text-[11px] text-black hover:opacity-70 transition-opacity font-normal">Privacy Policy</a>
-        {% endif %}
-        {% if shop.terms_of_service != blank %}
-          <a href="{{ shop.terms_of_service.url }}" class="text-[11px] text-black hover:opacity-70 transition-opacity font-normal">Terms & Conditions</a>
-        {% endif %}
-        {% if section.settings.accessibility_url != blank %}
-          <a href="{{ section.settings.accessibility_url }}" class="text-[11px] text-black hover:opacity-70 transition-opacity font-normal">Accessibility</a>
-        {% endif %}
-        <button class="text-[11px] text-black hover:opacity-70 transition-opacity flex items-center gap-2 font-normal whitespace-nowrap" aria-label="Your Privacy Choices">
-          <span class="relative inline-flex items-center">
-            <svg width="24" height="12" viewBox="0 0 30 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-black">
-              <rect x="0.5" y="0.5" width="23" height="11" rx="5.5" fill="black" stroke="black"/>
-              <circle cx="18" cy="6" r="3" fill="white"/>
-              <path d="M6 6L8 8L11 5" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          Your Privacy Choices
-        </button>
-      </div>
-
+    <!-- Bottom Row (Socials Only) -->
+    <div class="pt-8 flex flex-col md:flex-row justify-end items-center gap-6 border-t border-gray-200">
       <!-- Bottom Right: Social Icons -->
       <div class="flex items-center gap-8">
         {% if section.settings.tiktok_url != blank %}
