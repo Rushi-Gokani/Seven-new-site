@@ -325,6 +325,13 @@
           "type": "description",
           "settings": {}
         },
+        "rating_UQg8HM": {
+          "type": "rating",
+          "settings": {
+            "star_rating": "4.9",
+            "review_count": ""
+          }
+        },
         "promo_bar_Y4QQ3x": {
           "type": "promo_bar",
           "settings": {
@@ -334,6 +341,10 @@
         "buy_buttons_8hxpJh": {
           "type": "buy_buttons",
           "settings": {}
+        },
+        "afterpay_74KqiU": {
+          "type": "afterpay",
+          "settings": {}
         }
       },
       "block_order": [
@@ -342,8 +353,10 @@
         "text_dGzHkF",
         "text_BAyYDG",
         "description_XBkEUB",
+        "rating_UQg8HM",
         "promo_bar_Y4QQ3x",
-        "buy_buttons_8hxpJh"
+        "buy_buttons_8hxpJh",
+        "afterpay_74KqiU"
       ],
       "name": "Product Salt Stone",
       "settings": {
