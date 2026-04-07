@@ -819,7 +819,7 @@
                       {% endfor %}
                     </div>
                     <span class="product-rating-text">
-                      {{ section.settings.star_rating }} ({{ section.settings.review_count }})
+                      <span class="rating-value">{{ section.settings.star_rating }}</span> ({{ section.settings.review_count }})
                     </span>
                   </div>
                 </div>
@@ -1431,7 +1431,8 @@
 
   /* Refill Link */
   .product-refill-link {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
+    font-weight: 600;
     color: var(--color-text);
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -1445,9 +1446,11 @@
   /* Size Info */
   .product-size-text {
     font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
+    font-weight: 600;
+    letter-spacing: 0.1em;
     color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
     text-transform: uppercase;
   }
 
@@ -1469,8 +1472,14 @@
   }
 
   .product-rating-text {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--color-text-muted);
+    font-weight: 500;
+  }
+
+  .rating-value {
+    color: var(--color-text);
+    font-weight: 700;
   }
 
   /* Variant Picker */
@@ -1494,31 +1503,28 @@
   .variant-swatches {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    padding: 4px;
+    gap: 10px;
+    padding: 0;
   }
 
   .variant-swatch {
     width: var(--swatch-size, 70px);
     height: var(--swatch-size, 70px);
-    border: 2px solid transparent;
-    border-radius: 8px;
+    border: 1.5px solid transparent;
+    border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
-    background: #f5f5f5;
-    margin: 2px;
+    background: #F5F5F5;
   }
 
   .variant-swatch:hover {
-    border-color: #999;
-    transform: scale(1.02);
+    border-color: #E5E5E5;
   }
 
   .variant-swatch.is-active {
-    border: 2px solid black;
-    box-shadow: 0 0 0 2px white, 0 0 0 4px black;
+    border: 1.5px solid black;
   }
 
   .variant-swatch-image {
