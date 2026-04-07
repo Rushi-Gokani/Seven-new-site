@@ -76,10 +76,41 @@
   style="background-color: {{ section.settings.bg_color }};"
   x-data="{ 
     progress: 0,
+    isDown: false,
+    startX: 0,
+    scrollLeft: 0,
     updateProgress() {
       const el = this.$refs.scroller;
       const total = el.scrollWidth - el.offsetWidth;
       this.progress = total > 0 ? (el.scrollLeft / total) * 100 : 0;
+    },
+    scrollTo(e) {
+      const track = e.currentTarget;
+      const rect = track.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const percent = Math.min(Math.max(clickX / rect.width, 0), 1);
+      const scroller = this.$refs.scroller;
+      const target = percent * (scroller.scrollWidth - scroller.offsetWidth);
+      scroller.scrollTo({ left: target, behavior: 'smooth' });
+    },
+    startDrag(e) {
+      this.isDown = true;
+      this.startX = e.pageX - this.$refs.scroller.offsetLeft;
+      this.scrollLeft = this.$refs.scroller.scrollLeft;
+      this.$refs.scroller.style.scrollSnapType = 'none';
+      this.$refs.scroller.style.cursor = 'grabbing';
+    },
+    endDrag() {
+      this.isDown = false;
+      this.$refs.scroller.style.scrollSnapType = 'x mandatory';
+      this.$refs.scroller.style.cursor = 'grab';
+    },
+    drag(e) {
+      if (!this.isDown) return;
+      e.preventDefault();
+      const x = e.pageX - this.$refs.scroller.offsetLeft;
+      const walk = (x - this.startX) * 1.5; // Scroll speed
+      this.$refs.scroller.scrollLeft = this.scrollLeft - walk;
     }
   }"
 >
@@ -97,8 +128,13 @@
     <div class="slider-scroller-outer">
       <div 
         x-ref="scroller"
-        class="slider-scroller hide-scrollbar"
+        class="slider-scroller hide-scrollbar select-none"
+        style="cursor: grab;"
         @scroll="updateProgress()"
+        @mousedown="startDrag($event)"
+        @mouseleave="endDrag()"
+        @mouseup="endDrag()"
+        @mousemove="drag($event)"
       >
         {% for block in section.blocks %}
           {%- assign card_product = all_products[block.settings.product] -%}
@@ -158,9 +194,12 @@
 
     <!-- Progress Bar -->
     <div class="slider-progress-wrap">
-      <div class="slider-progress-track">
+      <div 
+        class="slider-progress-track cursor-pointer group/track"
+        @click="scrollTo($event)"
+      >
         <div 
-          class="slider-progress-bar"
+          class="slider-progress-bar transition-all duration-300 group-hover/track:scale-y-150"
           :style="`left: calc(${progress}% - (40px * (${progress} / 100)))`"
         ></div>
       </div>
