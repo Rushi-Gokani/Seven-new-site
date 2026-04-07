@@ -14,6 +14,7 @@
       "blocks": {
         "promo_toast_Wi9Jkg": {
           "type": "promo_toast",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/landscape_jpg.jpg",
             "text": "",
@@ -33,8 +34,8 @@
         "slide-2": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/1_2_ea6280a1-0ad3-47d2-9ad1-9668d320e46f.png",
-            "mobile_image": "shopify://shop_images/2_3.png",
+            "image": "shopify://shop_images/landscape_jpg.jpg",
+            "mobile_image": "shopify://shop_images/seven_bru_jpg.jpg",
             "slide_link": "",
             "overlay_opacity": 0
           }
