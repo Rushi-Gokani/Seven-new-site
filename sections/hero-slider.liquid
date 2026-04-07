@@ -435,11 +435,10 @@
                 style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px; max-width: {{ block.settings.max_width }}px;"
                 {{ block.shopify_attributes }}
               >
-                <a href="{{ block.settings.link | default: '#' }}" class="inline-flex items-center justify-center gap-6 px-20 py-5 bg-black text-white rounded-full uppercase tracking-[0.15em] text-[18px] font-bold transition-all duration-300 hover:bg-gray-800 group/btn whitespace-nowrap w-fit">
+                <a href="{{ block.settings.link | default: '#' }}" class="inline-flex items-center justify-center gap-10 px-14 py-4.5 bg-black text-white rounded-full uppercase tracking-tighter text-[15px] font-extrabold transition-all duration-300 hover:bg-gray-800 group/btn whitespace-nowrap w-fit">
                   <span>{{ block.settings.text }}</span>
-                  <svg width="20" height="12" viewBox="0 0 20 12" fill="none" class="transition-transform duration-300 group-hover/btn:translate-x-2 shrink-0" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M14 1L19 6L14 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M1 6H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <svg width="22" height="16" viewBox="0 0 24 24" fill="none" class="transition-transform duration-300 group-hover/btn:translate-x-1.5 shrink-0" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </a>
               </div>
