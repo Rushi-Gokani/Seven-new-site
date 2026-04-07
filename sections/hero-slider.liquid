@@ -141,11 +141,11 @@
           "type": "range",
           "id": "max_width",
           "min": 200,
-          "max": 1600,
-          "step": 20,
+          "max": 2500,
+          "step": 50,
           "unit": "px",
           "label": "Maximum Width",
-          "default": 1200
+          "default": 1800
         }
       ]
     },
@@ -213,8 +213,8 @@
           "type": "range",
           "id": "max_width",
           "min": 200,
-          "max": 1600,
-          "step": 20,
+          "max": 2500,
+          "step": 50,
           "unit": "px",
           "label": "Maximum Width",
           "default": 900
@@ -280,8 +280,8 @@
           "type": "range",
           "id": "max_width",
           "min": 200,
-          "max": 1600,
-          "step": 20,
+          "max": 2500,
+          "step": 50,
           "unit": "px",
           "label": "Maximum Width",
           "default": 500
@@ -408,23 +408,50 @@
       {%- endif -%}
     {%- endfor -%}
 
+<style>
+  .hero-content-outer {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    padding-left: 10vw !important;
+    padding-right: 10vw !important;
+  }
+  .hero-content-inner {
+    width: 100%;
+    max-width: 2500px;
+    pointer-events: auto;
+  }
+  .hero-block-style {
+    display: block !important;
+  }
+  @media (max-width: 768px) {
+    .hero-content-outer {
+      padding-left: 24px !important;
+      padding-right: 24px !important;
+    }
+  }
+</style>
+
     {%- comment -%} Modular Content Overlay (Global) {%- endcomment -%}
-    <div class="absolute inset-0 z-30 pointer-events-none flex items-center px-12 md:px-44 lg:px-[10%]">
-      <div class="max-w-[1600px] w-full pointer-events-auto">
+    <div class="hero-content-outer">
+      <div class="hero-content-inner">
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'heading' -%}
               <h2 
-                class="text-7xl md:text-8xl lg:text-[10rem] font-bold leading-[1.05] tracking-tighter {{ block.settings.color }}" 
-                style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px; max-width: {{ block.settings.max_width }}px;"
+                class="hero-block-style text-7xl md:text-8xl lg:text-[10rem] font-bold leading-[1.05] tracking-tighter {{ block.settings.color }}" 
+                style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px; max-width: {{ block.settings.max_width }}px !important;"
                 {{ block.shopify_attributes }}
               >
                 {{ block.settings.text }}
               </h2>
             {%- when 'subheading' -%}
               <p 
-                class="text-xl md:text-2xl lg:text-[2rem] font-medium opacity-90 {{ block.settings.color }}" 
-                style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px; max-width: {{ block.settings.max_width }}px;"
+                class="hero-block-style text-xl md:text-2xl lg:text-[2rem] font-medium opacity-90 {{ block.settings.color }}" 
+                style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px; max-width: {{ block.settings.max_width }}px !important;"
                 {{ block.shopify_attributes }}
               >
                 {{ block.settings.text }}
@@ -432,7 +459,7 @@
             {%- when 'button' -%}
               <div 
                 class="flex items-center justify-start" 
-                style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px; max-width: {{ block.settings.max_width }}px;"
+                style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px; max-width: {{ block.settings.max_width }}px !important;"
                 {{ block.shopify_attributes }}
               >
             <a href="{{ block.settings.link | default: '#' }}" class="inline-flex items-center justify-center gap-4 px-12 py-3 bg-black text-white rounded-full uppercase tracking-[0.15em] text-[11px] font-bold transition-all duration-300 hover:bg-gray-800 group/btn whitespace-nowrap w-fit">
