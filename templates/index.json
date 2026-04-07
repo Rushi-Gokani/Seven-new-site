@@ -59,10 +59,9 @@
         },
         "promo_toast_Wi9Jkg": {
           "type": "promo_toast",
-          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/landscape_jpg.jpg",
-            "text": "",
+            "text": "The SuperBrush Pro- Blush Pink",
             "link": "shopify://products/the-superbrush-pro-blush-pink"
           }
         },
@@ -86,7 +85,7 @@
         "slide-1"
       ],
       "custom_css": [
-        ".hero-slider{height: 90vh }"
+        ".hero-slider {height: 90vh;}"
       ],
       "settings": {
         "autoplay_speed": 5,
