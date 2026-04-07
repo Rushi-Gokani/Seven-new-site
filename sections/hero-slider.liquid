@@ -442,8 +442,8 @@
           {%- case block.type -%}
             {%- when 'heading' -%}
               <h2 
-                class="hero-block-style text-7xl md:text-8xl lg:text-[10rem] font-bold leading-[1.05] tracking-tighter {{ block.settings.color }}" 
-                style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px; max-width: {{ block.settings.max_width }}px !important;"
+                class="hero-block-style font-bold tracking-tighter {{ block.settings.color }}" 
+                style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px; max-width: {{ block.settings.max_width }}px !important; font-size: 60px; line-height: 1.1;"
                 {{ block.shopify_attributes }}
               >
                 {{ block.settings.text }}
