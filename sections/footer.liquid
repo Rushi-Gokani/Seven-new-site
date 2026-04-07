@@ -51,15 +51,15 @@
         {% endif %}
 
         <!-- Policy Links in First Column -->
-        <div class="mt-12 flex flex-col gap-4 text-left">
+        <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 text-left">
           {% if shop.privacy_policy != blank %}
-            <a href="{{ shop.privacy_policy.url }}" class="text-[11px] text-black hover:opacity-70 transition-opacity font-normal">Privacy Policy</a>
+            <a href="{{ shop.privacy_policy.url }}" class="text-[11px] text-black hover:opacity-70 transition-opacity font-normal whitespace-nowrap">Privacy Policy</a>
           {% endif %}
           {% if shop.terms_of_service != blank %}
-            <a href="{{ shop.terms_of_service.url }}" class="text-[11px] text-black hover:opacity-70 transition-opacity font-normal">Terms & Conditions</a>
+            <a href="{{ shop.terms_of_service.url }}" class="text-[11px] text-black hover:opacity-70 transition-opacity font-normal whitespace-nowrap">Terms & Conditions</a>
           {% endif %}
           {% if section.settings.accessibility_url != blank %}
-            <a href="{{ section.settings.accessibility_url }}" class="text-[11px] text-black hover:opacity-70 transition-opacity font-normal">Accessibility</a>
+            <a href="{{ section.settings.accessibility_url }}" class="text-[11px] text-black hover:opacity-70 transition-opacity font-normal whitespace-nowrap">Accessibility</a>
           {% endif %}
           <button class="text-[11px] text-black hover:opacity-70 transition-opacity flex items-center gap-2 font-normal whitespace-nowrap" aria-label="Your Privacy Choices">
             <span class="relative inline-flex items-center">
