@@ -24,12 +24,14 @@
   {%- liquid
     assign option_not_exist = true
     assign option_unavailable = true
+    assign variant_for_image = nil
 
     for option1_name in variants_option1_arr
       case option.position
         when 1
           if variants_option1_arr[forloop.index0] == value
             assign option_not_exist = false
+            assign variant_for_image = product.variants[forloop.index0]
 
             if variants_available_arr[forloop.index0]
               assign option_unavailable = false
@@ -38,6 +40,7 @@
         when 2
           if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == value
             assign option_not_exist = false
+            assign variant_for_image = product.variants[forloop.index0]
 
             if variants_available_arr[forloop.index0]
               assign option_unavailable = false
@@ -46,6 +49,7 @@
         when 3
           if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == product.selected_or_first_available_variant.option2 and variants_option3_arr[forloop.index0] == value
             assign option_not_exist = false
+            assign variant_for_image = product.variants[forloop.index0]
 
             if variants_available_arr[forloop.index0]
               assign option_unavailable = false
@@ -67,19 +71,29 @@
         checked
       {% endif %}
       {% if option_unavailable %}
-        class="peer disabled hidden [&:checked+label]:bg-indigo-900 [&:checked+label]:text-white [&:disabled+label]:bg-slate-100 [&:disabled+label]:text-gray-300 focus-visible:[&+label]:outline focus-visible:[&+label]:outline-2 focus-visible:[&+label]:outline-[#08f]"
+        class="peer variant-swatch-input disabled hidden"
       {% else %}
-        class="peer hidden [&.disabled+label]:line-through [&:checked+label]:bg-indigo-900 [&:checked+label]:text-white [&:disabled+label]:bg-slate-100 [&:disabled+label]:text-gray-300 focus-visible:[&+label]:outline focus-visible:[&+label]:outline-2 focus-visible:[&+label]:outline-[#08f]"
+        class="peer variant-swatch-input hidden"
       {% endif %}
     >
     <label 
       for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" 
       data-unavailable="{{ option_unavailable }}"
+      data-value="{{ value | escape }}"
       @keyup.enter="$el.click()"
       tabindex="0"
-      class="inline-block cursor-pointer rounded-full bg-slate-100 px-5 py-2.5 text-sm tracking-[1px] text-black data-[unavailable=true]:bg-slate-100 data-[unavailable=true]:text-gray-300"
+      class="variant-swatch-label relative cursor-pointer rounded-lg overflow-hidden bg-gray-100 transition-all duration-200 hover:opacity-90"
+      title="{{ value | escape }}"
       >
-      {{ value -}}
+      <div class="variant-swatch-image aspect-square w-16 md:w-20 p-2 flex items-center justify-center">
+        {%- if variant_for_image and variant_for_image.featured_image -%}
+          {{ variant_for_image.featured_image | image_url: width: 200 | image_tag: class: 'w-full h-full object-contain', loading: 'lazy', alt: value }}
+        {%- elsif variant_for_image and variant_for_image.image -%}
+          {{ variant_for_image.image | image_url: width: 200 | image_tag: class: 'w-full h-full object-contain', loading: 'lazy', alt: value }}
+        {%- else -%}
+          <span class="text-xs text-gray-500 text-center leading-tight">{{ value | slice: 0, 3 }}</span>
+        {%- endif -%}
+      </div>
       <span class="visually-hidden sr-only">{{ 'products.product.variant_sold_out_or_unavailable' | t }}</span>
     </label>
   {%- else -%}
@@ -100,7 +114,45 @@
         {% endif %}
       {%- else -%}
         {{- value -}}
-      {%- endif %}
+      {%- endif -%}
     </option>
   {%- endif -%}
 {%- endfor -%}
+
+<style>
+  .variant-swatch-input:checked + .variant-swatch-label {
+    outline: 2px solid black;
+    outline-offset: 2px;
+  }
+  
+  .variant-swatch-input:checked + .variant-swatch-label::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid black;
+    border-radius: 0.5rem;
+    pointer-events: none;
+  }
+  
+  .variant-swatch-input:disabled + .variant-swatch-label {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  
+  .variant-swatch-label:hover:not([data-unavailable="true"]) {
+    transform: scale(1.02);
+  }
+  
+  .variant-swatch-label[data-unavailable="true"] {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  
+  .variant-swatch-label[data-unavailable="true"]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.6);
+    z-index: 1;
+  }
+</style>
