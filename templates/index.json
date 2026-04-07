@@ -19,7 +19,7 @@
             "color": "text-black",
             "padding_top": 0,
             "padding_bottom": 16,
-            "padding_left": 36,
+            "padding_left": 100,
             "padding_right": 0
           }
         },
@@ -30,7 +30,7 @@
             "color": "text-black",
             "padding_top": 0,
             "padding_bottom": 32,
-            "padding_left": 28,
+            "padding_left": 100,
             "padding_right": 0
           }
         },
@@ -41,7 +41,7 @@
             "link": "shopify://collections/all",
             "padding_top": 0,
             "padding_bottom": 16,
-            "padding_left": 28,
+            "padding_left": 100,
             "padding_right": 0
           }
         },
