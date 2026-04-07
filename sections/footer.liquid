@@ -10,11 +10,11 @@
 
 <div class="w-full bg-[#f8f8f8] py-16 md:py-24">
   <div class="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20">
-    <!-- Top Section (4 Columns) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-24 items-start mb-24">
+    <!-- Top Section (4 Columns with increased gap between Col 1 and 2) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-y-16 gap-x-12 lg:gap-x-32 xl:gap-x-40 items-start mb-24">
       
-      <!-- Part 1: Newsletter Signup -->
-      <div class="w-full">
+      <!-- Part 1: Newsletter Signup (First Column) -->
+      <div class="w-full pr-4">
         {% if section.settings.show_newsletter %}
           {% form 'customer', id: 'FooterNewsletter', class: 'block w-full' %}
             <input type="hidden" name="contact[tags]" value="newsletter">
@@ -51,8 +51,8 @@
         {% endif %}
       </div>
 
-      <!-- Part 2: Column 1 Links -->
-      <div class="w-full lg:pl-4">
+      <!-- Part 2: Column 1 Links (Second Column) -->
+      <div class="w-full lg:pl-8">
         <ul class="space-y-4">
           {% if section.settings.menu_1 != blank %}
             {% for link in section.settings.menu_1.links %}
@@ -68,7 +68,7 @@
         </ul>
       </div>
 
-      <!-- Part 3: Column 2 Links -->
+      <!-- Part 3: Column 2 Links (Third Column) -->
       <div class="w-full">
         <ul class="space-y-4">
           {% if section.settings.menu_2 != blank %}
@@ -84,7 +84,7 @@
         </ul>
       </div>
 
-      <!-- Part 4: Column 3 Links (Shipping/Language) -->
+      <!-- Part 4: Column 3 Links (Fourth Column) -->
       <div class="w-full">
         <ul class="space-y-4">
           <li class="text-sm text-black font-normal">{{ section.settings.shipping_label }}: <span class="font-normal">{{ section.settings.shipping_value }}</span></li>
