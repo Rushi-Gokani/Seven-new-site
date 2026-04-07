@@ -178,11 +178,13 @@
 }
 {% endschema %}
 
+{%- assign slide_count_actual = section.blocks | where: 'type', 'slide' | size -%}
+
 <section
   class="hero-slider relative overflow-hidden group {{ section.settings.height }}"
   x-data="{ 
     currentSlide: 0,
-    slideCount: {{ section.blocks.size }},
+    slideCount: {{ section.blocks | where: 'type', 'slide' | size }},
     autoplay: {{ section.settings.autoplay }},
     autoplaySpeed: {{ section.settings.autoplay_speed }},
     interval: null,
@@ -206,12 +208,14 @@
   @mouseleave="resume()"
 >
   <div class="slides-container relative h-full w-full">
+    {%- assign slide_counter = 0 -%}
     {%- for block in section.blocks -%}
       {%- if block.type == 'slide' -%}
-        {%- assign slide_index = forloop.index0 -%}
+        {%- assign current_index = slide_counter -%}
+        {%- assign slide_counter = slide_counter | plus: 1 -%}
         <div
           class="slide absolute inset-0 h-full w-full transition-all duration-1000 ease-in-out overflow-hidden"
-          :class="{ 'opacity-100 z-10': currentSlide === {{ slide_index }}, 'opacity-0 z-0': currentSlide !== {{ slide_index }} }"
+          :class="{ 'opacity-100 z-10': currentSlide === {{ current_index }}, 'opacity-0 z-0': currentSlide !== {{ current_index }} }"
           {{ block.shopify_attributes }}
         >
           {%- if block.settings.slide_link != blank -%}
@@ -312,15 +316,20 @@
     </button>
   {%- endif -%}
 
-  {%- if section.settings.show_dots and section.blocks.size > 1 -%}
+  {%- if section.settings.show_dots and slide_count_actual > 1 -%}
     <div class="dots-container absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-3">
+      {%- assign dot_counter = 0 -%}
       {%- for block in section.blocks -%}
-        <button
-          class="h-1 w-10 transition-all duration-500 rounded-full"
-          :class="currentSlide === {{ forloop.index0 }} ? 'bg-white' : 'bg-white/30'"
-          @click="goTo({{ forloop.index0 }})"
-          aria-label="Go to slide {{ forloop.index }}"
-        ></button>
+        {%- if block.type == 'slide' -%}
+          {%- assign dot_index = dot_counter -%}
+          {%- assign dot_counter = dot_counter | plus: 1 -%}
+          <button
+            class="h-1 w-10 transition-all duration-500 rounded-full"
+            :class="currentSlide === {{ dot_index }} ? 'bg-white' : 'bg-white/30'"
+            @click="goTo({{ dot_index }})"
+            aria-label="Go to slide {{ dot_counter }}"
+          ></button>
+        {%- endif -%}
       {%- endfor -%}
     </div>
   {%- endif -%}
