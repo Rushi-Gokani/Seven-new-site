@@ -216,16 +216,15 @@
     <div class="slider-progress-wrap">
       <div 
         x-ref="track"
-        class="slider-progress-track cursor-pointer group/track py-2 -my-2"
+        class="slider-progress-track"
         @mousedown="startTrackDrag($event)"
         @mousemove.window="trackDrag($event)"
         @mouseup.window="endTrackDrag()"
         @click="scrollTo($event)"
       >
         <div 
-          class="slider-progress-bar transition-transform"
-          :class="isTracking ? 'scale-y-200 duration-0' : 'duration-300'"
-          :style="`left: calc(${progress}% - (40px * (${progress} / 100)))`"
+          class="slider-progress-bar"
+          :style="`left: calc(${progress}% - (80px * (${progress} / 100)))`"
         ></div>
       </div>
     </div>
@@ -365,16 +364,16 @@
   margin-top: 40px;
 }
 .slider-progress-track {
-  width: 220px;
-  height: 1px;
+  width: 400px;
+  height: 2px;
   background: #e5e5e5;
   position: relative;
 }
 .slider-progress-bar {
   position: absolute;
-  top: -0.5px;
+  top: 0;
   height: 2px;
-  width: 40px;
+  width: 80px;
   background: #000;
   transition: left 0.1s ease-out;
 }

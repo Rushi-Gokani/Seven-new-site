@@ -61,10 +61,47 @@
           "label": "Mobile background image (optional)"
         },
         {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Bring the spa home"
+        },
+        {
+          "type": "textarea",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "The five-star Body Wash that transforms your shower."
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "SHOP NOW"
+        },
+        {
           "type": "url",
-          "id": "slide_link",
-          "label": "Slide link (click to redirect)",
-          "info": "Leave empty to make the image non-clickable"
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 80,
+          "step": 10,
+          "unit": "%",
+          "label": "Overlay opacity",
+          "default": 0
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "label": "Text color",
+          "options": [
+            { "value": "text-white", "label": "White" },
+            { "value": "text-black", "label": "Black" }
+          ],
+          "default": "text-black"
         }
       ]
     }
@@ -99,14 +136,10 @@
   <div class="slides-container relative h-full w-full">
     {%- for block in section.blocks -%}
       <div
-        class="slide absolute inset-0 h-full w-full transition-opacity duration-1000 ease-in-out"
+        class="slide absolute inset-0 h-full w-full transition-all duration-1000 ease-in-out"
         :class="{ 'opacity-100 z-10': currentSlide === {{ forloop.index0 }}, 'opacity-0 z-0': currentSlide !== {{ forloop.index0 }} }"
         {{ block.shopify_attributes }}
       >
-        {%- if block.settings.slide_link != blank -%}
-          <a href="{{ block.settings.slide_link }}" class="absolute inset-0 z-10" aria-label="{{ block.settings.image.alt | default: 'View slide' | escape }}"></a>
-        {%- endif -%}
-
         {%- if block.settings.image != blank -%}
           <picture class="absolute inset-0 h-full w-full">
             {%- if block.settings.mobile_image != blank -%}
@@ -124,49 +157,84 @@
                       {{ block.settings.image | image_url: width: 1366 }} 1366w,
                       {{ block.settings.image | image_url: width: 1920 }} 1920w"
               sizes="100vw"
-              alt="{{ block.settings.image.alt | default: block.settings.heading | escape }}"
+              alt="{{ block.settings.heading | escape }}"
               class="h-full w-full object-cover"
               loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
               fetchpriority="{% if forloop.first %}high{% else %}low{% endif %}"
-              decoding="{% if forloop.first %}sync{% else %}async{% endif %}"
               width="{{ block.settings.image.width }}"
               height="{{ block.settings.image.height }}"
             >
           </picture>
+          
+          {%- if block.settings.overlay_opacity > 0 -%}
+            <div class="absolute inset-0 z-10 bg-black" style="opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }}"></div>
+          {%- endif -%}
         {%- else -%}
-          <div class="absolute inset-0 h-full w-full bg-gradient-to-br from-cloud-burst-500 to-cloud-burst-700"></div>
+          <div class="absolute inset-0 h-full w-full bg-[#f8f8f8]"></div>
         {%- endif -%}
+
+        {%- comment -%} Content Overlay {%- endcomment -%}
+        <div class="absolute inset-0 z-20 flex px-8 md:px-20 lg:px-32">
+          <div class="flex flex-col justify-center max-w-[500px] {{ block.settings.text_color }} transition-all duration-700 delay-300"
+               :class="currentSlide === {{ forloop.index0 }} ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'">
+            
+            {%- if block.settings.heading != blank -%}
+              <h2 class="text-4xl md:text-5xl lg:text-7xl font-bold leading-[1.1] mb-4 tracking-tight">
+                {{ block.settings.heading }}
+              </h2>
+            {%- endif -%}
+
+            {%- if block.settings.subheading != blank -%}
+              <p class="text-base md:text-lg lg:text-xl font-medium mb-10 opacity-90 max-w-[450px]">
+                {{ block.settings.subheading }}
+              </p>
+            {%- endif -%}
+
+            {%- if block.settings.button_text != blank -%}
+              <div>
+                <a href="{{ block.settings.button_link | default: '#' }}" 
+                   class="inline-flex items-center gap-3 px-8 py-4 bg-black text-white text-xs font-bold tracking-[0.2em] rounded-full transition-transform duration-300 hover:scale-105">
+                  {{ block.settings.button_text }}
+                  <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 1L13 5L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M1 5H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
       </div>
     {%- endfor -%}
   </div>
 
   {%- if section.settings.show_arrows and section.blocks.size > 1 -%}
     <button
-      class="nav-arrow absolute left-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-cloud-burst-900 md:left-8"
+      class="nav-arrow absolute left-4 top-1/2 z-30 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-black md:left-10 opacity-0 group-hover:opacity-100"
       @click="prev()"
       aria-label="Previous slide"
     >
-      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path>
       </svg>
     </button>
     <button
-      class="nav-arrow absolute right-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-cloud-burst-900 md:right-8"
+      class="nav-arrow absolute right-4 top-1/2 z-30 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-black md:right-10 opacity-0 group-hover:opacity-100"
       @click="next()"
       aria-label="Next slide"
     >
-      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path>
       </svg>
     </button>
   {%- endif -%}
 
   {%- if section.settings.show_dots and section.blocks.size > 1 -%}
-    <div class="dots-container absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 gap-2.5 md:bottom-8">
+    <div class="dots-container absolute bottom-10 left-10 md:left-20 lg:left-32 z-30 flex gap-3">
       {%- for block in section.blocks -%}
         <button
-          class="h-2.5 w-2.5 rounded-full transition-all duration-300"
-          :class="currentSlide === {{ forloop.index0 }} ? 'bg-white w-8' : 'bg-white/50 hover:bg-white/75'"
+          class="h-1 w-8 transition-all duration-500 rounded-full"
+          :class="currentSlide === {{ forloop.index0 }} ? 'bg-black' : 'bg-black/20'"
           @click="goTo({{ forloop.index0 }})"
           aria-label="Go to slide {{ forloop.index }}"
         ></button>
