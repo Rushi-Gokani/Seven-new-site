@@ -236,6 +236,7 @@
     },
     "featured-product-grid": {
       "type": "featured-product-grid",
+      "disabled": true,
       "settings": {
         "featured_collection": "homepage-collection"
       }
@@ -282,6 +283,7 @@
         "collection_item_3",
         "collection_item_4"
       ],
+      "disabled": true,
       "settings": {
         "heading": "Shopped by Gold",
         "heading_size": "h2",
@@ -341,6 +343,7 @@
         "text_item_eK6cU8",
         "text_item_N7iCzF"
       ],
+      "disabled": true,
       "name": "Marquee",
       "settings": {
         "speed": "30s",
@@ -394,6 +397,7 @@
         "collection_tab_ReqKFM",
         "collection_tab_LkndGC"
       ],
+      "disabled": true,
       "name": "Tabbed Collections",
       "settings": {
         "heading": "Shop by Category",
@@ -445,6 +449,7 @@
         "testimonial_wKAPcd",
         "testimonial_Y9JzeU"
       ],
+      "disabled": true,
       "name": "Testimonials",
       "settings": {
         "heading": "What Our Customers Say",
@@ -485,6 +490,7 @@
         "question_gBGbA4",
         "question_hwQxNx"
       ],
+      "disabled": true,
       "name": "FAQ Section",
       "settings": {
         "heading": "Frequently Asked Questions",
@@ -571,6 +577,7 @@
         "accordion_hKm3LA",
         "accordion_nXhyJG"
       ],
+      "disabled": true,
       "name": "Product Salt Stone",
       "settings": {
         "product": "sensitive-brush-heads-dusty-rose-edition",
