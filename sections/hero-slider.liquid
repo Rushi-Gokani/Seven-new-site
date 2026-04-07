@@ -259,7 +259,7 @@
     {%- endfor -%}
 
     {%- comment -%} Modular Content Overlay (Global) {%- endcomment -%}
-    <div class="absolute inset-0 z-30 pointer-events-none flex items-center px-8 md:px-20 lg:px-32">
+    <div class="absolute inset-0 z-30 pointer-events-none flex items-center px-16 md:px-32 lg:px-48">
       <div class="max-w-[450px] md:max-w-[600px] pointer-events-auto">
         {%- for block in section.blocks -%}
           {%- case block.type -%}
@@ -272,12 +272,12 @@
                 {{ block.settings.text }}
               </p>
             {%- when 'button' -%}
-              <div class="mt-8 mb-4 flex items-center justify-start" {{ block.shopify_attributes }}>
-                <a href="{{ block.settings.link | default: '#' }}" class="inline-flex items-center justify-center gap-8 px-14 py-4 bg-black text-white rounded-full uppercase tracking-[0.1em] text-[12px] font-black transition-all duration-300 hover:bg-gray-800 group/btn whitespace-nowrap w-fit min-w-fit">
+              <div class="mt-10 mb-4 flex items-center justify-start" {{ block.shopify_attributes }}>
+                <a href="{{ block.settings.link | default: '#' }}" class="inline-flex items-center justify-center gap-4 px-9 py-3.5 bg-black text-white rounded-full uppercase tracking-[0.15em] text-[11px] font-bold transition-all duration-300 hover:bg-gray-800 group/btn whitespace-nowrap w-fit">
                   <span>{{ block.settings.text }}</span>
-                  <svg width="20" height="12" viewBox="0 0 20 12" fill="none" class="transition-transform duration-300 group-hover/btn:translate-x-2 shrink-0" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M14 1L19 6L14 11" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M1 6H19" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                  <svg width="15" height="10" viewBox="0 0 15 10" fill="none" class="transition-transform duration-300 group-hover/btn:translate-x-1 shrink-0" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 1L14 5L10 9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M1 5H14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </a>
               </div>
@@ -288,44 +288,7 @@
   </div>
   </div>
 
-  {%- if section.settings.show_arrows and section.blocks.size > 1 -%}
-    <button
-      class="nav-arrow absolute left-4 top-1/2 z-30 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-black md:left-10 opacity-0 group-hover:opacity-100"
-      @click="prev()"
-      aria-label="Previous slide"
-    >
-      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path>
-      </svg>
-    </button>
-    <button
-      class="nav-arrow absolute right-4 top-1/2 z-30 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-black md:right-10 opacity-0 group-hover:opacity-100"
-      @click="next()"
-      aria-label="Next slide"
-    >
-      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path>
-      </svg>
-    </button>
-  {%- endif -%}
-
-  {%- if section.settings.show_dots and slide_count_actual > 1 -%}
-    <div class="dots-container absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-3">
-      {%- assign dot_counter = 0 -%}
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'slide' -%}
-          {%- assign dot_index = dot_counter -%}
-          {%- assign dot_counter = dot_counter | plus: 1 -%}
-          <button
-            class="h-1 w-10 transition-all duration-500 rounded-full"
-            :class="currentSlide === {{ dot_index }} ? 'bg-white' : 'bg-white/30'"
-            @click="goTo({{ dot_index }})"
-            aria-label="Go to slide {{ dot_counter }}"
-          ></button>
-        {%- endif -%}
-      {%- endfor -%}
-    </div>
-  {%- endif -%}
+  {%- comment -%} Navigation Arrows and Dots removed as per user request {%- endcomment -%}
 
   {%- comment -%} Promo Toast Component {%- endcomment -%}
   {%- for block in section.blocks -%}
