@@ -53,7 +53,7 @@
         <!-- Policy Links in First Column -->
         <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 text-left">
           {% if shop.privacy_policy != blank %}
-            <a href="{{ shop.privacy_policy.url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal whitespace-nowrap">Privacy Policy</a>
+            <a href="{{ shop.privacy_policy.url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal whitespace-nowrap">Privacy Policy   </a>
           {% endif %}
           {% if shop.terms_of_service != blank %}
             <a href="{{ shop.terms_of_service.url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal whitespace-nowrap">Terms & Conditions</a>
@@ -93,7 +93,7 @@
 
       <!-- Part 3: Column 2 Links -->
       <div class="w-full">
-        <ul class="space-y-4 space-x-2">
+        <ul class="space-y-4 pl-8">
           {% if section.settings.menu_2 != blank %}
             {% for link in section.settings.menu_2.links %}
               <li><a href="{{ link.url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal block">{{ link.title }}</a></li>

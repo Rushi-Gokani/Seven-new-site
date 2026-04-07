@@ -198,6 +198,7 @@
         box-sizing: border-box;
         border: 0 solid;
         margin: 0;
+        padding: 0;
     }
 
     ::file-selector-button {
@@ -3054,7 +3055,8 @@
     }
 
     .text-black {
-        color: var(--color-black)
+        color: var(--color-black);
+        padding-left: 10px;
     }
 
     .text-cloud-burst {
