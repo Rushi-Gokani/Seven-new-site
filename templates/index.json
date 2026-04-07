@@ -315,6 +315,12 @@
             "text": "<p>15.2 FL OZ / 450 ML</p>"
           }
         },
+        "text_BAyYDG": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Scent:Santal & Vetiver</p>"
+          }
+        },
         "description_XBkEUB": {
           "type": "description",
           "settings": {}
@@ -328,6 +334,7 @@
         "title_mMXqki",
         "text_xMWVCM",
         "text_dGzHkF",
+        "text_BAyYDG",
         "description_XBkEUB",
         "buy_buttons_8hxpJh"
       ],
