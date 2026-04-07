@@ -76,6 +76,29 @@
           "default": 0
         }
       ]
+    },
+    {
+      "type": "promo_toast",
+      "name": "Promo Toast",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Small product image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Promo text",
+          "default": "Free Mini Santal Deodorant on orders $65+"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Promo link"
+        }
+      ]
     }
   ],
   "presets": [
@@ -201,4 +224,52 @@
       {%- endfor -%}
     </div>
   {%- endif -%}
+
+  {%- comment -%} Promo Toast Component {%- endcomment -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'promo_toast' -%}
+      <div 
+        x-data="{ show: true }" 
+        x-show="show" 
+        x-transition:enter="transition ease-out duration-500"
+        x-transition:enter-start="opacity-0 translate-y-4"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        class="absolute bottom-6 right-6 md:bottom-10 md:right-10 z-40 bg-[#f8f8f8] p-1.5 pr-4 rounded-2xl flex items-center gap-4 shadow-sm border border-black/5"
+        {{ block.shopify_attributes }}
+      >
+        {%- if block.settings.image != blank -%}
+          <div class="h-16 w-16 flex-shrink-0 bg-white rounded-xl overflow-hidden">
+            <img 
+              src="{{ block.settings.image | image_url: width: 150 }}" 
+              alt="{{ block.settings.text }}"
+              class="h-full w-full object-contain mix-blend-multiply"
+              width="64"
+              height="64"
+            >
+          </div>
+        {%- endif -%}
+        
+        <div class="flex-grow">
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}" class="text-[14px] font-bold text-black hover:underline tracking-tight">
+              {{ block.settings.text }}
+            </a>
+          {%- else -%}
+             <span class="text-[14px] font-bold text-black tracking-tight">{{ block.settings.text }}</span>
+          {%- endif -%}
+        </div>
+
+        <button 
+          @click="show = false" 
+          class="p-2 ml-2 text-black hover:opacity-50 transition-opacity"
+          aria-label="Close promo"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 1L13 13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M13 1L1 13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
 </section>
