@@ -1,0 +1,92 @@
+{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-variant-picker.css' | asset_url | stylesheet_tag }}
+{{ 'product-form.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+  "name": "Product Salt",
+  "tag": "section",
+  "class": "section-product-salt",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "BEST SELLER"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Salt"
+    }
+  ]
+}
+{% endschema %}
+
+{%- assign product = all_products[section.settings.product] | default: product -%}
+
+<div class="page-width">
+  <div class="product-salt">
+    {% if product %}
+      <div class="product-grid">
+        <!-- Images -->
+        <div class="product-media">
+          <span class="badge">{{ section.settings.badge_text }}</span>
+          {% if product.featured_image %}
+            {{ product.featured_image | image_url: width: 800 | image_tag: loading: 'eager' }}
+          {% endif %}
+        </div>
+        
+        <!-- Info -->
+        <div class="product-info">
+          <h1>{{ product.title }}</h1>
+          <p>{{ product.description }}</p>
+          <p class="price">{{ product.selected_or_first_available_variant.price | money }}</p>
+          
+          <!-- Variants -->
+          {% if product.variants.size > 1 %}
+            <div class="variants">
+              {% for variant in product.variants %}
+                <button class="variant-btn">{{ variant.title }}</button>
+              {% endfor %}
+            </div>
+          {% endif %}
+          
+          <!-- Add to Cart -->
+          {% form 'product', product %}
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <button type="submit" class="add-to-cart">ADD TO CART</button>
+          {% endform %}
+          
+        </div>
+      </div>
+    {% else %}
+      <div class="product-salt-placeholder" style="padding: 40px; text-align: center; background: #f9f9f9;">
+        <p>Please select a product in the section settings to display this component.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+.product-salt { padding: 40px 0; }
+.product-grid { display: grid; grid-template-columns: 1fr 400px; gap: 60px; }
+.product-media { position: relative; background: #f5f5f5; padding: 40px; text-align: center; }
+.badge { position: absolute; top: 20px; left: 20px; background: #fff; padding: 8px 16px; font-size: 10px; font-weight: bold; letter-spacing: 1px; border-radius: 4px; }
+.product-media img { max-width: 100%; height: auto; }
+.product-info h1 { font-size: 32px; text-transform: uppercase; margin: 0 0 20px; }
+.product-info p { color: #666; line-height: 1.6; margin: 0 0 20px; }
+.price { font-size: 24px; font-weight: bold; color: #000 !important; }
+.variants { display: flex; gap: 10px; margin: 20px 0; }
+.variant-btn { padding: 10px 20px; border: 1px solid #ddd; background: #fff; cursor: pointer; border-radius: 4px; }
+.add-to-cart { width: 100%; padding: 18px; background: #000; color: #fff; border: none; border-radius: 999px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+@media (max-width: 768px) {
+  .product-grid { grid-template-columns: 1fr; }
+}
+{% endstylesheet %}

@@ -1,0 +1,14 @@
+{
+  "layout": "theme",
+  "sections": {
+    "main": {
+      "type": "product-salt",
+      "settings": {
+        "badge_text": "BEST SELLER"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

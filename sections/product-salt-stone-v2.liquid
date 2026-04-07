@@ -1,0 +1,184 @@
+{% comment %}
+  Salt & Stone Product Page - Simplified Version
+{% endcomment %}
+
+{% schema %}
+{
+  "name": "Product Salt Stone V2",
+  "tag": "section",
+  "class": "section-product-salt-stone",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "BEST SELLER"
+    },
+    {
+      "type": "text",
+      "id": "review_count",
+      "label": "Review Count",
+      "default": "5,540 reviews"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title"
+    },
+    {
+      "type": "description",
+      "name": "Description"
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy Buttons"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Salt Stone",
+      "blocks": [
+        { "type": "title" },
+        { "type": "description" },
+        { "type": "buy_buttons" }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{%- assign product = all_products[section.settings.product] | default: product -%}
+
+{% if product %}
+  {%- assign current_variant = product.selected_or_first_available_variant -%}
+  {%- assign image_media = product.media | where: "media_type", "image" -%}
+
+  <div class="product-salt-stone" data-section-id="{{ section.id }}">
+    <div class="product-grid">
+      
+      <!-- Thumbnails -->
+      <div class="product-thumbs">
+        {% for media in image_media %}
+          <div class="thumb">
+            {{ media | image_url: width: 150 | image_tag }}
+          </div>
+        {% endfor %}
+      </div>
+      
+      <!-- Main Image -->
+      <div class="product-main">
+        <span class="badge">{{ section.settings.badge_text }}</span>
+        {% if product.featured_image %}
+          {{ product.featured_image | image_url: width: 800 | image_tag }}
+        {% endif %}
+      </div>
+      
+      <!-- Product Info -->
+      <div class="product-info">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'title' %}
+              <h1 class="product-title">{{ product.title }}</h1>
+            {% when 'description' %}
+              <div class="product-desc">{{ product.description }}</div>
+            {% when 'buy_buttons' %}
+              {% form 'product', product %}
+                <input type="hidden" name="id" value="{{ current_variant.id }}">
+                <button type="submit" class="btn-add">ADD TO CART</button>
+              {% endform %}
+          {% endcase %}
+        {% endfor %}
+        <p class="rating">Rating: 4.9 ({{ section.settings.review_count }})</p>
+      </div>
+      
+    </div>
+  </div>
+{% else %}
+  <div class="product-salt-stone placeholder" style="padding: 40px; text-align: center; background: #f9f9f9;">
+    <p>Please select a product in the section settings to display this component.</p>
+  </div>
+{% endif %}
+
+<style>
+.product-salt-stone {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: 80px 1fr 400px;
+  gap: 40px;
+}
+.product-thumbs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.thumb img {
+  width: 100%;
+  border-radius: 8px;
+}
+.product-main {
+  position: relative;
+  background: #f5f5f5;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+}
+.badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: white;
+  padding: 8px 16px;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.product-main img {
+  max-width: 100%;
+  height: auto;
+}
+.product-title {
+  font-size: 28px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 0 0 20px;
+}
+.product-desc {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.btn-add {
+  width: 100%;
+  padding: 18px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.rating {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+}
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+  .product-thumbs {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+}
+</style>
