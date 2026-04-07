@@ -56,6 +56,18 @@
           "default": "<p>Add <b>bold</b> or <u>underline</u> text here.</p>"
         }
       ]
+    },
+    {
+      "type": "promo_bar",
+      "name": "Promo Bar",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Promo Text",
+          "default": "Get a free Mini Santal Deodorant on orders $65+"
+        }
+      ]
     }
   ],
   "presets": [
@@ -123,6 +135,10 @@
               {% endform %}
             {% when 'text' %}
               <div class="product-text-custom prose-sm mb-4" {{ block.shopify_attributes }}>
+                {{ block.settings.text }}
+              </div>
+            {% when 'promo_bar' %}
+              <div class="promo-bar-pill mb-6" {{ block.shopify_attributes }}>
                 {{ block.settings.text }}
               </div>
 {% endcase %}
@@ -224,6 +240,15 @@
 .rating-value {
   font-weight: bold;
   color: #000;
+}
+.promo-bar-pill {
+  background: #f3f3f3;
+  border-radius: 999px;
+  padding: 12px 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #000;
+  font-weight: 500;
 }
 @media (max-width: 768px) {
   .product-grid {
