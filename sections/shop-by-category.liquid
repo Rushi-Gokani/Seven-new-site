@@ -70,62 +70,152 @@
 }
 {% endschema %}
 
-<div class="shop-by-category py-20 lg:py-24" style="background-color: {{ section.settings.bg_color }};">
+<style>
+  .shop-by-category-wrapper {
+    padding: 80px 0;
+  }
+  .category-card-container {
+    position: relative;
+    aspect-ratio: 4/5;
+    border-radius: 10px !important;
+    overflow: hidden;
+    background-color: #f8f8f8;
+    Isolation: isolate;
+  }
+  .category-card-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .category-card-container:hover .category-card-image {
+    transform: scale(1.05);
+  }
+  .category-card-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 40%);
+  }
+  .category-card-content {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+  .category-card-title {
+    color: white;
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .category-button-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    pointer-events: auto;
+  }
+  .category-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    padding: 12px 36px;
+    background-color: white !important;
+    color: black !important;
+    border-radius: 100px;
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    width: fit-content;
+  }
+  /* The CRITICAL Hover State */
+  .category-card-container:hover .category-button {
+    background-color: black !important;
+    color: white !important;
+  }
+  .category-button svg {
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+  .category-card-container:hover .category-button svg {
+    transform: translateX(6px);
+  }
+  @media (max-width: 768px) {
+    .category-card-title { font-size: 20px; }
+    .category-card-content { padding: 24px; }
+    .category-button { gap: 20px; }
+  }
+</style>
+
+<div class="shop-by-category-wrapper" style="background-color: {{ section.settings.bg_color }};">
   <div class="max-w-[1540px] mx-auto px-6 md:px-12">
     
-    <!-- Section Header -->
+    <!-- Header -->
     <div class="flex justify-between items-baseline mb-12">
-      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter text-black">
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-normal tracking-tighter text-black m-0">
         {{ section.settings.title }}
       </h2>
       {% if section.settings.shop_all_link != blank %}
-        <a href="{{ section.settings.shop_all_link }}" class="text-[11px] font-bold uppercase tracking-[0.2em] text-black underline underline-offset-4 hover:opacity-70 transition-opacity">
+        <a href="{{ section.settings.shop_all_link }}" class="text-[11px] font-normal uppercase tracking-[0.2em] text-black underline underline-offset-4 hover:opacity-70 transition-opacity">
           {{ section.settings.shop_all_text }}
         </a>
       {% endif %}
     </div>
 
-    <!-- Category Grid -->
+    <!-- Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {%- for block in section.blocks -%}
-        <div class="group relative aspect-[4/5] overflow-hidden rounded-[48px] bg-[#f8f8f8]" {{ block.shopify_attributes }}>
+        <div class="category-card-container" {{ block.shopify_attributes }}>
           
           <!-- Image -->
           {%- if block.settings.image != blank -%}
-            {{ block.settings.image | image_url: width: 800 | image_tag:
-              class: 'absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105',
-              loading: 'lazy'
-            }}
+            <img 
+              src="{{ block.settings.image | image_url: width: 800 }}" 
+              alt="{{ block.settings.title }}"
+              class="category-card-image"
+              loading="lazy"
+              width="800"
+              height="1000"
+            >
           {%- else -%}
-             <div class="absolute inset-0 flex items-center justify-center bg-gray-100">
+             <div class="category-card-image bg-gray-100 flex items-center justify-center">
                {{ 'image' | placeholder_svg_tag: 'w-20 h-20 opacity-20' }}
              </div>
           {%- endif -%}
 
-          <!-- Overlay (Subtle Gradient for Title Readability) -->
-          <div class="absolute inset-0 z-10 bg-gradient-to-b from-black/20 via-transparent to-transparent"></div>
+          <div class="category-card-overlay"></div>
 
-          <!-- Content Wrapper -->
-          <div class="absolute inset-0 z-20 p-8 flex flex-col justify-between">
-            <!-- Title (Top Left) -->
-            <h3 class="text-2xl md:text-3xl font-medium text-white tracking-tight">
-              {{ block.settings.title }}
-            </h3>
+          <!-- Content -->
+          <div class="category-card-content">
+            <h3 class="category-card-title">{{ block.settings.title }}</h3>
 
-            <!-- Link/Button (Bottom Left) -->
             {% if block.settings.link != blank %}
-            <a href="{{ block.settings.link }}" class="inline-flex items-center justify-center gap-10 px-11 py-4 bg-white text-black rounded-full uppercase tracking-[0.1em] text-[11px] font-bold transition-all duration-300 hover:bg-gray-100 group/btn whitespace-nowrap w-fit">
-              <span>{{ block.settings.button_text }}</span>
-              <svg width="20" height="12" viewBox="0 0 24 24" fill="none" class="transition-transform duration-300 group-hover/btn:translate-x-1.5 shrink-0" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
+              <div class="category-button-wrap">
+                <a href="{{ block.settings.link }}" class="category-button">
+                  <span>{{ block.settings.button_text }}</span>
+                  <svg width="20" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </div>
             {% endif %}
           </div>
 
           <!-- Clickable whole card area if link exists -->
           {% if block.settings.link != blank %}
-             <a href="{{ block.settings.link }}" class="absolute inset-0 z-10 block" aria-label="{{ block.settings.title }}"></a>
+             <a href="{{ block.settings.link }}" class="absolute inset-0 z-30 block" aria-label="{{ block.settings.title }}"></a>
           {% endif %}
         </div>
       {%- endfor -%}
