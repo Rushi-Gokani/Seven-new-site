@@ -126,6 +126,10 @@
     x-data="{ 
       activeIndex: 0,
       totalImages: {{ image_media.size }},
+      showCursor: false,
+      cursorSide: 'right',
+      cursorX: 0,
+      cursorY: 0,
       goTo(index) {
         if (index < 0) index = this.totalImages - 1;
         if (index >= this.totalImages) index = 0;
@@ -154,7 +158,19 @@
       </div>
       
       <!-- Main Image Scroller -->
-      <div class="product-main">
+      <div 
+        class="product-main"
+        @mousemove="
+          const rect = $el.getBoundingClientRect();
+          const x = $event.clientX - rect.left;
+          cursorSide = x < rect.width / 2 ? 'left' : 'right';
+          showCursor = true;
+          cursorX = $event.clientX;
+          cursorY = $event.clientY;
+        "
+        @mouseleave="showCursor = false"
+        @click="cursorSide === 'left' ? goTo(activeIndex - 1) : goTo(activeIndex + 1)"
+      >
         <span class="badge">{{ section.settings.badge_text }}</span>
         
         <div 
@@ -167,6 +183,17 @@
               {{ media | image_url: width: 1200 | image_tag: class: 'gallery-img' }}
             </div>
           {% endfor %}
+        </div>
+
+        <!-- Custom Cursor -->
+        <div 
+          class="gallery-custom-cursor"
+          x-show="showCursor"
+          :style="`left: ${cursorX}px; top: ${cursorY}px;`"
+          x-cloak
+        >
+          <svg x-show="cursorSide === 'left'" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <svg x-show="cursorSide === 'right'" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </div>
 
         <!-- Pagination Dots -->
@@ -300,7 +327,32 @@
   background: #fff;
   border-radius: 12px;
   overflow: hidden;
+  cursor: none;
 }
+.gallery-custom-cursor {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1000;
+  transform: translate(-50%, -50%);
+  color: #000;
+  transition: transform 0.1s ease-out;
+}
+.gallery-custom-cursor svg {
+  width: 32px;
+  height: 32px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 1px rgba(255,255,255,0.5));
+}
+[x-cloak] { display: none !important; }
 .main-gallery-scroller {
   display: flex;
   overflow-x: auto;
