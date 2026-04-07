@@ -37,6 +37,56 @@
         "height": "h-[500px] md:h-[600px]"
       }
     },
+    "featured_collection_slider_y7wHkU": {
+      "type": "featured-collection-slider",
+      "blocks": {
+        "product_GdmjQa": {
+          "type": "product",
+          "settings": {
+            "product": "kids-brush-heads-7",
+            "badge_text": "new",
+            "scent_text": ""
+          }
+        },
+        "product_AYXGU7": {
+          "type": "product",
+          "settings": {
+            "product": "kids-3-purple-pop",
+            "badge_text": "low stock",
+            "scent_text": ""
+          }
+        },
+        "product_za4LLF": {
+          "type": "product",
+          "settings": {
+            "product": "kids-brush-heads-3",
+            "badge_text": "best seller",
+            "scent_text": ""
+          }
+        },
+        "product_eDDJ4k": {
+          "type": "product",
+          "settings": {
+            "product": "regular-brush-heads-pro-midnight-blue",
+            "badge_text": "best seller",
+            "scent_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_GdmjQa",
+        "product_AYXGU7",
+        "product_za4LLF",
+        "product_eDDJ4k"
+      ],
+      "name": "Featured Collection Slider",
+      "settings": {
+        "title": "Best Sellers",
+        "link_text": "SHOP ALL",
+        "link_url": "",
+        "bg_color": "#ffffff"
+      }
+    },
     "featured-product-grid": {
       "type": "featured-product-grid",
       "settings": {
@@ -383,6 +433,7 @@
   },
   "order": [
     "hero-slider",
+    "featured_collection_slider_y7wHkU",
     "featured-product-grid",
     "shopped_by_gold",
     "marquee_bnkf8n",
