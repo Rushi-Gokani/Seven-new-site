@@ -4377,8 +4377,9 @@
         }
 
         .lg\:text-5xl {
-            font-size: var(--text-5xl);
-            line-height: var(--tw-leading, var(--text-5xl--line-height))
+            line-height: var(--tw-leading, var(--text-5xl--line-height));
+            font-weight: 500;
+            font-size: 32px
         }
 
         .lg\:text-6xl {
