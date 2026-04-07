@@ -12,12 +12,21 @@
     "hero-slider": {
       "type": "hero-slider",
       "blocks": {
+        "promo_toast_Wi9Jkg": {
+          "type": "promo_toast",
+          "settings": {
+            "image": "shopify://shop_images/optimized_brush_green_ddeafb24-0a83-4950-94ef-aeefe5764756.jpg",
+            "text": "Free Mini Santal Deodorant on orders $65+",
+            "link": ""
+          }
+        },
         "slide-1": {
           "type": "slide",
           "disabled": true,
           "settings": {
             "image": "shopify://shop_images/03_d04e0916-f0f0-4180-8b36-254bf8409d27.png",
             "mobile_image": "shopify://shop_images/1_3_093c8e55-a899-4577-ac7d-1870d11c0378.png",
+            "slide_link": "",
             "overlay_opacity": 0
           }
         },
@@ -26,11 +35,13 @@
           "settings": {
             "image": "shopify://shop_images/1_2_ea6280a1-0ad3-47d2-9ad1-9668d320e46f.png",
             "mobile_image": "shopify://shop_images/2_3.png",
+            "slide_link": "",
             "overlay_opacity": 0
           }
         }
       },
       "block_order": [
+        "promo_toast_Wi9Jkg",
         "slide-1",
         "slide-2"
       ],
