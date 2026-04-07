@@ -258,7 +258,7 @@
           {%- comment -%} Slide-Specific Content Overlay {%- endcomment -%}
           <div 
             class="absolute inset-0 z-30 pointer-events-none flex items-center px-8 md:px-20 lg:px-32 transition-all duration-700 delay-300"
-            :class="currentSlide === {{ slide_index }} ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
+            :class="currentSlide === {{ current_index }} ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
           >
             <div class="max-w-[450px] md:max-w-[600px] pointer-events-auto">
               {%- comment -%} Logic to find content blocks belonging to this slide {%- endcomment -%}
