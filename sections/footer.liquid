@@ -8,18 +8,16 @@
   endif
 %}
 
-<div class="border-t border-gray-200 bg-gray-50">
-  <div class="container px-6 py-12 md:px-8 md:py-14">
-    <div class="grid gap-10 lg:grid-cols-12">
-      <div class="lg:col-span-5">
-        <h2 class="text-xl font-semibold text-cloud-burst-600 md:text-2xl">{{ shop.name }}</h2>
-        <p class="mt-3 max-w-xl text-sm leading-6 text-gray-600">{{ section.settings.tagline }}</p>
-
+<div class="border-t border-gray-200 bg-gray-100">
+  <div class="container px-6 py-12 md:px-8 md:py-16">
+    <!-- Top Section -->
+    <div class="grid gap-12 lg:grid-cols-12">
+      <!-- Left: Newsletter -->
+      <div class="lg:col-span-4">
         {% if section.settings.show_newsletter %}
-          {% form 'customer', id: 'FooterNewsletter', class: 'mt-6 rounded-xl border border-gray-200 bg-white p-4 sm:p-5' %}
+          {% form 'customer', id: 'FooterNewsletter', class: '' %}
             <input type="hidden" name="contact[tags]" value="newsletter">
-            <h3 class="text-base font-semibold leading-6 text-cloud-burst-600">{{ section.settings.newsletter_heading }}</h3>
-            <p id="FooterNewsletter-description" class="mt-1 text-sm leading-5 text-gray-600">Get product updates and occasional offers.</p>
+            <h3 class="text-base font-normal text-gray-900">{{ section.settings.newsletter_heading }}</h3>
             <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-stretch">
               <label class="sr-only" for="FooterNewsletter-email">Email address</label>
               <input
@@ -29,13 +27,12 @@
                 value="{% if customer %}{{ customer.email }}{% endif %}"
                 autocomplete="email"
                 required
-                aria-describedby="FooterNewsletter-description"
-                placeholder="Enter your email"
-                class="h-11 w-full rounded-lg border border-gray-300 bg-white px-3.5 text-sm text-gray-900 placeholder:text-gray-400 focus-visible:border-cloud-burst-400 focus-visible:outline-none"
+                placeholder="Enter email address"
+                class="h-12 w-full rounded-full border border-gray-300 bg-white px-5 text-sm text-gray-900 placeholder:text-gray-400 focus-visible:border-gray-400 focus-visible:outline-none"
               >
               <button
                 type="submit"
-                class="inline-flex h-11 w-full items-center justify-center rounded-lg bg-cloud-burst-500 px-5 text-sm font-semibold text-white transition hover:bg-cloud-burst-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cloud-burst-500 sm:w-auto"
+                class="inline-flex h-12 w-full items-center justify-center rounded-full bg-black px-8 text-sm font-normal text-white transition hover:bg-gray-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black sm:w-auto"
                 name="commit"
               >
                 {{ section.settings.newsletter_button_label }}
@@ -52,107 +49,136 @@
         {% endif %}
       </div>
 
-      <div class="lg:col-span-3">
-        <h3 class="text-sm font-semibold text-cloud-burst-600">Shop</h3>
-        <nav class="mt-4" aria-label="Footer primary links">
-          <ul class="space-y-2.5">
-            {% for link in primary_links limit: 8 %}
-              <li>
-                <a
-                  href="{{ link.url }}"
-                  class="text-sm text-gray-600 no-underline transition hover:text-cloud-burst-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cloud-burst-400"
-                >
-                  {{ link.title }}
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
-        </nav>
-      </div>
+      <!-- Right: 3 Columns -->
+      <div class="lg:col-span-8">
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <!-- Column 1 -->
+          <div>
+            <h4 class="text-sm font-normal text-gray-900">Subscribe</h4>
+            <nav class="mt-4" aria-label="Footer column 1 links">
+              <ul class="space-y-3">
+                {% for link in primary_links limit: 5 %}
+                  <li>
+                    <a
+                      href="{{ link.url }}"
+                      class="text-sm text-gray-600 no-underline transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                    >
+                      {{ link.title }}
+                    </a>
+                  </li>
+                {% endfor %}
+                {% if primary_links.size < 5 %}
+                  <li>
+                    <a href="#" class="text-sm text-gray-600 no-underline transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">Become a Member</a>
+                  </li>
+                  <li>
+                    <a href="#" class="text-sm text-gray-600 no-underline transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">Refer a Friend</a>
+                  </li>
+                  <li>
+                    <a href="#" class="text-sm text-gray-600 no-underline transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">Take the Scent Quiz</a>
+                  </li>
+                  <li>
+                    <a href="#" class="text-sm text-gray-600 no-underline transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">Find a Store</a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
 
-      <div class="lg:col-span-2">
-        <h3 class="text-sm font-semibold text-cloud-burst-600">Policies</h3>
-        <ul class="mt-4 space-y-2.5">
-          {% if section.settings.secondary_menu != blank %}
-            {% for link in section.settings.secondary_menu.links limit: 8 %}
-              <li>
-                <a
-                  href="{{ link.url }}"
-                  class="text-sm text-gray-600 no-underline transition hover:text-cloud-burst-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cloud-burst-400"
-                >
-                  {{ link.title }}
-                </a>
-              </li>
-            {% endfor %}
-          {% else %}
-            {% if shop.privacy_policy != blank %}
-              <li>
-                <a href="{{ shop.privacy_policy.url }}" class="text-sm text-gray-600 no-underline transition hover:text-cloud-burst-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cloud-burst-400">{{ shop.privacy_policy.title }}</a>
-              </li>
-            {% endif %}
-            {% if shop.refund_policy != blank %}
-              <li>
-                <a href="{{ shop.refund_policy.url }}" class="text-sm text-gray-600 no-underline transition hover:text-cloud-burst-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cloud-burst-400">{{ shop.refund_policy.title }}</a>
-              </li>
-            {% endif %}
-            {% if shop.shipping_policy != blank %}
-              <li>
-                <a href="{{ shop.shipping_policy.url }}" class="text-sm text-gray-600 no-underline transition hover:text-cloud-burst-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cloud-burst-400">{{ shop.shipping_policy.title }}</a>
-              </li>
-            {% endif %}
-            {% if shop.terms_of_service != blank %}
-              <li>
-                <a href="{{ shop.terms_of_service.url }}" class="text-sm text-gray-600 no-underline transition hover:text-cloud-burst-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cloud-burst-400">{{ shop.terms_of_service.title }}</a>
-              </li>
-            {% endif %}
-          {% endif %}
-        </ul>
-      </div>
+          <!-- Column 2 -->
+          <div>
+            <h4 class="text-sm font-normal text-gray-900">Help Center</h4>
+            <ul class="mt-4 space-y-3">
+              {% if section.settings.secondary_menu != blank %}
+                {% for link in section.settings.secondary_menu.links limit: 4 %}
+                  <li>
+                    <a
+                      href="{{ link.url }}"
+                      class="text-sm text-gray-600 no-underline transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                    >
+                      {{ link.title }}
+                    </a>
+                  </li>
+                {% endfor %}
+              {% else %}
+                <li>
+                  <a href="#" class="text-sm text-gray-600 no-underline transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">FAQs</a>
+                </li>
+                {% if shop.refund_policy != blank %}
+                  <li>
+                    <a href="{{ shop.refund_policy.url }}" class="text-sm text-gray-600 no-underline transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">Returns</a>
+                  </li>
+                {% endif %}
+                {% if section.settings.support_email != blank %}
+                  <li>
+                    <a href="mailto:{{ section.settings.support_email }}" class="text-sm text-gray-600 no-underline transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">Contact</a>
+                  </li>
+                {% endif %}
+              {% endif %}
+            </ul>
+          </div>
 
-      <div class="lg:col-span-2">
-        <h3 class="text-sm font-semibold text-cloud-burst-600">Support</h3>
-        <ul class="mt-4 space-y-2.5 text-sm text-gray-600">
-          {% if section.settings.support_email != blank %}
-            <li>
-              <a href="mailto:{{ section.settings.support_email }}" class="no-underline text-gray-600 transition hover:text-cloud-burst-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cloud-burst-400">{{ section.settings.support_email }}</a>
-            </li>
-          {% endif %}
-          {% if section.settings.support_phone != blank %}
-            <li>
-              <a href="tel:{{ section.settings.support_phone | replace: ' ', '' }}" class="no-underline text-gray-600 transition hover:text-cloud-burst-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cloud-burst-400">{{ section.settings.support_phone }}</a>
-            </li>
-          {% endif %}
-          {% if section.settings.support_hours != blank %}
-            <li>{{ section.settings.support_hours }}</li>
-          {% endif %}
-        </ul>
-
-        <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-          {% if section.settings.instagram_url != blank %}
-            <a href="{{ section.settings.instagram_url }}" class="text-xs font-semibold uppercase tracking-[0.08em] text-gray-500 no-underline transition hover:text-cloud-burst-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cloud-burst-400">Instagram</a>
-          {% endif %}
-          {% if section.settings.facebook_url != blank %}
-            <a href="{{ section.settings.facebook_url }}" class="text-xs font-semibold uppercase tracking-[0.08em] text-gray-500 no-underline transition hover:text-cloud-burst-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cloud-burst-400">Facebook</a>
-          {% endif %}
-          {% if section.settings.tiktok_url != blank %}
-            <a href="{{ section.settings.tiktok_url }}" class="text-xs font-semibold uppercase tracking-[0.08em] text-gray-500 no-underline transition hover:text-cloud-burst-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cloud-burst-400">TikTok</a>
-          {% endif %}
+          <!-- Column 3 -->
+          <div>
+            <h4 class="text-sm font-normal text-gray-900">Shipping</h4>
+            <ul class="mt-4 space-y-3">
+              <li>
+                <a href="#" class="text-sm text-gray-600 no-underline transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">India</a>
+              </li>
+            </ul>
+            <h4 class="mt-6 text-sm font-normal text-gray-900">Language</h4>
+            <ul class="mt-4 space-y-3">
+              <li>
+                <a href="#" class="text-sm text-gray-600 no-underline transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">English</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="mt-10 border-t border-gray-200 pt-5">
-      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <!-- Bottom Section -->
+    <div class="mt-12 border-t border-gray-200 pt-8">
+      <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <!-- Left: Links -->
+        <div class="flex flex-wrap items-center gap-6">
+          {% if shop.privacy_policy != blank %}
+            <a href="{{ shop.privacy_policy.url }}" class="text-sm text-gray-600 no-underline transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">{{ shop.privacy_policy.title }}</a>
+          {% endif %}
+          {% if shop.terms_of_service != blank %}
+            <a href="{{ shop.terms_of_service.url }}" class="text-sm text-gray-600 no-underline transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">{{ shop.terms_of_service.title }}</a>
+          {% endif %}
+          <a href="#" class="text-sm text-gray-600 no-underline transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">Accessibility</a>
+          <a href="#" class="flex items-center gap-1 text-sm text-gray-600 no-underline transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">
+            Your Privacy Choices
+            <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Right: Social Icons -->
+        <div class="flex items-center gap-4">
+          {% if section.settings.tiktok_url != blank %}
+            <a href="{{ section.settings.tiktok_url }}" class="text-gray-600 transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black" aria-label="TikTok">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.instagram_url != blank %}
+            <a href="{{ section.settings.instagram_url }}" class="text-gray-600 transition hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black" aria-label="Instagram">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="mt-6 text-center sm:mt-0">
         <p class="text-xs text-gray-500">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p>
-        {% if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 %}
-          <ul class="flex flex-wrap items-center gap-2" role="list" aria-label="Accepted payment methods">
-            {% for type in shop.enabled_payment_types %}
-              <li class="rounded border border-gray-200 bg-white px-2 py-1">
-                {{ type | payment_type_svg_tag: class: 'h-4 w-auto' }}
-              </li>
-            {% endfor %}
-          </ul>
-        {% endif %}
       </div>
     </div>
   </div>
@@ -164,26 +190,6 @@
     "class": "footer",
     "tag": "footer",
     "settings": [
-      {
-        "type": "header",
-        "content": "Content"
-      },
-      {
-        "type": "textarea",
-        "id": "tagline",
-        "label": "Brand message",
-        "default": "Thoughtfully selected products and dependable service, all in one place."
-      },
-      {
-        "type": "link_list",
-        "id": "primary_menu",
-        "label": "Primary menu"
-      },
-      {
-        "type": "link_list",
-        "id": "secondary_menu",
-        "label": "Secondary menu"
-      },
       {
         "type": "header",
         "content": "Newsletter"
@@ -198,13 +204,27 @@
         "type": "text",
         "id": "newsletter_heading",
         "label": "Newsletter heading",
-        "default": "Join our newsletter"
+        "default": "Sign up & save 10%"
       },
       {
         "type": "text",
         "id": "newsletter_button_label",
         "label": "Newsletter button label",
-        "default": "Subscribe"
+        "default": "Sign up"
+      },
+      {
+        "type": "header",
+        "content": "Menus"
+      },
+      {
+        "type": "link_list",
+        "id": "primary_menu",
+        "label": "Primary menu"
+      },
+      {
+        "type": "link_list",
+        "id": "secondary_menu",
+        "label": "Secondary menu"
       },
       {
         "type": "header",
@@ -217,18 +237,6 @@
         "default": "support@example.com"
       },
       {
-        "type": "text",
-        "id": "support_phone",
-        "label": "Support phone",
-        "default": "+1 (800) 555-0147"
-      },
-      {
-        "type": "text",
-        "id": "support_hours",
-        "label": "Support hours",
-        "default": "Mon-Fri, 9am-5pm"
-      },
-      {
         "type": "header",
         "content": "Social links"
       },
@@ -239,23 +247,8 @@
       },
       {
         "type": "url",
-        "id": "facebook_url",
-        "label": "Facebook URL"
-      },
-      {
-        "type": "url",
         "id": "tiktok_url",
         "label": "TikTok URL"
-      },
-      {
-        "type": "header",
-        "content": "Layout"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_payment_icons",
-        "label": "Show payment icons",
-        "default": true
       }
     ]
   }
