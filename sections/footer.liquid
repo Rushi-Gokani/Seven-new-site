@@ -10,11 +10,11 @@
 
 <div class="w-full bg-[#f8f8f8] py-16 md:py-24">
   <div class="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20">
-    <!-- Top Section -->
-    <div class="grid grid-cols-1 lg:grid-cols-[1.2fr_2fr] gap-16 lg:gap-32 mb-24 items-start">
+    <!-- Top Section (4 Columns) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-24 items-start mb-24">
       
-      <!-- Left: Newsletter Signup -->
-      <div class="w-full max-w-[450px]">
+      <!-- Part 1: Newsletter Signup -->
+      <div class="w-full">
         {% if section.settings.show_newsletter %}
           {% form 'customer', id: 'FooterNewsletter', class: 'block w-full' %}
             <input type="hidden" name="contact[tags]" value="newsletter">
@@ -51,55 +51,51 @@
         {% endif %}
       </div>
 
-      <!-- Right: 3 Columns (Grid-based for separation) -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-24 w-full h-full lg:justify-items-end">
-        
-        <!-- Column 1 -->
-        <div class="w-full lg:max-w-[200px] text-left">
-          <ul class="space-y-4">
-            {% if section.settings.menu_1 != blank %}
-              {% for link in section.settings.menu_1.links %}
-                <li><a href="{{ link.url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal block">{{ link.title }}</a></li>
-              {% endfor %}
-            {% else %}
-              <li><a href="#" class="text-sm text-black font-normal block">Subscribe</a></li>
-              <li><a href="#" class="text-sm text-black font-normal block">Become a Member</a></li>
-              <li><a href="#" class="text-sm text-black font-normal block">Refer a Friend</a></li>
-              <li><a href="#" class="text-sm text-black font-normal block">Take the Scent Quiz</a></li>
-              <li><a href="#" class="text-sm text-black font-normal block">Find a Store</a></li>
-            {% endif %}
-          </ul>
-        </div>
+      <!-- Part 2: Column 1 Links -->
+      <div class="w-full lg:pl-4">
+        <ul class="space-y-4">
+          {% if section.settings.menu_1 != blank %}
+            {% for link in section.settings.menu_1.links %}
+              <li><a href="{{ link.url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal block">{{ link.title }}</a></li>
+            {% endfor %}
+          {% else %}
+            <li><a href="#" class="text-sm text-black font-normal block">Subscribe</a></li>
+            <li><a href="#" class="text-sm text-black font-normal block">Become a Member</a></li>
+            <li><a href="#" class="text-sm text-black font-normal block">Refer a Friend</a></li>
+            <li><a href="#" class="text-sm text-black font-normal block">Take the Scent Quiz</a></li>
+            <li><a href="#" class="text-sm text-black font-normal block">Find a Store</a></li>
+          {% endif %}
+        </ul>
+      </div>
 
-        <!-- Column 2 -->
-        <div class="w-full lg:max-w-[200px] text-left">
-          <ul class="space-y-4">
-            {% if section.settings.menu_2 != blank %}
-              {% for link in section.settings.menu_2.links %}
-                <li><a href="{{ link.url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal block">{{ link.title }}</a></li>
-              {% endfor %}
-            {% else %}
-              <li><a href="#" class="text-sm text-black font-normal block">Help Center</a></li>
-              <li><a href="#" class="text-sm text-black font-normal block">FAQs</a></li>
-              <li><a href="#" class="text-sm text-black font-normal block">Returns</a></li>
-              <li><a href="#" class="text-sm text-black font-normal block">Contact</a></li>
-            {% endif %}
-          </ul>
-        </div>
+      <!-- Part 3: Column 2 Links -->
+      <div class="w-full">
+        <ul class="space-y-4">
+          {% if section.settings.menu_2 != blank %}
+            {% for link in section.settings.menu_2.links %}
+              <li><a href="{{ link.url }}" class="text-sm text-black hover:opacity-70 transition-opacity font-normal block">{{ link.title }}</a></li>
+            {% endfor %}
+          {% else %}
+            <li><a href="#" class="text-sm text-black font-normal block">Help Center</a></li>
+            <li><a href="#" class="text-sm text-black font-normal block">FAQs</a></li>
+            <li><a href="#" class="text-sm text-black font-normal block">Returns</a></li>
+            <li><a href="#" class="text-sm text-black font-normal block">Contact</a></li>
+          {% endif %}
+        </ul>
+      </div>
 
-        <!-- Column 3 -->
-        <div class="w-full lg:max-w-[200px] text-left">
-          <ul class="space-y-4">
-            <li class="text-sm text-black font-normal">{{ section.settings.shipping_label }}: <span class="font-normal">{{ section.settings.shipping_value }}</span></li>
-            <li class="text-sm text-black font-normal">{{ section.settings.language_label }}: <span class="font-normal">{{ section.settings.language_value }}</span></li>
-          </ul>
-        </div>
+      <!-- Part 4: Column 3 Links (Shipping/Language) -->
+      <div class="w-full">
+        <ul class="space-y-4">
+          <li class="text-sm text-black font-normal">{{ section.settings.shipping_label }}: <span class="font-normal">{{ section.settings.shipping_value }}</span></li>
+          <li class="text-sm text-black font-normal">{{ section.settings.language_label }}: <span class="font-normal">{{ section.settings.language_value }}</span></li>
+        </ul>
       </div>
     </div>
 
-    <!-- Bottom Section -->
+    <!-- Bottom Row (Policy & Socials) -->
     <div class="pt-8 flex flex-col md:flex-row justify-between items-center gap-6 border-t border-gray-200">
-      <!-- Left: Policy Links -->
+      <!-- Bottom Left: Policy Links -->
       <div class="flex flex-wrap items-center gap-8">
         {% if shop.privacy_policy != blank %}
           <a href="{{ shop.privacy_policy.url }}" class="text-[11px] text-black hover:opacity-70 transition-opacity font-normal">Privacy Policy</a>
@@ -122,8 +118,8 @@
         </button>
       </div>
 
-      <!-- Right: Social Icons -->
-      <div class="flex items-center gap-6">
+      <!-- Bottom Right: Social Icons -->
+      <div class="flex items-center gap-8">
         {% if section.settings.tiktok_url != blank %}
           <a href="{{ section.settings.tiktok_url }}" class="text-black hover:opacity-70 transition-opacity" aria-label="TikTok">
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -134,7 +130,7 @@
         {% if section.settings.instagram_url != blank %}
           <a href="{{ section.settings.instagram_url }}" class="text-black hover:opacity-70 transition-opacity" aria-label="Instagram">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
             </svg>
           </a>
         {% endif %}
