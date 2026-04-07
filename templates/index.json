@@ -59,6 +59,7 @@
         },
         "promo_toast_Wi9Jkg": {
           "type": "promo_toast",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/landscape_jpg.jpg",
             "text": "The SuperBrush Pro- Blush Pink",
