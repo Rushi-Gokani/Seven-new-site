@@ -309,6 +309,12 @@
             "text": "<p><a href=\"https://www.saltandstone.com/products/body-wash-refill-set/?source=bodywashpdp\">Save $9 with the Body Wash Refill Set</a></p>"
           }
         },
+        "text_dGzHkF": {
+          "type": "text",
+          "settings": {
+            "text": "<p>15.2 FL OZ / 450 ML</p>"
+          }
+        },
         "description_XBkEUB": {
           "type": "description",
           "settings": {}
@@ -321,6 +327,7 @@
       "block_order": [
         "title_mMXqki",
         "text_xMWVCM",
+        "text_dGzHkF",
         "description_XBkEUB",
         "buy_buttons_8hxpJh"
       ],
