@@ -15,13 +15,13 @@
         "heading_mqpbP4": {
           "type": "heading",
           "settings": {
-            "text": "The super   <br>brush pro",
+            "text": "The super  <br> brush pro",
             "color": "text-black",
             "padding_top": 0,
             "padding_bottom": 16,
             "padding_left": 100,
             "padding_right": 0,
-            "max_width": 1200
+            "max_width": 1600
           }
         },
         "subheading_MaRRRX": {
