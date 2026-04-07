@@ -227,7 +227,7 @@
       "settings": {
         "title": "Shop by Category",
         "shop_all_text": "SHOP ALL",
-        "shop_all_link": "",
+        "shop_all_link": "shopify://collections/all",
         "bg_color": "#ffffff"
       }
     },
