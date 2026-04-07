@@ -177,6 +177,60 @@
         "bg_color": "#ffffff"
       }
     },
+    "shop_by_category_i6WMCi": {
+      "type": "shop-by-category",
+      "blocks": {
+        "category_TVp8gC": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/40.png",
+            "title": "Deodorant",
+            "button_text": "SHOP DEODORANT",
+            "link": "shopify://collections/all"
+          }
+        },
+        "category_P4bRXP": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/32.png",
+            "title": "Body Wash",
+            "button_text": "SHOP BODY WASH",
+            "link": "shopify://collections"
+          }
+        },
+        "category_WP8YTR": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/7_de2bf0c8-d378-4e6d-9ad5-69c6ee51db8b.png",
+            "title": "Body Mist",
+            "button_text": "SHOP BODY MIST",
+            "link": ""
+          }
+        },
+        "category_jz9jz8": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/02_92c17a5b-324f-47b5-8e7a-57ff4ddfce65.png",
+            "title": "Body Cream",
+            "button_text": "SHOP BODY CREAM",
+            "link": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "category_TVp8gC",
+        "category_P4bRXP",
+        "category_WP8YTR",
+        "category_jz9jz8"
+      ],
+      "name": "Shop by Category",
+      "settings": {
+        "title": "Shop by Category",
+        "shop_all_text": "SHOP ALL",
+        "shop_all_link": "",
+        "bg_color": "#ffffff"
+      }
+    },
     "featured-product-grid": {
       "type": "featured-product-grid",
       "settings": {
@@ -524,6 +578,7 @@
   "order": [
     "hero-slider",
     "featured_collection_slider_y7wHkU",
+    "shop_by_category_i6WMCi",
     "featured-product-grid",
     "shopped_by_gold",
     "marquee_bnkf8n",
