@@ -30,10 +30,10 @@
 <div class="w-full bg-[#f8f8f8] py-16 md:py-24 footer-container">
   <div class="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20">
     <!-- Top Section (4 Columns) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 items-start mb-24">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-24 items-start mb-24">
       
       <!-- Part 1: Newsletter Signup -->
-      <div class="w-full lg:col-span-5 newsletter-part">
+      <div class="w-full newsletter-part">
         {% if section.settings.show_newsletter %}
           {% form 'customer', id: 'FooterNewsletter', class: 'block w-full' %}
             <input type="hidden" name="contact[tags]" value="newsletter">
@@ -70,17 +70,17 @@
         {% endif %}
 
         <!-- Policy Links in First Column -->
-        <div class="mt-[10px] flex flex-wrap items-center gap-x-8 gap-y-4 text-left">
+        <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 text-left">
           {% if shop.privacy_policy != blank %}
-            <a href="{{ shop.privacy_policy.url }}" class="text-sm text-black hover:opacity-70 transition-opacity whitespace-nowrap bg-transparent">Privacy Policy</a>
+            <a href="{{ shop.privacy_policy.url }}" class="text-sm text-black hover:opacity-70 transition-opacity whitespace-nowrap">Privacy Policy</a>
           {% endif %}
           {% if shop.terms_of_service != blank %}
-            <a href="{{ shop.terms_of_service.url }}" class="text-sm text-black hover:opacity-70 transition-opacity whitespace-nowrap bg-transparent">Terms & Conditions</a>
+            <a href="{{ shop.terms_of_service.url }}" class="text-sm text-black hover:opacity-70 transition-opacity whitespace-nowrap">Terms & Conditions</a>
           {% endif %}
           {% if section.settings.accessibility_url != blank %}
-            <a href="{{ section.settings.accessibility_url }}" class="text-sm text-black hover:opacity-70 transition-opacity whitespace-nowrap bg-transparent">Accessibility</a>
+            <a href="{{ section.settings.accessibility_url }}" class="text-sm text-black hover:opacity-70 transition-opacity whitespace-nowrap">Accessibility</a>
           {% endif %}
-          <button class="text-sm text-black hover:opacity-70 transition-opacity flex items-center gap-2 whitespace-nowrap bg-transparent border-none p-0" aria-label="Your Privacy Choices">
+          <button class="text-sm text-black hover:opacity-70 transition-opacity flex items-center gap-2 whitespace-nowrap" aria-label="Your Privacy Choices">
             <span class="relative inline-flex items-center">
               <svg width="24" height="12" viewBox="0 0 30 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-black">
                 <rect x="0.5" y="0.5" width="23" height="11" rx="5.5" fill="black" stroke="black"/>
@@ -94,7 +94,7 @@
       </div>
 
       <!-- Part 2: Column 1 Links -->
-      <div class="w-full lg:col-start-6 lg:col-span-2 bold-column">
+      <div class="w-full lg:pl-24 bold-column">
         <ul class="space-y-4">
           {% if section.settings.menu_1 != blank %}
             {% for link in section.settings.menu_1.links %}
@@ -111,7 +111,7 @@
       </div>
 
       <!-- Part 3: Column 2 Links -->
-      <div class="w-full lg:col-span-2 bold-column">
+      <div class="w-full bold-column">
         <ul class="space-y-4 pl-8">
           {% if section.settings.menu_2 != blank %}
             {% for link in section.settings.menu_2.links %}
@@ -127,14 +127,14 @@
       </div>
 
       <!-- Part 4: Column 3 Links (Shipping/Language + Socials) -->
-      <div class="w-full lg:col-start-11 lg:col-span-2 bold-column lg:text-right">
+      <div class="w-full lg:pl-32 bold-column">
         <ul class="space-y-4 mb-8">
           <li class="text-sm text-black">{{ section.settings.shipping_label }}: <span>{{ section.settings.shipping_value }}</span></li>
           <li class="text-sm text-black">{{ section.settings.language_label }}: <span>{{ section.settings.language_value }}</span></li>
         </ul>
         
         <!-- Social Icons in Column 4 -->
-        <div class="flex items-center lg:justify-end gap-6 mt-8">
+        <div class="flex items-center gap-6 mt-8">
           {% if section.settings.tiktok_url != blank %}
             <a href="{{ section.settings.tiktok_url }}" class="text-black hover:opacity-70 transition-opacity" aria-label="TikTok">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -150,7 +150,7 @@
             </a>
           {% endif %}
           {% if section.settings.social_logo_custom != blank %}
-            <a href="{{ section.settings.social_logo_url }}" class="hover:opacity-70 transition-opacity flex items-center" style="margin-left: 360px; margin-top:40px" aria-label="Custom Social Logo">
+            <a href="{{ section.settings.social_logo_url }}" class="hover:opacity-70 transition-opacity flex items-center" aria-label="Custom Social Logo">
               <img 
                 src="{{ section.settings.social_logo_custom | image_url: width: section.settings.social_logo_width }}" 
                 alt="Social Media Logo"
