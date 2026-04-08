@@ -25,7 +25,7 @@
       ],
       "settings": {
         "show_collection_image": true,
-        "products_per_page": 18,
+        "products_per_page": 12,
         "enable_sorting": true,
         "enable_filtering": true,
         "show_filter_count": true
