@@ -38,7 +38,7 @@
           {% form 'customer', id: 'FooterNewsletter', class: 'block w-full' %}
             <input type="hidden" name="contact[tags]" value="newsletter">
             <h3 class="text-2xl md:text-3xl text-black mb-8 footer-heading">{{ section.settings.newsletter_heading }}</h3>
-            <div class="relative flex items-center bg-[#f5f5f5] rounded-full p-1.5 w-full max-w-md">
+            <div class="relative flex items-center bg-[#f5f5f5] rounded-full p-1.5 w-full max-w-md" style="background-color: #f5f5f5;">
               <label class="sr-only" for="FooterNewsletter-email">Enter email address</label>
               <input
                 id="FooterNewsletter-email"
@@ -48,11 +48,11 @@
                 autocomplete="email"
                 required
                 placeholder="Enter email address"
-                class="flex-1 h-12 pl-6 bg-[#f5f5f5] text-sm text-black placeholder:text-gray-500 focus:outline-none border-none shadow-none ring-0 w-full"
+                class="flex-1 h-12 pl-6 bg-transparent text-sm text-black placeholder:text-gray-500 focus:outline-none border-none shadow-none ring-0 w-full"
               >
               <button
                 type="submit"
-                class="h-8 px-4 bg-black text-white text-[10px] uppercase tracking-normal font-bold rounded-full transition-colors flex-shrink-0"
+                class="h-9 px-6 bg-black text-white text-[11px] uppercase tracking-widest font-bold rounded-full transition-colors flex-shrink-0"
                 style="white-space: nowrap;"
                 name="commit"
               >
