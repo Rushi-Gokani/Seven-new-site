@@ -2198,7 +2198,7 @@
     }
 
     .border-gray-200 {
-        border-color: var(--color-gray-200)
+        border-color: var(--color-white)
     }
 
     .border-gray-300 {
@@ -2737,7 +2737,8 @@
     .py-12 {
         padding-block: calc(var(--spacing)*12)
     }
-/* 
+
+    /* 
     .py-16 {
         padding-block: calc(var(--spacing)*16)
     } */
@@ -3697,7 +3698,7 @@
         .hover\:bg-white:hover {
             background-color: var(--color-white);
             color: #000;
-        
+
         }
 
         .hover\:bg-white\/5:hover {
@@ -4265,7 +4266,8 @@
         .md\:py-20 {
             padding-block: calc(var(--spacing)*20)
         }
-/* 
+
+        /* 
         .md\:py-24 {
         } */
 
