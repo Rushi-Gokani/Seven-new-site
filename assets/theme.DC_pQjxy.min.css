@@ -1268,7 +1268,7 @@
     }
 
     .mt-10 {
-        margin-top: calc(var(--spacing)*10)
+        margin-top: calc(var(--spacing)*25)
     }
 
     .mt-12 {
