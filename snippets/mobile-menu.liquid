@@ -7,61 +7,123 @@
 {% if menu != blank and menu.links.size > 0 %}
 <ul
   id="mobile-menu-list"
-  class="space-y-1"
+  class="space-y-6 pt-4"
   x-data="{ expanded: {} }"
 >
   {% for link in menu.links %}
-    {%- if link.links.size > 0 -%}
-  {% assign has_child = true %}
-{%- else -%}
-  {% assign has_child = false %}
-{%- endif -%}
+    {% liquid
+      assign has_child = false
+      if link.links.size > 0
+        assign has_child = true
+      endif
+      
+      assign is_new = false
+      if link.title contains '[NEW]'
+        assign is_new = true
+        assign link_title = link.title | replace: '[NEW]', '' | strip
+      else
+        assign link_title = link.title
+      endif
+
+      assign is_shop = false
+      if link_title == 'SHOP' or link_title == 'Shop'
+        assign is_shop = true
+      endif
+    %}
+
     <li class="mobile-menu-item">
       {% if has_child %}
         <button
           type="button"
-          class="flex w-full items-center justify-between px-4 py-3.5 text-[15px] font-medium text-black uppercase no-underline transition-all duration-200"
-          :class="expanded[{{ forloop.index }}] ? 'bg-gray-100' : 'hover:bg-gray-50'"
+          class="flex w-full items-center justify-between py-2 text-[24px] font-bold text-black bg-white uppercase tracking-tight no-underline group"
           @click="expanded[{{ forloop.index }}] = !expanded[{{ forloop.index }}]"
         >
-          <span>{{ link.title | escape }}</span>
-          <svg 
-            class="h-4 w-4 shrink-0 transition-transform duration-200" 
-            :class="expanded[{{ forloop.index }}] ? 'rotate-180' : ''"
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
+          <span>{{ link_title | escape }}</span>
+          {% if is_new %}
+            <span class="ml-2 bg-black text-white text-[10px] px-2 py-0.5 rounded-full tracking-normal font-bold">NEW</span>
+          {% endif %}
         </button>
-        <div x-show="expanded[{{ forloop.index }}]" x-collapse>
-          <ul class="ml-4 border-l border-gray-100 pl-4 space-y-2">
+
+        <div x-show="expanded[{{ forloop.index }}]" x-collapse class="mt-6 pb-6 border-b border-gray-100 mb-6">
+          <ul class="space-y-5">
             {% for child in link.links %}
-              <li>
-                <a
-                  href="{{ child.url }}"
-                  class="block py-2 text-base font-medium text-gray-500 uppercase no-underline transition-colors duration-200 hover:text-black"
-                  @click="$store.global.closeMobileMenu()"
-                >
-                  {{ child.title | escape }}
-                </a>
-              </li>
+              {% liquid
+                assign is_group_header = false
+                assign upcase_title = child.title | upcase
+                if upcase_title contains 'BY PRODUCT' or upcase_title contains 'COLLECTIONS'
+                  assign is_group_header = true
+                endif
+
+                assign is_child_new = false
+                if child.title contains '[NEW]'
+                  assign is_child_new = true
+                  assign child_title = child.title | replace: '[NEW]', '' | strip
+                else
+                  assign child_title = child.title
+                endif
+              %}
+
+              {% if is_group_header %}
+                <li class="pt-6 first:pt-0">
+                  <span class="block text-[12px] font-bold text-gray-400 uppercase tracking-[0.1em] mb-4 border-t border-gray-50 pt-6 first:border-0 first:pt-0">{{ child_title | escape }}</span>
+                  {% if child.links.size > 0 %}
+                    <ul class="space-y-4">
+                      {% for grandchild in child.links %}
+                        {% liquid
+                          assign is_grand_new = false
+                          if grandchild.title contains '[NEW]'
+                            assign is_grand_new = true
+                            assign grand_title = grandchild.title | replace: '[NEW]', '' | strip
+                          else
+                            assign grand_title = grandchild.title
+                          endif
+                        %}
+                        <li>
+                          <a 
+                            href="{{ grandchild.url }}" 
+                            class="flex items-center gap-2 text-[18px] font-medium text-black no-underline hover:text-gray-600 transition-colors"
+                            @click="$store.global.closeMobileMenu()"
+                          >
+                            <span>{{ grand_title | escape }}</span>
+                            {% if is_grand_new %}
+                              <span class="bg-black text-white text-[9px] px-1.5 py-0.5 rounded-full uppercase tracking-normal font-bold leading-none">NEW</span>
+                            {% endif %}
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </li>
+              {% else %}
+                <li>
+                  <a 
+                    href="{{ child.url }}" 
+                    class="flex items-center gap-2 text-[18px] font-medium text-black no-underline hover:text-gray-600 transition-colors"
+                    @click="$store.global.closeMobileMenu()"
+                  >
+                    <span>{{ child_title | escape }}</span>
+                    {% if is_child_new %}
+                      <span class="bg-black text-white text-[9px] px-1.5 py-0.5 rounded-full uppercase tracking-normal font-bold leading-none">NEW</span>
+                    {% endif %}
+                  </a>
+                </li>
+              {% endif %}
             {% endfor %}
           </ul>
         </div>
       {% else %}
         <a
           href="{{ link.url }}"
-          class="flex w-full items-center justify-between px-4 py-3.5 text-[15px] font-medium text-black uppercase no-underline transition-all duration-200 hover:bg-gray-50"
+          class="flex w-full items-center justify-between py-2 text-[24px] font-bold text-black bg-white uppercase tracking-tight no-underline"
           @click="$store.global.closeMobileMenu()"
         >
-          <span>{{ link.title | escape }}</span>
+          <span>{{ link_title | escape }}</span>
+          {% if is_new %}
+            <span class="ml-2 bg-black text-white text-[10px] px-2 py-0.5 rounded-full tracking-normal font-bold">NEW</span>
+          {% endif %}
         </a>
       {% endif %}
     </li>
   {% endfor %}
-
-  {%- comment -%} Utility links removed as they are now in the header {%- endcomment -%}
 </ul>
 {% endif %}

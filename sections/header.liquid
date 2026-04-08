@@ -56,7 +56,7 @@
         <button
           id="mobile-nav-trigger"
           type="button"
-          class="inline-flex h-10 w-10 items-center justify-center rounded-full border-0 bg-white/10 text-white transition-colors duration-200 hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          class="inline-flex h-10 -ml-4 items-center justify-start pl-0 pr-4 border-0 bg-white/10 text-white transition-colors duration-200 hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           @click="$store.global.toggleMobileMenu()"
           :aria-expanded="$store.global.isMobileMenuVisible"
           aria-label="Toggle mobile menu"
@@ -72,7 +72,7 @@
       <!-- Mobile Search Icon (Left) -->
       <button
         type="button"
-        class="md:hidden hover:opacity-70 transition-opacity focus-visible:outline-none bg-transparent border-none p-0 flex items-center"
+        class="md:hidden hover:opacity-70 transition-opacity focus-visible:outline-none bg-transparent border-none p-0 flex items-center -ml-3"
         @click="$store.global.isPredictiveSearchVisible = true"
         aria-label="Search">
         <span class="w-5 h-5 flex items-center justify-center">
@@ -87,7 +87,7 @@
     </div>
 
     <!-- Center Logo -->
-    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pl-0 pr-4 md:px-0">
       <a href="{{ routes.root_url }}" aria-label="{{ shop.name }} home" class="header-logo block text-[11px] md:text-lg lg:text-xl font-medium tracking-[0.2em] uppercase text-black no-underline whitespace-nowrap">
         {% if section.settings.logo %}
           {% assign logo_width = section.settings.logo_max_width %}
@@ -197,7 +197,7 @@
   <!-- Mobile Side Drawer -->
   <div
     id="mobile-menu-panel"
-    class="fixed inset-y-0 left-0 z-50 bg-white w-[90vw] h-full shadow-2xl md:hidden [[x-cloak]]:hidden text-black flex flex-col"
+    class="fixed inset-y-0 left-0 z-50 bg-white w-[85vw] h-full shadow-2xl md:hidden [[x-cloak]]:hidden text-black flex flex-col"
     x-show="$store.global.isMobileMenuVisible"
     x-transition:enter="transition ease-out duration-300"
     x-transition:enter-start="-translate-x-full"
@@ -205,14 +205,14 @@
     x-transition:leave="transition ease-in duration-200"
     x-transition:leave-start="translate-x-0"
     x-transition:leave-end="-translate-x-full"
-    x-cloak>
+    x-cloak style="width: 85%;">
     
     <!-- Drawer Header -->
     <div class="flex items-center justify-end px-6 pt-6 pb-2 flex-shrink-0">
       <button 
         @click="$store.global.closeMobileMenu()"
         type="button"
-        class="w-10 h-10 flex items-center justify-center bg-[#f4f4f4] text-black hover:opacity-75 transition-opacity"
+        class="w-10 h-10 flex items-center justify-center bg-white text-black hover:opacity-75 transition-opacity"
         aria-label="Close menu">
         {% render 'icon-close-x' %}
       </button>
