@@ -203,6 +203,7 @@
         "shop_all_link": "shopify://collections/all",
         "bg_color": "#ffffff"
       }
+    }
   },
   "order": [
     "hero-slider",
