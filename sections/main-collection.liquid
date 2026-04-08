@@ -139,20 +139,34 @@
     <div class="container mx-auto px-6 py-12 md:px-8 lg:px-12">
       {%- paginate collection.products by section.settings.products_per_page -%}
         {%- if collection.products.size > 0 -%}
+<<<<<<< HEAD
           <div class="product-grid grid grid-cols-2 gap-4 md:gap-6" role="list">
             {%- for product in collection.products -%}
               <div class="product-card group">
+=======
+          <div class="product-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" role="list">
+            {%- for product in collection.products -%}
+              <div class="product-card" {{ block.shopify_attributes }}>
+>>>>>>> 6fdeed35523ecf2d5bbaa3bb23ea98865532e29d
                 <!-- Product Image -->
                 <div class="product-image-container mb-4">
                   <a href="{{ product.url }}" class="block relative overflow-hidden bg-gray-100 aspect-[3/4]">
                     {%- if product.featured_image -%}
                       <img
+<<<<<<< HEAD
                         src="{{ product.featured_image | image_url: width: 800 }}"
                         srcset="{{ product.featured_image | image_url: width: 400 }} 400w,
                                 {{ product.featured_image | image_url: width: 600 }} 600w,
                                 {{ product.featured_image | image_url: width: 800 }} 800w,
                                 {{ product.featured_image | image_url: width: 1200 }} 1200w"
                         sizes="(min-width: 768px) 50vw, 50vw"
+=======
+                        src="{{ product.featured_image | image_url: width: 600 }}"
+                        srcset="{{ product.featured_image | image_url: width: 400 }} 400w,
+                                {{ product.featured_image | image_url: width: 600 }} 600w,
+                                {{ product.featured_image | image_url: width: 800 }} 800w"
+                        sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw"
+>>>>>>> 6fdeed35523ecf2d5bbaa3bb23ea98865532e29d
                         alt="{{ product.featured_image.alt | default: product.title | escape }}"
                         class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                         loading="lazy"
@@ -382,9 +396,12 @@
 
 .product-card {
   transition: transform 0.3s ease;
+<<<<<<< HEAD
   height: 100%;
   display: flex;
   flex-direction: column;
+=======
+>>>>>>> 6fdeed35523ecf2d5bbaa3bb23ea98865532e29d
 }
 
 .product-card:hover {
@@ -394,6 +411,7 @@
 .product-image-container {
   position: relative;
   overflow: hidden;
+<<<<<<< HEAD
   flex-shrink: 0;
 }
 
@@ -401,6 +419,8 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+=======
+>>>>>>> 6fdeed35523ecf2d5bbaa3bb23ea98865532e29d
 }
 
 .product-image-container a {
@@ -418,14 +438,22 @@
 @media (max-width: 768px) {
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
+<<<<<<< HEAD
     gap: 1rem;
+=======
+    gap: 1.5rem;
+>>>>>>> 6fdeed35523ecf2d5bbaa3bb23ea98865532e29d
   }
 }
 
 @media (max-width: 480px) {
   .product-grid {
+<<<<<<< HEAD
     grid-template-columns: repeat(2, 1fr);
     gap: 0.75rem;
+=======
+    grid-template-columns: 1fr;
+>>>>>>> 6fdeed35523ecf2d5bbaa3bb23ea98865532e29d
   }
 }
 </style>
@@ -437,6 +465,7 @@ function toggleFilters() {
 }
 
 function quickAdd(productId) {
+<<<<<<< HEAD
   // Find the first variant of the product
   const formData = new FormData();
   formData.append('id', productId);
@@ -455,6 +484,10 @@ function quickAdd(productId) {
     console.error('Error:', error);
     alert('Could not add to cart. Please try again.');
   });
+=======
+  // Implement quick add functionality
+  console.log('Quick add product:', productId);
+>>>>>>> 6fdeed35523ecf2d5bbaa3bb23ea98865532e29d
 }
 </script>
 
@@ -529,6 +562,7 @@ function quickAdd(productId) {
         }
       ]
     }
+<<<<<<< HEAD
   ],
   "presets": [
     {
@@ -541,6 +575,8 @@ function quickAdd(productId) {
         "show_filter_count": true
       }
     }
+=======
+>>>>>>> 6fdeed35523ecf2d5bbaa3bb23ea98865532e29d
   ]
 }
 {% endschema %}
