@@ -234,7 +234,7 @@
 
 <style>
 .featured-slider-section {
-  padding: 80px 0;
+  padding: 20px 0;
   overflow: hidden;
   font-family: inherit;
 }
@@ -253,8 +253,12 @@
   font-size: 32px;
   font-weight: 500;
   margin: 0;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   font-family: inherit;
+}
+@media (max-width: 768px) {
+  .slider-title { font-size: 24px; }
+  .slider-header { padding: 0 20px; }
 }
 .slider-link {
   font-size: 11px;
@@ -275,6 +279,10 @@
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   padding-bottom: 20px;
+  background: #fff;
+}
+@media (max-width: 768px) {
+  .slider-scroller { gap: 15px; }
 }
 .slider-item {
   flex: 0 0 20%;
@@ -291,20 +299,25 @@
   .slider-container { padding: 0 20px; }
   .slider-scroller-outer { margin: 0 -20px; padding: 0 20px; }
 }
-@media (max-width: 640px) {
-  .slider-item { flex: 0 0 85%; }
+@media (max-width: 768px) {
+  .slider-item { flex: 0 0 calc(50% - 5px); }
+  .slider-container { padding: 0 20px; }
+  .slider-scroller-outer { margin: 0 -20px; padding: 0 20px; }
+  .slider-header { padding: 0 0; margin-bottom: 24px; margin-left: 0; }
+  .slider-progress-wrap { display: none !important; }
+  .card-info { padding: 15px 0; }
 }
 
 /* Card Styling */
 .card-image-wrap {
   position: relative;
   background: #f7f7f7;
-  aspect-ratio: 1/1.05;
+  aspect-ratio: 1/1.1;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 0;
 }
 .card-img {
   width: 100%;
@@ -317,18 +330,19 @@
 }
 .card-badge {
   position: absolute;
-  top: 15px;
+  top: 12px;
   background: #fff;
-  padding: 6px 10px;
-  font-size: 10px;
+  padding: 4px 8px;
+  font-size: 8px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   z-index: 5;
   color: #000;
+  line-height: 1;
 }
 .card-badge--left {
-  left: 15px;
+  left: 12px;
 }
 .card-badge--right {
   right: 15px;
@@ -337,10 +351,11 @@
   padding: 20px 0;
 }
 .card-title {
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 11px;
+  font-weight: 700;
   margin: 0 0 4px 0;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.1em;
+  color: #000;
 }
 .card-title a {
   text-decoration: none;
@@ -348,16 +363,18 @@
 }
 .card-scent {
   font-size: 11px;
-  color: hsl(0, 0%, 50%);
+  color: #8c8c8c;
   margin: 0 0 4px 0;
   letter-spacing: 0.05em;
-  font-weight: 500;
+  font-weight: 400;
+  text-transform: uppercase;
 }
 .card-status {
   font-size: 11px;
-  color: hsl(0, 0%, 50%);
+  color: #a0a0a0;
   letter-spacing: 0.05em;
-  font-weight: 500;
+  font-weight: 400;
+  text-transform: uppercase;
 }
 
 /* Progress Bar */
