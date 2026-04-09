@@ -30,13 +30,21 @@
         "buy_buttons_EAbkFt": {
           "type": "buy_buttons",
           "settings": {}
+        },
+        "accordion_BBcRMH": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Accordion Heading",
+            "content": "<p>Add content here for your accordion.</p>"
+          }
         }
       },
       "block_order": [
         "title_PwbMUC",
         "description_AneURH",
         "rating_UnJjQk",
-        "buy_buttons_EAbkFt"
+        "buy_buttons_EAbkFt",
+        "accordion_BBcRMH"
       ],
       "name": "Product Salt Stone",
       "settings": {
@@ -141,6 +149,7 @@
     },
     "product-recommendations": {
       "type": "product-recommendations",
+      "disabled": true,
       "settings": {
         "heading": ""
       }
