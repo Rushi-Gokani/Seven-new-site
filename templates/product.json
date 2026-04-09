@@ -1,17 +1,154 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
+    "product_salt_stone_v2_RByDeV": {
+      "type": "product-salt-stone-v2",
+      "blocks": {
+        "title_PwbMUC": {
+          "type": "title",
+          "settings": {}
+        },
+        "description_AneURH": {
+          "type": "description",
+          "settings": {}
+        },
+        "rating_UnJjQk": {
+          "type": "rating",
+          "settings": {
+            "star_rating": "4.9",
+            "review_count": "5,540 reviews"
+          }
+        },
+        "buy_buttons_EAbkFt": {
+          "type": "buy_buttons",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title_PwbMUC",
+        "description_AneURH",
+        "rating_UnJjQk",
+        "buy_buttons_EAbkFt"
+      ],
+      "name": "Product Salt Stone",
+      "settings": {
+        "product": "",
+        "badge_text": "BEST SELLER"
+      }
+    },
+    "main_product_custom_4MNzdY": {
+      "type": "main-product-custom",
+      "blocks": {
+        "title_HxARbP": {
+          "type": "title",
+          "settings": {}
+        },
+        "description_X4QkdG": {
+          "type": "description",
+          "settings": {}
+        },
+        "refill_link_mjUknb": {
+          "type": "refill_link",
+          "settings": {
+            "text": "Save $9 with the Body Wash Refill Set",
+            "link_url": ""
+          }
+        },
+        "size_info_g9yxML": {
+          "type": "size_info",
+          "settings": {
+            "size_text": "15.2 FL OZ / 450 ML"
+          }
+        },
+        "rating_QrdCdQ": {
+          "type": "rating",
+          "settings": {
+            "star_rating": "4.9",
+            "review_count": "3,540 reviews"
+          }
+        },
+        "variant_picker_JKHHgD": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "promo_bar_rRF3Kx": {
+          "type": "promo_bar",
+          "settings": {
+            "text": "Get a free Mini Santal Deodorant on orders $70+"
+          }
+        },
+        "buy_buttons_AjRzin": {
+          "type": "buy_buttons",
+          "settings": {}
+        },
+        "cross_sell_BNLWYF": {
+          "type": "cross_sell",
+          "settings": {
+            "heading": "COMPLETE YOUR ROUTINE",
+            "products": []
+          }
+        },
+        "accordion_enYEtB": {
+          "type": "accordion",
+          "settings": {
+            "heading": "",
+            "content": ""
+          }
+        },
+        "accordion_r86tJ3": {
+          "type": "accordion",
+          "settings": {
+            "heading": "",
+            "content": ""
+          }
+        }
+      },
+      "block_order": [
+        "title_HxARbP",
+        "description_X4QkdG",
+        "refill_link_mjUknb",
+        "size_info_g9yxML",
+        "rating_QrdCdQ",
+        "variant_picker_JKHHgD",
+        "promo_bar_rRF3Kx",
+        "buy_buttons_AjRzin",
+        "cross_sell_BNLWYF",
+        "accordion_enYEtB",
+        "accordion_r86tJ3"
+      ],
+      "disabled": true,
+      "name": "Premium Product Page",
+      "settings": {
+        "badge_text": "BEST SELLER",
+        "floating_badge_text": "GET 10% OFF"
+      }
+    },
     "main": {
       "type": "main-product",
+      "disabled": true,
       "settings": {
-        "picker_type": "radio"
+        "picker_type": "radio",
+        "gallery_layout": "thumbnails_bottom"
       }
     },
     "product-recommendations": {
       "type": "product-recommendations",
-      "settings": {}
+      "settings": {
+        "heading": ""
+      }
     }
   },
   "order": [
+    "product_salt_stone_v2_RByDeV",
+    "main_product_custom_4MNzdY",
     "main",
     "product-recommendations"
   ]
